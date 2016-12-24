@@ -23,7 +23,7 @@ def link_files():
 
     for home_file, dot_file in zip(home_files, dot_files):
         print('link\t{}\tto\t{}'.format(dot_file, home_file))
-        os.link(dot_file, home_file)
+        os.symlink(dot_file, home_file)
 
 def main():
     remove_files()
