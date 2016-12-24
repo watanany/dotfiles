@@ -1,0 +1,6 @@
+[submodule ".zsh/auto-fu.zsh"]
+	path = .zsh/auto-fu.zsh
+	url = git@github.com:hchbaw/auto-fu.zsh.git
+[submodule ".config/nvim/dein/repos/github.com/Shougo/dein.vim"]
+	path = .config/nvim/dein/repos/github.com/Shougo/dein.vim
+	url = git@github.com:Shougo/dein.vim.git
