@@ -1,0 +1,6 @@
+*~
+.*.un~
+
+.vim/bundle
+.vim/undodir/*
+!.vim/undodir/.keep
