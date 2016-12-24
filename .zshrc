@@ -147,6 +147,5 @@ alias git-vimdiff='git difftool --tool=vimdiff --no-prompt'
 # .zshrc.local(実験用設定ファイル)を実行
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
-
 # Hello World
 echo "\n\e[31m*\e[m \e[33m*\e[m \e[35m*\e[m \e[36m*\e[m Hello World \e[31m*\e[m \e[33m*\e[m \e[35m*\e[m \e[36m*\e[m\n"
