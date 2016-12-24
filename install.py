@@ -2,24 +2,27 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-import shutil
-import requests
 
 HOME = os.getenv('HOME')
 CONFIG_ROOT = os.path.join(HOME, 'dotfiles')
 
-FILES = ['.zshrc', '.vimrc', '.tmux.conf', 'ghci']
+FILES = ['.zshrc', '.vimrc', '.tmux.conf', '.ghci']
 DIRS = ['.zsh', '.vim', '.config/nvim']
+PATH_LIST = FILES + DIRS
 
 def remove_files():
-    home_files = [os.path.join(HOME, fn) for fn in FILES + DIRS]
-    for fn in home_files:
-        shutil.rmtree(path)
+    home_files = [os.path.join(HOME, fn) for fn in PATH_LIST]
+    home_files = [path for path in home_files if os.path.exists(path)]
+
+    for path in home_files:
+        os.remove(path)
 
 def link_files():
-    home_files = [os.path.join(HOME, fn) for fn in FILES + DIRS]
-    dot_files = [os.path.join(CONFIG_ROOT, fn) for fn in FILES + DIRS]
-    for home_file, dot_files in zip(home_files, dot_files):
+    home_files = [os.path.join(HOME, fn) for fn in PATH_LIST]
+    dot_files = [os.path.join(CONFIG_ROOT, fn) for fn in PATH_LIST]
+
+    for home_file, dot_file in zip(home_files, dot_files):
+        print('link\t{}\tto\t{}'.format(dot_file, home_file))
         os.link(dot_file, home_file)
 
 def main():
