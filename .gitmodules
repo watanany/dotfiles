@@ -4,3 +4,6 @@
 [submodule ".config/nvim/dein/repos/github.com/Shougo/dein.vim"]
 	path = .config/nvim/dein/repos/github.com/Shougo/dein.vim
 	url = git@github.com:Shougo/dein.vim.git
+[submodule ".git-subcommands"]
+	path = .git-subcommands
+	url = git@github.com:watanany/git-subcommands.git

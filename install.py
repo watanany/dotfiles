@@ -7,7 +7,7 @@ HOME = os.getenv('HOME')
 CONFIG_ROOT = os.path.join(HOME, 'dotfiles')
 
 FILES = ['.zshrc', '.vimrc', '.tmux.conf', '.ghci']
-DIRS = ['.zsh', '.vim', '.config/nvim']
+DIRS = ['.zsh', '.vim', '.config/nvim', '.git-subcommands']
 PATH_LIST = FILES + DIRS
 
 def remove_files():
