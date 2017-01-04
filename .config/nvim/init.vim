@@ -1,4 +1,3 @@
-
 " Maintainer:   Watanabe Shingo <s1170087@gmail.com>
 " Last change:  2016 Sep 26
 "
