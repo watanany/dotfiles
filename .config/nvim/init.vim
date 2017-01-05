@@ -313,6 +313,7 @@ let g:indent_guides_space_guides=1
 let g:vim_tags_auto_generate = 1
 let g:vimfiler_as_default_explorer = 1
 " let g:vimfiler_edit_action = 'tabopen'
+let g:table_mode_corner='|'
 
 " neocomplcache --
 " Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
@@ -350,6 +351,8 @@ let g:neocomplcache_force_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 " JSON編集時にconceal機能を無効化
 autocmd Filetype json setl conceallevel=0
+" .mdファイル読み込み時にテーブルモードをONにする
+autocmd BufRead *.md TableModeEnable
 " .scssファイル読み込み時にファイルタイプにsassをセットする
 autocmd BufRead,BufNewFile *.scss setf sass
 " .exsファイル読み込み時にファイルタイプをelixirにセットする
