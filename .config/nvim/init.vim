@@ -182,7 +182,6 @@ if has('conceal')
     set conceallevel=2 concealcursor=niv
 endif
 
-
 " Don't use Ex mode, use Q for formatting
 map Q gq
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
@@ -265,8 +264,6 @@ nnoremap <silent>,rv :Unite -toggle rails/view<CR>
 nnoremap <silent>,rC :Unite -toggle rails/config<CR>
 nnoremap <silent>,rd :Unite -toggle rails/db<CR>
 " vimfiler --
-" ダブルクリックでファイルを開けるようにする
-" autocmd Filetype vimfiler nmap <buffer> <2-LeftMouse> <Plug>(vimfiler_edit_file)
 " ファイルリスト
 nnoremap <silent>,f :VimFiler -split -simple -toggle -winwidth=35 -no-quit<CR>
 " neocomplcache --
@@ -353,25 +350,29 @@ let g:neocomplcache_force_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 " JSON編集時にconceal機能を無効化
 autocmd Filetype json setl conceallevel=0
+" 保存時に末尾の空白を除去
+autocmd BufWritePre * StripWhitespace
 " .mdファイル読み込み時にテーブルモードをONにする
 autocmd BufRead *.md TableModeEnable
 " .scssファイル読み込み時にファイルタイプにsassをセットする
 autocmd BufRead,BufNewFile *.scss setf sass
-" .exsファイル読み込み時にファイルタイプをelixirにセットする
-autocmd BufRead,BufNewFile *.exs setf elixir
 " .jbuilderファイル読み込み時にファイルタイプをrubyにセットする
 autocmd BufRead,BufNewFile *.jbuilder setf ruby
-" 保存時に末尾の空白を除去
-autocmd BufWritePre * StripWhitespace
+" .exsファイル読み込み時にファイルタイプをelixirにセットする
+autocmd BufRead,BufNewFile *.exs setf elixir
 " vimfiler表示の際は行番号を付けない
 autocmd Filetype vimfiler setlocal nonumber
 autocmd Filetype vimfiler setlocal norelativenumber
+" ダブルクリックでファイルを開けるようにする
+" autocmd Filetype vimfiler nmap <buffer> <2-LeftMouse> <Plug>(vimfiler_edit_file)
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+
 
 
 "--------------------------------------------------------------------------------
