@@ -101,6 +101,8 @@ if has('langmap') && exists('+langnoremap')
     " compatible).
     set langnoremap
 endif
+" undo
+set undofile
 " show the cursor position all the time
 set ruler
 " display incomplete commands
