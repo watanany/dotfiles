@@ -77,13 +77,13 @@ bindkey "^N" history-beginning-search-forward-end
 # コアファイルを作らないようにする
 limit coredumpsize 0
 
-# PATHの設定
-export PATH=~/.git-subcommands:~/.local/bin:~/bin:${PATH}
-
+export XDG_CONFIG_HOME=$HOME/.config
 export EDITOR=nvim
 export PAGER=less
 export TERM=xterm-256color
-export XDG_CONFIG_HOME=$HOME/.config
+export GOPATH=$HOME/.golang
+export GOROOT=$(go env GOROOT)
+export PATH=~/.git-subcommands:~/.local/bin:~/bin:$GOPATH/bin:$PATH
 
 # aliasの設定
 alias mv="mv -i"
@@ -136,13 +136,13 @@ alias sidekiq='bundle exec sidekiq'
 alias git-vimdiff='git difftool --tool=vimdiff --no-prompt'
 
 # auto-fuの設定
-# if [ -f ~/.zsh/auto-fu.zsh/auto-fu.zsh ]; then
-#     source ~/.zsh/auto-fu.zsh/auto-fu.zsh
-#     zle-line-init () {auto-fu-init;}
-#     zle -N zle-line-init
-#     zstyle ':completion:*' completer _oldlist _complete
-#     zle -N zle-keymap-select auto-fu-zle-keymap-select
-# fi
+if [ -f ~/.zsh/auto-fu.zsh/auto-fu.zsh ]; then
+    source ~/.zsh/auto-fu.zsh/auto-fu.zsh
+    zle-line-init () {auto-fu-init;}
+    zle -N zle-line-init
+    zstyle ':completion:*' completer _oldlist _complete
+    zle -N zle-keymap-select auto-fu-zle-keymap-select
+fi
 
 # .zshrc.local(実験用設定ファイル)を実行
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
