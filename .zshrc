@@ -126,6 +126,10 @@ function tmux-panes {
     tmux resize-pane -D 10
 }
 
+pretty_json() {
+    python -c 'import sys, json; j=json.loads(sys.stdin.read()); print(json.dumps(j, indent=4, ensure_ascii=False))'
+}
+
 # Ruby on Rails
 alias be='bundle exec'
 alias rails='bundle exec spring rails'
