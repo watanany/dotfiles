@@ -6,7 +6,7 @@ import os
 HOME = os.getenv('HOME')
 CONFIG_ROOT = os.path.join(HOME, 'dotfiles')
 
-FILES = ['.zshrc', '.vimrc', '.tmux.conf', '.ghci']
+FILES = ['.zshrc', '.vimrc', '.tmux.conf', '.ghci', '.iex.exs']
 DIRS = ['.zsh', '.vim', '.config/nvim', '.git-subcommands']
 PATH_LIST = FILES + DIRS
 
