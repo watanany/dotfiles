@@ -152,6 +152,10 @@ on_ft=['javascript']
 repo='mattn/jscomplete-vim'
 on_ft=['javascript']
 
+[[plugins]]
+repo='leafgarland/typescript-vim'
+on_ft=['typescript']
+
 #--------------------------------------------------------------------------------
 # CoffeeScript
 #--------------------------------------------------------------------------------
