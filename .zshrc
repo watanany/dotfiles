@@ -81,9 +81,10 @@ export XDG_CONFIG_HOME=$HOME/.config
 export EDITOR=nvim
 export PAGER=less
 export TERM=xterm-256color
-export GOPATH=$HOME/.golang
-export GOROOT=$(go env GOROOT)
-export PATH=~/.git-subcommands:~/.local/bin:~/bin:$GOPATH/bin:$PATH
+# export GOPATH=$HOME/.golang
+# export GOROOT=$(go env GOROOT)
+# export PATH=$GOPATH/bin:$PATH
+export PATH=~/.git-subcommands:~/.local/bin:~/bin:$PATH
 
 # aliasの設定
 alias mv="mv -i"
