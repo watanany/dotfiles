@@ -73,10 +73,12 @@ endif
 set runtimepath+=$XDG_CONFIG_HOME/nvim/dein/repos/github.com/Shougo/dein.vim
 
 " Required:
-call dein#begin('$XDG_CONFIG_HOME/nvim/dein')
-call dein#load_toml('$XDG_CONFIG_HOME/nvim/plugins.toml')
-" Required:
-call dein#end()
+if dein#load_state('$XDG_CONFIG_HOME/nvim/dein')
+  call dein#begin('$XDG_CONFIG_HOME/nvim/dein')
+  call dein#load_toml('$XDG_CONFIG_HOME/nvim/plugins.toml')
+  call dein#end()
+  call dein#save_state()
+endif
 
 " Required:
 filetype plugin indent on
