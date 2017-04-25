@@ -104,6 +104,7 @@ if has('langmap') && exists('+langnoremap')
     set langnoremap
 endif
 " undo
+set undodir=$HOME/.local/share/nvim/undo
 set undofile
 " show the cursor position all the time
 set ruler
