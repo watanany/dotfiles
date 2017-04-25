@@ -78,7 +78,7 @@ bindkey "^N" history-beginning-search-forward-end
 limit coredumpsize 0
 
 export XDG_CONFIG_HOME=$HOME/.config
-export EDITOR=nvim
+export EDITOR=vim
 export PAGER=less
 export TERM=xterm-256color
 export PATH=~/.git-subcommands:~/.local/bin:~/bin:$PATH
