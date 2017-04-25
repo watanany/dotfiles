@@ -103,9 +103,31 @@ if has('langmap') && exists('+langnoremap')
     " compatible).
     set langnoremap
 endif
+
+
+" 履歴を10000件まで取る
+set history=10000
+" インクリメンタルサーチをON
+set incsearch
+" 検索結果をハイライト
+set hlsearch
+" ルーラーを表示
+set ruler
+" タブ挿入時にshiftwidthを使うようにする
+set smarttab
+"
+set ttyfast
+"
+set autoread
 " undo
 set undodir=$HOME/.local/share/nvim/undo
 set undofile
+" バックアップディレクトリ
+set backupdir=$HOME/.local/share/nvim/backup
+" バックアップファイルを作らない
+"set nowritebackup
+" バックアップをしない
+"set nobackup
 " show the cursor position all the time
 set ruler
 " display incomplete commands
@@ -125,10 +147,6 @@ set softtabstop=2
 set scrolloff=5
 " .swapファイルを作らない
 set noswapfile
-" バックアップファイルを作らない
-set nowritebackup
-" バックアップをしない
-set nobackup
 " ビープ音を消す
 set vb
 set t_vb=
@@ -180,6 +198,8 @@ set wildmenu wildmode=list:full
 "set cursorline
 " カーソル移動の動作を変更
 set whichwrap=b,s,h,l,<,>,[,]
+" バックスペースで改行も消せるようにする
+set backspace=indent,eol,start
 
 if has('conceal')
     set conceallevel=2 concealcursor=niv
