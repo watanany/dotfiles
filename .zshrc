@@ -83,6 +83,8 @@ export PAGER=less
 export TERM=xterm-256color
 export PATH=~/.git-subcommands:~/.local/bin:~/bin:$PATH
 
+export KERAS_BACKEND=tensorflow
+
 # aliasの設定
 alias mv="mv -i"
 alias cp="cp -i"
