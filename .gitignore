@@ -4,3 +4,5 @@
 .vim/bundle
 .vim/undodir/*
 !.vim/undodir/.keep
+.config/nvim/dein/
+.zsh/google-cloud-sdk/
