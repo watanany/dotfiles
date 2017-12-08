@@ -2,12 +2,6 @@
 repo='Shougo/dein.vim'
 
 [[plugins]]
-repo='Shougo/neosnippet.vim'
-
-[[plugins]]
-repo='Shougo/neosnippet-snippets'
-
-[[plugins]]
 repo='Shougo/vimshell'
 rev='3787e5'
 
@@ -20,10 +14,11 @@ repo='flazz/vim-colorschemes'
 
 [[plugins]]
 repo='w0ng/vim-hybrid'
+script_type='colors'
 
 # 補完プラグイン
 [[plugins]]
-repo='Shougo/neocomplcache'
+repo='Shougo/deoplete.nvim'
 
 # コメントアウト
 [[plugins]]
@@ -52,7 +47,7 @@ repo='cocopon/lightline-hybrid.vim'
 # テキストを整列させるプラグイン
 [[plugins]]
 repo='godlygeek/tabular'
-# repo='junegunn/vim-easy-align'
+#repo='junegunn/vim-easy-align'
 
 # ブラウザを開くコマンドを追加
 [[plugins]]
@@ -210,12 +205,13 @@ on_ft=['ruby', 'erb', 'haml']
 #--------------------------------------------------------------------------------
 # Python
 #--------------------------------------------------------------------------------
+# 補完プラグイン
 [[plugins]]
-repo='davidhalter/jedi-vim'
-on_ft=['python']
+repo='zchee/deoplete-jedi'
+
 [[plugins]]
-repo='lambdalisue/vim-pyenv'
-on_ft=['python']
+repo = 'nvie/vim-flake8'
+on_ft = 'python'
 
 #--------------------------------------------------------------------------------
 # Go Lang
