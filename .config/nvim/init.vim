@@ -311,6 +311,9 @@ let g:vim_tags_auto_generate=1
 let g:vimfiler_as_default_explorer=1
 " let g:vimfiler_edit_action = 'tabopen'
 let g:table_mode_corner='|'
+let g:rustfmt_autosave=1
+let g:racer_cmd="$HOME/.cargo/bin/racer"
+let g:racer_experimental_completer=1
 
 " deopleteで補完した後、preview windowを閉じる
 autocmd CompleteDone * silent! pclose!
@@ -339,3 +342,8 @@ autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+autocmd FileType rust nmap gd <Plug>(rust-def)
+autocmd FileType rust nmap gs <Plug>(rust-def-split)
+autocmd FileType rust nmap gx <Plug>(rust-def-vertical)
+autocmd FileType rust nmap <leader>gd <Plug>(rust-doc)

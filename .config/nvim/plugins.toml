@@ -260,3 +260,14 @@ on_ft=['scala']
 [[plugins]]
 repo='elixir-lang/vim-elixir'
 on_ft=['elixir']
+
+#--------------------------------------------------------------------------------
+# Rust
+#--------------------------------------------------------------------------------
+[[plugins]]
+repo='rust-lang/rust.vim'
+on_ft=['rust']
+
+[[plugins]]
+repo='racer-rust/vim-racer'
+on_ft=['rust']
