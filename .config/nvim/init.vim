@@ -307,8 +307,8 @@ let g:indent_guides_enable_on_vim_startup=1
 let g:indent_guides_color_change_percent=20
 let g:indent_guides_guide_size=1
 let g:indent_guides_space_guides=1
-let g:vim_tags_auto_generate = 1
-let g:vimfiler_as_default_explorer = 1
+let g:vim_tags_auto_generate=1
+let g:vimfiler_as_default_explorer=1
 " let g:vimfiler_edit_action = 'tabopen'
 let g:table_mode_corner='|'
 
