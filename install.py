@@ -1,19 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 import sys
 import os
 
 HOME = os.getenv('HOME')
 CONFIG_ROOT = os.path.join(HOME, 'dotfiles')
 
-DIRS = ['.zsh', '.vim', '.config/nvim', '.cache', '.local/share', '.tmux/plugins']
-LINK_LIST = ['.zshrc', '.vimrc', '.tmux.conf', '.ghci', '.iex.exs', '.cache/dein', '.tmux/plugins/tpm', '.git-subcommands']
+DIRS = ['.cache', '.local/share', '.tmux/plugins']
+LINK_LIST = ['.zsh', '.zshrc', '.vim', '.vimrc', '.tmux.conf', '.ghci', '.iex.exs', '.cache/dein', '.tmux/plugins/tpm', '.git-subcommands']
 
-def remove_files():
+def remove_links():
     home_files = [os.path.join(HOME, fn) for fn in LINK_LIST]
-    home_files = [path for path in home_files if os.path.exists(path)]
+    home_files = [path for path in home_files if os.path.exists(path) or os.path.islink(path)]
 
     for path in home_files:
+        print('remove {0}'.format(path))
         os.remove(path)
 
 def link_files():
@@ -21,7 +23,7 @@ def link_files():
     dot_files = [os.path.join(CONFIG_ROOT, fn) for fn in LINK_LIST]
 
     for home_file, dot_file in zip(home_files, dot_files):
-        print('link\t{}\tto\t{}'.format(dot_file, home_file))
+        print('link\t{0}\tto\t{1}'.format(dot_file, home_file))
         os.symlink(dot_file, home_file)
 
 def make_dirs():
@@ -32,7 +34,7 @@ def make_dirs():
 
 def main():
     make_dirs()
-    remove_files()
+    remove_links()
     link_files()
 
 
