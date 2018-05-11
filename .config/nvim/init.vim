@@ -70,7 +70,7 @@ if &compatible
 endif
 
 " Required:
-set runtimepath+=$XDG_CACHE_HOME/dein
+set runtimepath+=$XDG_CACHE_HOME/dein/repos/github.com/Shougo/dein.vim
 
 " Required:
 if dein#load_state('$XDG_CACHE_HOME/dein')
