@@ -142,13 +142,13 @@ alias sidekiq='bundle exec sidekiq'
 alias git-vimdiff='git difftool --tool=vimdiff --no-prompt'
 
 # auto-fuの設定
-if [ -f ~/.zsh/auto-fu.zsh/auto-fu.zsh ]; then
-    source ~/.zsh/auto-fu.zsh/auto-fu.zsh
-    zle-line-init () {auto-fu-init;}
-    zle -N zle-line-init
-    zstyle ':completion:*' completer _oldlist _complete
-    zle -N zle-keymap-select auto-fu-zle-keymap-select
-fi
+# if [ -f ~/.zsh/auto-fu.zsh/auto-fu.zsh ]; then
+#     source ~/.zsh/auto-fu.zsh/auto-fu.zsh
+#     zle-line-init () {auto-fu-init;}
+#     zle -N zle-line-init
+#     zstyle ':completion:*' completer _oldlist _complete
+#     zle -N zle-keymap-select auto-fu-zle-keymap-select
+# fi
 
 # .zshrc.local(実験用設定ファイル)を実行
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
