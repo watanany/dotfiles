@@ -29,7 +29,6 @@ repo='flazz/vim-colorschemes'
 
 [[plugins]]
 repo='w0ng/vim-hybrid'
-script_type='colors'
 
 # 補完プラグイン
 [[plugins]]
