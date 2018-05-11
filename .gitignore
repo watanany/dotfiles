@@ -2,10 +2,9 @@
 .*.un~
 
 /.vim/bundle
-/.vim/undodir/
+/.vim/undodir
 !.vim/undodir/.keep
-/.cache/dein/
-!/.cache/dein/repos/github.com/Shougo/dein.vim/
-/.tmux/plugins/
+/.cache/dein
+/.tmux/plugins
 !/.tmux/plugins/.keep
-/.zsh/google-cloud-sdk/
+/.zsh/google-cloud-sdk
