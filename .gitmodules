@@ -1,15 +1,12 @@
 [submodule ".zsh/auto-fu.zsh"]
 	path = .zsh/auto-fu.zsh
 	url = git@github.com:hchbaw/auto-fu.zsh.git
+[submodule ".tmux/plugins/tpm"]
+	path = .tmux/plugins/tpm
+	url = git@github.com:tmux-plugins/tpm.git
 [submodule ".config/nvim/dein/repos/github.com/Shougo/dein.vim"]
 	path = .config/nvim/dein/repos/github.com/Shougo/dein.vim
 	url = git@github.com:Shougo/dein.vim.git
 [submodule ".git-subcommands"]
 	path = .git-subcommands
 	url = git@github.com:watanany/git-subcommands.git
-[submodule ".cache/dein"]
-	path = .cache/dein
-	url = git@github.com:Shougo/dein.vim.git
-[submodule ".tmux/plugins/tpm"]
-	path = .tmux/plugins/tpm
-	url = git@github.com:tmux-plugins/tpm.git
