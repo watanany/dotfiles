@@ -16,9 +16,6 @@ endif
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
-
 if has("vms")
     set nobackup        " do not keep a backup file, use versions instead
 else
@@ -26,20 +23,6 @@ else
     set undodir=$HOME/.vim/undodir
     set undofile        " keep an undo file (undo changes after closing)
 endif
-set history=50      " keep 50 lines of command line history
-set ruler       " show the cursor position all the time
-set showcmd     " display incomplete commands
-set incsearch       " do incremental searching
-
-" For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
-" let &guioptions = substitute(&guioptions, "t", "", "g")
-
-" Don't use Ex mode, use Q for formatting
-map Q gq
-
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
-inoremap <C-U> <C-G>u<C-U>
 
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
@@ -50,6 +33,7 @@ endif
 " Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
     syntax on
+    " 検索結果をハイライト表示
     set hlsearch
 endif
 
@@ -60,6 +44,7 @@ if has("autocmd")
     " Use the default filetype settings, so that mail gets 'tw' set to 72,
     " 'cindent' is on in C files, etc.
     " Also load indent files, to automatically do language-dependent indenting.
+    filetype off
     filetype plugin indent on
 
     " Put these in an autocmd group, so that we can delete them easily.
@@ -79,6 +64,31 @@ if has("autocmd")
                     \   exe "normal! g`\"" |
                     \ endif
     augroup END
+
+    autocmd FileType vim setl ts=4 et sw=4 sts=4
+
+    " JSON編集時にconceal機能を無効化
+    autocmd Filetype json setl conceallevel=0
+    " .scssファイル読み込み時にファイルタイプにsassをセットする
+    autocmd BufRead,BufNewFile *.scss setf sass
+    " .exsファイル読み込み時にファイルタイプをelixirにセットする
+    autocmd BufRead,BufNewFile *.exs setf elixir
+    " .jbuilderファイル読み込み時にファイルタイプをrubyにセットする
+    autocmd BufRead,BufNewFile *.jbuilder setf ruby
+    " .slimファイル読み込み時にファイルタイプをslimにセットする
+    autocmd BufRead,BufNewFile *.slim setf slim
+    " vimfiler表示の際は行番号を付けない
+    autocmd Filetype vimfiler setlocal nonumber
+    autocmd Filetype vimfiler setlocal norelativenumber
+    " 保存時に末尾の空白を除去
+    " autocmd BufWritePre * :%s/\s\+$//ge
+    autocmd BufWritePre * StripWhitespace
+    " Enable omni completion.
+    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 else
     set autoindent      " always set autoindenting on
 endif " has("autocmd")
@@ -98,250 +108,12 @@ if has('langmap') && exists('+langnoremap')
     set langnoremap
 endif
 
+" Don't use Ex mode, use Q for formatting
+map Q gq
 
-
-" --------------------------------------------------
-" * NeoBundleの設定
-" --------------------------------------------------
-if has('vim_starting')
-  " Required:
-  set runtimepath+=/home/$USER/.vim/bundle/neobundle.vim/
-endif
-
-" Required:
-call neobundle#begin(expand('/home/$USER/.vim/bundle'))
-
-" Let NeoBundle manage NeoBundle
-" Required:
-NeoBundleFetch 'Shougo/neobundle.vim'
-
-" Add or remove your Bundles here:
-NeoBundle 'Shougo/neosnippet.vim'
-NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'ctrlpvim/ctrlp.vim'
-NeoBundle 'flazz/vim-colorschemes'
-
-" You can specify revision/branch/tag.
-NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
-" vimproc
-NeoBundle 'Shougo/vimproc.vim', {
-\ 'build' : {
-\     'windows' : 'tools\\update-dll-mingw',
-\     'cygwin' : 'make -f make_cygwin.mak',
-\     'mac' : 'make',
-\     'linux' : 'make',
-\     'unix' : 'gmake',
-\    },
-\ }
-
-" カラースキーム
-NeoBundle 'w0ng/vim-hybrid'
-" NeoBundle 'altercation/vim-colors-solarized'
-" NeoBundle 'vim-scripts/BusyBee'
-" NeoBundle 'jonathanfilip/vim-lucius'
-" NeoBundle 'vim-scripts/twilight'
-
-" 補完プラグイン
-NeoBundle has('lua') ? 'Shougo/neocomplete' : 'Shougo/neocomplcache'
-" コメントアウト
-NeoBundle 'scrooloose/nerdcommenter'
-" 対応する括弧を自動入力
-NeoBundle 'Townk/vim-autoclose'
-" f + 一文字で検索
-NeoBundle 'rhysd/clever-f.vim'
-" s + 二文字で検索
-NeoBundle 'goldfeld/vim-seek'
-" ステータスバーのプラグイン
-NeoBundle 'itchyny/lightline.vim'
-" ステータスバー用のhybridのcolorscheme
-NeoBundle 'cocopon/lightline-hybrid.vim'
-" テキストを整列させるプラグイン
-NeoBundle 'godlygeek/tabular'
-" NeoBundle 'junegunn/vim-easy-align'
-" ブラウザを開くコマンドを追加
-NeoBundle 'tyru/open-browser.vim'
-" indentの深さに色をつける
-NeoBundle 'nathanaelkane/vim-indent-guides'
-" quickrun
-NeoBundle 'thinca/vim-quickrun'
-" カーソル移動加速プラグイン
-NeoBundle 'rhysd/accelerated-jk'
-
-" Unite
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'Shougo/vimfiler.vim'
-
-" reference viewer
-NeoBundle 'thinca/vim-ref'
-
-" 行末の不要な半角スペースを可視化
-NeoBundle 'ntpeters/vim-better-whitespace'
-
-" text-objectを囲むプラグイン(ys + text-object)
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'tpope/vim-repeat'
-
-" vimからctagsを使う
-NeoBundle 'szw/vim-tags'
-" タブ作成・移動・削除
-NeoBundle 'watanany/vim-tabs'
-" カーソル移動
-" NeoBundle 'Lokaltog/vim-easymotion'
-" セッション保存
-NeoBundle 'tpope/vim-obsession'
-
-" HTML ---
-" HTML5 Syntax
-NeoBundleLazy 'othree/html5.vim', {
-\    'autoload': { 'filetypes': ['html', 'eruby'] }
-\}
-
-" HTMLのショートカットプラグイン
-NeoBundleLazy 'mattn/emmet-vim', {
-\    'autoload': { 'filetypes': ['html', 'eruby'] }
-\}
-
-" Markdown, reStructuredText, textile プレビュープラグイン
-NeoBundleLazy 'kannokanno/previm', {
-\    'autoload': { 'filetypes': ['markdown'] }
-\}
-
-NeoBundleLazy 'kannokanno/previm', {
-\    'autoload': { 'filetypes': ['markdown'] }
-\}
-
-" CSS ---
-NeoBundleLazy 'hail2u/vim-css3-syntax', {
-\    'autoload': { 'filetypes': ['css', 'less', 'scss'] }
-\}
-
-" JavaScript ---
-NeoBundleLazy 'vim-scripts/jQuery', {
-\    'autoload': { 'filetypes': ['html', 'javascript'] }
-\}
-
-NeoBundleLazy 'jelera/vim-javascript-syntax', {
-\    'autoload': { 'filetypes': ['html', 'javascript'] }
-\}
-
-NeoBundleLazy 'mattn/jscomplete-vim', {
-\    'autoload': { 'filetypes': ['html', 'javascript'] }
-\}
-
-" CoffeeScript ---
-" coffee scriptのsyntax + 自動compileのプラグイン
-NeoBundleLazy 'kchmck/vim-coffee-script', {
-\    'autoload': { 'filetypes': ['coffee'] }
-\}
-
-NeoBundleLazy 'digitaltoad/vim-pug', {
-\    'autoload': { 'filetypes': ['pug'] }
-\}
-
-" Ruby ---
-NeoBundleLazy 'vim-scripts/ruby-matchit', {
-\    'autoload': { 'filetypes': ['ruby', 'eruby', 'haml'] }
-\}
-
-NeoBundleLazy 'tpope/vim-endwise', {
-\    'autoload': { 'filetypes': ['ruby', 'eruby', 'haml'] }
-\}
-
-
-NeoBundleLazy 'yuku-t/vim-ref-ri', {
-\    'depends': ['thinca/vim-ref'],
-\    'autoload': { 'filetypes': ['ruby', 'eruby', 'haml'] }
-\}
-
-" Ruby on Rails
-NeoBundleLazy 'tpope/vim-rails', {
-\    'autoload': { 'filetypes': ['ruby', 'eruby', 'haml'] }
-\}
-
-NeoBundleLazy 'tpope/vim-bundler', {
-\    'autoload': { 'filetypes': ['ruby', 'eruby', 'haml'] }
-\}
-
-NeoBundleLazy 'basyura/unite-rails', {
-\    'autoload': { 'filetypes': ['ruby', 'eruby', 'haml'] }
-\}
-
-NeoBundleLazy 'scrooloose/syntastic', {
-\    'autoload': { 'filetypes': ['ruby', 'eruby', 'haml'] }
-\}
-
-
-" Python ---
-NeoBundleLazy 'davidhalter/jedi-vim', {
-\    'autoload': { 'filetypes': ['python', 'python3'] }
-\}
-
-NeoBundleLazy 'lambdalisue/vim-pyenv', {
-\    'depends': ['davidhalter/jedi-vim'],
-\    'autoload': {
-\      'filetypes': ['python', 'python3'],
-\    }
-\}
-
-" Haskell ---
-NeoBundleLazy 'kana/vim-filetype-haskell', {
-\    'autoload': { 'filetypes': ['haskell'] }
-\}
-
-NeoBundleLazy 'eagletmt/ghcmod-vim', {
-\    'autoload': { 'filetypes': ['haskell'] }
-\}
-
-NeoBundleLazy 'ujihisa/neco-ghc', {
-\    'autoload': { 'filetypes': ['haskell'] }
-\}
-
-" NeoBundle 'osyo-manga/vim-watchdogs', {
-" \    'autoload': { 'filetypes': ['haskell'] }
-" \}
-
-NeoBundleLazy 'ujihisa/ref-hoogle', {
-\    'depends': ['thinca/vim-ref'],
-\    'autoload': { 'filetypes': ['haskell'] }
-\}
-
-NeoBundleLazy 'ujihisa/unite-haskellimport', {
-\    'depends': ['Shougo/unite.vim'],
-\    'autoload': { 'filetypes': ['haskell'] }
-\}
-
-" Scala ---
-NeoBundleLazy 'derekwyatt/vim-scala', {
-\    'autoload': { 'filetypes': ['scala'] }
-\}
-
-" Elixir ---
-NeoBundleLazy 'elixir-lang/vim-elixir', {
-\    'autoload': { 'filetypes': ['elixir'] }
-\}
-
-
-" Required:
-call neobundle#end()
-
-" Required:
-filetype plugin indent on
-
-" If there are uninstalled bundles found on startup,
-" this will conveniently prompt you to install them.
-NeoBundleCheck
-" --------------------------------------------------
-
-" カラースキームをhybridに変える
-if has#colorscheme('hybrid')
-    set background=dark
-    colorscheme hybrid
-endif
-
-" colorscheme busybee
-" colorscheme twilight256
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+" so that you can undo CTRL-U after inserting a line break.
+inoremap <C-U> <C-G>u<C-U>
 
 " インデントをTabではなくスペース2つで揃える
 " タブを画面で表示する際の幅(ts)
@@ -353,12 +125,9 @@ set shiftwidth=2
 " タブ入力時その数値分だけ半角スペースを挿入する(sts)
 set softtabstop=2
 
-
 " 環境設定系
-" シンタックスハイライト
-syntax on
 " エンコード
-set encoding=utf8
+set encoding=utf-8
 " ファイルエンコード
 set fileencoding=utf-8
 " スクロールする時に下が見えるようにする
@@ -411,8 +180,6 @@ set ignorecase
 set smartcase
 " インクリメンタルサーチを行う
 set incsearch
-" 検索結果をハイライト表示
-set hlsearch
 " コマンド、検索パターンを10000個まで履歴に残す
 set history=10000
 " xtermとscreen対応
@@ -429,11 +196,17 @@ set statusline=%F%r%h%=
 set wildmenu wildmode=list:full
 " カーソルラインの強調表示を有効化
 " CUI環境だと重い
-"set cursorline
+set cursorline
 " 外部でファイルに変更がされた場合は読みなおす
 set autoread
 " カーソル移動の動作を変更
 set whichwrap=b,s,h,l,<,>,[,]
+
+if has('unnamedplus')
+    set clipboard& clipboard+=unnamedplus
+else
+    set clipboard& clipboard+=unnamed,autoselect
+endif
 
 " w!! でスーパーユーザーとして保存（sudoが使える環境限定）
 cmap w!! w !sudo tee % > /dev/null
@@ -472,42 +245,10 @@ nnoremap <silent> Tt :setl expandtab! expandtab?<CR>
 nnoremap <silent> Tw :setl wrap!      wrap?<CR>
 nnoremap <silent> Tp :setl paste!     paste?<CR>
 
-
-" vim 起動時のみカレントディレクトリを開いたファイルの親ディレクトリに指定
-function! s:ChangeCurrentDir(directory, bang)
-    if a:directory == ''
-        lcd %:p:h
-    else
-        execute 'lcd' . a:directory
-    endif
-
-    if a:bang == ''
-        pwd
-    endif
-endfunction
-
-" ~/.vimrc.localが存在する場合のみ設定を読み込む
-let s:local_vimrc = expand('~/.vimrc.local')
-if filereadable(s:local_vimrc)
-    execute 'source ' . s:local_vimrc
-endif
-
 " /{pattern}の入力中は「/」をタイプすると自動で「\/」が、
 " ?{pattern}の入力中は「?」をタイプすると自動で「\?」が 入力されるようになる
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
-if has('unnamedplus')
-    set clipboard& clipboard+=unnamedplus
-else
-    set clipboard& clipboard+=unnamed,autoselect
-endif
-
-" インサートモードでも移動
-"inoremap <c-d> <delete>
-"inoremap <c-j> <down>
-"inoremap <c-k> <up>
-"inoremap <c-h> <left>
-"inoremap <c-l> <right>
 
 " 画面切り替え
 nnoremap <c-j> <c-w>j
@@ -515,24 +256,353 @@ nnoremap <c-k> <c-w>k
 nnoremap <c-l> <c-w>l
 nnoremap <c-h> <c-w>h
 
-" <space>j, <space>kで画面送り
-" noremap <space>j <c-f><cr><cr>
-" noremap <space>k <c-b><cr><cr>
-
 " vaで全選択
 vnoremap a <Esc>ggVG
 
-" JSON編集時にconceal機能を無効化
-autocmd Filetype json setl conceallevel=0
 
-" .scssファイル読み込み時にファイルタイプにsassをセットする
-autocmd BufRead,BufNewFile *.scss setf sass
+" ======================================================================
+" * NeoBundleの設定
+" ======================================================================
+if has('vim_starting')
+  " Required:
+  set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
+endif
 
-" .exsファイル読み込み時にファイルタイプをelixirにセットする
-autocmd BufRead,BufNewFile *.exs setf elixir
+" Required:
+call neobundle#begin(expand('/$HOME/.vim/bundle'))
 
-" .jbuilderファイル読み込み時にファイルタイプをrubyにセットする
-autocmd BufRead,BufNewFile *.jbuilder setf ruby
+" Let NeoBundle manage NeoBundle
+" Required:
+NeoBundleFetch 'Shougo/neobundle.vim'
 
-" NeoBundleプラグインの設定ファイルを読み込む
-runtime! config/*.vim
+" Add or remove your Bundles here:
+NeoBundle 'Shougo/neosnippet.vim'
+NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'ctrlpvim/ctrlp.vim'
+NeoBundle 'flazz/vim-colorschemes'
+
+" You can specify revision/branch/tag.
+NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
+" vimproc
+NeoBundle 'Shougo/vimproc.vim', {
+\     'build' : {
+\         'windows' : 'tools\\update-dll-mingw',
+\         'cygwin' : 'make -f make_cygwin.mak',
+\         'mac' : 'make',
+\         'linux' : 'make',
+\         'unix' : 'gmake',
+\     },
+\ }
+
+" カラースキーム
+NeoBundle 'w0ng/vim-hybrid'
+" NeoBundle 'altercation/vim-colors-solarized'
+" NeoBundle 'vim-scripts/BusyBee'
+" NeoBundle 'jonathanfilip/vim-lucius'
+" NeoBundle 'vim-scripts/twilight'
+
+" 補完プラグイン
+NeoBundle 'Shougo/neocomplcache'
+" コメントアウト
+NeoBundle 'scrooloose/nerdcommenter'
+" 対応する括弧を自動入力
+NeoBundle 'Townk/vim-autoclose'
+" f + 一文字で検索
+NeoBundle 'rhysd/clever-f.vim'
+" s + 二文字で検索
+NeoBundle 'goldfeld/vim-seek'
+" ステータスバーのプラグイン
+NeoBundle 'itchyny/lightline.vim'
+" ステータスバー用のhybridのcolorscheme
+NeoBundle 'cocopon/lightline-hybrid.vim'
+" テキストを整列させるプラグイン
+NeoBundle 'godlygeek/tabular'
+" NeoBundle 'junegunn/vim-easy-align'
+" ブラウザを開くコマンドを追加
+NeoBundle 'tyru/open-browser.vim'
+" indentの深さに色をつける
+NeoBundle 'nathanaelkane/vim-indent-guides'
+" quickrun
+NeoBundle 'thinca/vim-quickrun'
+" カーソル移動加速プラグイン
+NeoBundle 'rhysd/accelerated-jk'
+
+" Unite
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/neomru.vim'
+NeoBundle 'Shougo/vimfiler.vim'
+
+" reference viewer
+NeoBundle 'thinca/vim-ref'
+
+" 行末の不要な半角スペースを可視化
+NeoBundle 'ntpeters/vim-better-whitespace'
+
+" text-objectを囲むプラグイン(ys + text-object)
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tpope/vim-repeat'
+
+" vimからctagsを使う
+NeoBundle 'szw/vim-tags'
+" タブ作成・移動・削除
+NeoBundle 'watanany/vim-tabs'
+" カーソル移動
+" NeoBundle 'Lokaltog/vim-easymotion'
+" セッション保存
+NeoBundle 'tpope/vim-obsession'
+
+" HTML ---
+" HTML5 Syntax
+NeoBundleLazy 'othree/html5.vim', {
+\     'autoload': { 'filetypes': ['html', 'eruby'] }
+\ }
+
+" HTMLのショートカットプラグイン
+NeoBundleLazy 'mattn/emmet-vim', {
+\     'autoload': { 'filetypes': ['html', 'eruby'] }
+\ }
+
+" Markdown, reStructuredText, textile プレビュープラグイン
+NeoBundleLazy 'kannokanno/previm', {
+\     'autoload': { 'filetypes': ['markdown'] }
+\ }
+
+NeoBundleLazy 'kannokanno/previm', {
+\     'autoload': { 'filetypes': ['markdown'] }
+\ }
+
+NeoBundleLazy 'slim-template/vim-slim', {
+\     'autoload': { 'filetypes': ['slim'] }
+\ }
+
+" CSS ---
+NeoBundleLazy 'hail2u/vim-css3-syntax', {
+\     'autoload': { 'filetypes': ['css', 'less', 'scss'] }
+\ }
+
+" JavaScript ---
+NeoBundleLazy 'vim-scripts/jQuery', {
+\     'autoload': { 'filetypes': ['html', 'javascript'] }
+\ }
+
+NeoBundleLazy 'jelera/vim-javascript-syntax', {
+\     'autoload': { 'filetypes': ['html', 'javascript'] }
+\ }
+
+NeoBundleLazy 'mattn/jscomplete-vim', {
+\     'autoload': { 'filetypes': ['html', 'javascript'] }
+\ }
+
+" CoffeeScript ---
+" coffee scriptのsyntax + 自動compileのプラグイン
+NeoBundleLazy 'kchmck/vim-coffee-script', {
+\     'autoload': { 'filetypes': ['coffee'] }
+\ }
+
+NeoBundleLazy 'digitaltoad/vim-pug', {
+\     'autoload': { 'filetypes': ['pug'] }
+\ }
+
+" Ruby ---
+NeoBundleLazy 'vim-scripts/ruby-matchit', {
+\     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
+\ }
+
+NeoBundleLazy 'tpope/vim-endwise', {
+\     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
+\ }
+
+
+NeoBundleLazy 'yuku-t/vim-ref-ri', {
+\     'depends': ['thinca/vim-ref'],
+\     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
+\ }
+
+" Ruby on Rails
+NeoBundleLazy 'tpope/vim-rails', {
+\     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
+\ }
+
+NeoBundleLazy 'tpope/vim-bundler', {
+\     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
+\ }
+
+NeoBundleLazy 'basyura/unite-rails', {
+\     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
+\ }
+
+NeoBundleLazy 'scrooloose/syntastic', {
+\     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
+\ }
+
+" Python ---
+NeoBundleLazy 'davidhalter/jedi-vim', {
+\     'autoload': { 'filetypes': ['python', 'python3'] }
+\ }
+
+NeoBundleLazy 'lambdalisue/vim-pyenv', {
+\      'depends': ['davidhalter/jedi-vim'],
+\      'autoload': {
+\        'filetypes': ['python', 'python3'],
+\      }
+\ }
+
+" Haskell ---
+NeoBundleLazy 'kana/vim-filetype-haskell', {
+\     'autoload': { 'filetypes': ['haskell'] }
+\ }
+
+NeoBundleLazy 'eagletmt/ghcmod-vim', {
+\     'autoload': { 'filetypes': ['haskell'] }
+\ }
+
+NeoBundleLazy 'ujihisa/neco-ghc', {
+\     'autoload': { 'filetypes': ['haskell'] }
+\ }
+
+NeoBundleLazy 'ujihisa/ref-hoogle', {
+\     'depends': ['thinca/vim-ref'],
+\     'autoload': { 'filetypes': ['haskell'] }
+\ }
+
+NeoBundleLazy 'ujihisa/unite-haskellimport', {
+\     'depends': ['Shougo/unite.vim'],
+\     'autoload': { 'filetypes': ['haskell'] }
+\ }
+
+" Scala ---
+NeoBundleLazy 'derekwyatt/vim-scala', {
+\     'autoload': { 'filetypes': ['scala'] }
+\ }
+
+" Elixir ---
+NeoBundleLazy 'elixir-lang/vim-elixir', {
+\     'autoload': { 'filetypes': ['elixir'] }
+\ }
+
+" Rust ---
+NeoBundleLazy 'rust-lang/rust.vim', {
+\     'autoload': { 'filetypes': ['rust'] }
+\ }
+
+NeoBundleLazy 'racer-rust/vim-racer', {
+\     'autoload': { 'filetypes': ['rust'] }
+\ }
+
+" Required:
+call neobundle#end()
+
+" Required:
+filetype plugin indent on
+
+" If there are uninstalled bundles found on startup,
+" this will conveniently prompt you to install them.
+NeoBundleCheck
+" --------------------------------------------------
+
+" カラースキームをhybridに変える
+set background=dark
+colorscheme hybrid
+" colorscheme busybee
+" colorscheme twilight256
+
+" J, Kでの移動を加速する
+nmap j <Plug>(accelerated_jk_gj)
+nmap k <Plug>(accelerated_jk_gk)
+nmap <DOWN> <Plug>(accelerated_jk_gj)
+nmap <UP> <Plug>(accelerated_jk_gk)
+
+" nerdcommenterの設定「,,」でコメントON/OFF切り替え
+" let g:NERDCreateDefaultMappings = 0
+let NERDSpaceDelims = 1
+nmap ,, <Plug>NERDCommenterToggle
+vmap ,, <Plug>NERDCommenterToggle
+
+" Unite
+nnoremap <silent>,b :Unite -toggle buffer<CR>
+nnoremap <silent>,m :Unite -toggle file_mru<CR>
+nnoremap <silent>,f :VimFiler -split -simple -toggle -winwidth=35 -no-quit<CR>
+
+" neocomplcache
+" Plugin key-mappings.
+inoremap <expr><C-g> neocomplcache#undo_completion()
+inoremap <expr><C-l> neocomplcache#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+    return neocomplcache#smart_close_popup() . "\<CR>"
+    " For no inserting <CR> key.
+    "return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplcache#close_popup()
+inoremap <expr><C-e>  neocomplcache#cancel_popup()
+
+" インデントの深さに色をつける
+let g:indent_guides_start_level=2
+let g:indent_guides_auto_colors=0
+let g:indent_guides_enable_on_vim_startup=1
+let g:indent_guides_color_change_percent=20
+let g:indent_guides_guide_size=1
+let g:indent_guides_space_guides=1
+
+" VimFilerをデフォルトのファイルエクスプローラーにする
+let g:vimfiler_as_default_explorer = 1
+
+" QuickRun
+let g:quickrun_config={'*': {'split': 'vertical'}}
+
+" CTags
+let g:vim_tags_auto_generate = 1
+
+" Light line
+let g:lightline = {}
+let g:lightline.colorscheme = 'hybrid'
+
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplcache.
+let g:neocomplcache_enable_at_startup = 1
+" Use smartcase.
+let g:neocomplcache_enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplcache_min_syntax_length = 3
+let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+
+" Define dictionary.
+let g:neocomplcache_dictionary_filetype_lists = {
+\     'default' : '',
+\     'vimshell' : $HOME.'/.vimshell_hist',
+\     'scheme' : $HOME.'/.gosh_completions'
+\ }
+
+" Define keyword.
+if !exists('g:neocomplcache_keyword_patterns')
+    let g:neocomplcache_keyword_patterns = {}
+endif
+let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
+
+" Enable heavy omni completion.
+if !exists('g:neocomplcache_force_omni_patterns')
+    let g:neocomplcache_force_omni_patterns = {}
+endif
+let g:neocomplcache_force_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+let g:neocomplcache_force_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+let g:neocomplcache_force_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+" For perlomni.vim setting.
+" https://github.com/c9s/perlomni.vim
+let g:neocomplcache_force_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+
+" ~/.vimrc.localが存在する場合のみ設定を読み込む
+let s:local_vimrc = expand('~/.vimrc.local')
+if filereadable(s:local_vimrc)
+    execute 'source ' . s:local_vimrc
+endif
