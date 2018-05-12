@@ -70,7 +70,7 @@ if has("autocmd")
     autocmd FileType python setlocal ts=4 et sw=4 sts=4
 
     " JSON編集時にconceal機能を無効化
-    autocmd Filetype json setl conceallevel=0
+    autocmd Filetype json setlocal conceallevel=0
     " .scssファイル読み込み時にファイルタイプにsassをセットする
     autocmd BufRead,BufNewFile *.scss setf sass
     " .exsファイル読み込み時にファイルタイプをelixirにセットする
@@ -244,11 +244,11 @@ nnoremap <S-Right> <C-w><CR>
 nnoremap <S-Up>    <C-w>-<CR>
 nnoremap <S-Down>  <C-w>+<CR>
 " T + 一文字 で各種設定をトグル
-nnoremap <silent> Ts :setl spell!     spell?<CR>
-nnoremap <silent> Tl :setl list!      list?<CR>
-nnoremap <silent> Tt :setl expandtab! expandtab?<CR>
-nnoremap <silent> Tw :setl wrap!      wrap?<CR>
-nnoremap <silent> Tp :setl paste!     paste?<CR>
+nnoremap <silent> Ts :setlocal spell!     spell?<CR>
+nnoremap <silent> Tl :setlocal list!      list?<CR>
+nnoremap <silent> Tt :setlocal expandtab! expandtab?<CR>
+nnoremap <silent> Tw :setlocal wrap!      wrap?<CR>
+nnoremap <silent> Tp :setlocal paste!     paste?<CR>
 
 " /{pattern}の入力中は「/」をタイプすると自動で「\/」が、
 " ?{pattern}の入力中は「?」をタイプすると自動で「\?」が 入力されるようになる
