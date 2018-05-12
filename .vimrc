@@ -65,7 +65,9 @@ if has("autocmd")
                     \ endif
     augroup END
 
-    autocmd FileType vim setl ts=4 et sw=4 sts=4
+    autocmd FileType vim setlocal ts=4 et sw=4 sts=4
+    autocmd FileType c setlocal ts=4 et sw=4 sts=4
+    autocmd FileType python setlocal ts=4 et sw=4 sts=4
 
     " JSON編集時にconceal機能を無効化
     autocmd Filetype json setl conceallevel=0
