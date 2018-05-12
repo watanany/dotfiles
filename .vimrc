@@ -115,6 +115,9 @@ map Q gq
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
 
+highlight IndentGuidesOdd  ctermbg=235
+highlight IndentGuidesEven ctermbg=237
+
 " インデントをTabではなくスペース2つで揃える
 " タブを画面で表示する際の幅(ts)
 set tabstop=2
