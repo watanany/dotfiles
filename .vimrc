@@ -201,7 +201,7 @@ set statusline=%F%r%h%=
 set wildmenu wildmode=list:full
 " カーソルラインの強調表示を有効化
 " CUI環境だと重い
-set cursorline
+"set cursorline
 " 外部でファイルに変更がされた場合は読みなおす
 set autoread
 " カーソル移動の動作を変更
