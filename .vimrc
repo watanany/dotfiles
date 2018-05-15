@@ -485,7 +485,7 @@ NeoBundleLazy 'derekwyatt/vim-scala', {
 
 " Elixir ---
 NeoBundleLazy 'elixir-lang/vim-elixir', {
-\     'autoload': { 'filetypes': ['elixir'] }
+\     'autoload': { 'filetypes': ['elixir', 'eelixir'] }
 \ }
 
 " Rust ---
