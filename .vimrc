@@ -501,6 +501,7 @@ NeoBundleLazy 'racer-rust/vim-racer', {
 call neobundle#end()
 
 " Required:
+filetype off
 filetype plugin indent on
 
 " If there are uninstalled bundles found on startup,
