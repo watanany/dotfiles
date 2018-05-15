@@ -289,6 +289,7 @@ NeoBundle 'flazz/vim-colorschemes'
 
 " You can specify revision/branch/tag.
 NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
+
 " vimproc
 NeoBundle 'Shougo/vimproc.vim', {
 \     'build' : {
