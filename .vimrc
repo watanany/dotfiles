@@ -65,6 +65,9 @@ if has("autocmd")
                     \ endif
     augroup END
 
+    autocmd VimEnter,ColorScheme * :highlight IndentGuidesOdd  ctermbg=235
+    autocmd VimEnter,ColorScheme * :highlight IndentGuidesEven ctermbg=237
+
     autocmd FileType vim setlocal ts=4 et sw=4 sts=4
     autocmd FileType c setlocal ts=4 et sw=4 sts=4
     autocmd FileType python setlocal ts=4 et sw=4 sts=4
@@ -116,9 +119,6 @@ map Q gq
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
-
-highlight IndentGuidesOdd  ctermbg=235
-highlight IndentGuidesEven ctermbg=237
 
 " インデントをTabではなくスペース2つで揃える
 " タブを画面で表示する際の幅(ts)
@@ -551,12 +551,12 @@ inoremap <expr><C-y>  neocomplcache#close_popup()
 inoremap <expr><C-e>  neocomplcache#cancel_popup()
 
 " インデントの深さに色をつける
-let g:indent_guides_start_level=2
-let g:indent_guides_auto_colors=0
-let g:indent_guides_enable_on_vim_startup=1
-let g:indent_guides_color_change_percent=20
-let g:indent_guides_guide_size=1
-let g:indent_guides_space_guides=1
+let g:indent_guides_start_level = 2
+let g:indent_guides_auto_colors = 0
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_color_change_percent = 20
+let g:indent_guides_guide_size = 1
+let g:indent_guides_space_guides = 1
 
 " VimFilerをデフォルトのファイルエクスプローラーにする
 let g:vimfiler_as_default_explorer = 1
