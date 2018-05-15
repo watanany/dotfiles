@@ -435,11 +435,11 @@ NeoBundleLazy 'tpope/vim-rails', {
 \     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
 \ }
 
-NeoBundleLazy 'basyura/unite-rails', {
+NeoBundleLazy 'tpope/vim-bundler', {
 \     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
 \ }
 
-NeoBundleLazy 'tpope/vim-bundler', {
+NeoBundleLazy 'basyura/unite-rails', {
 \     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
 \ }
 
