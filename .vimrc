@@ -431,16 +431,15 @@ NeoBundleLazy 'yuku-t/vim-ref-ri', {
 \ }
 
 " Ruby on Rails
-" vim-railsはプラグイン側のコーディングによりLazyロードができない
-NeoBundle 'tpope/vim-rails', {
-\     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
-\ }
-
-NeoBundleLazy 'tpope/vim-bundler', {
+NeoBundleLazy 'tpope/vim-rails', {
 \     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
 \ }
 
 NeoBundleLazy 'basyura/unite-rails', {
+\     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
+\ }
+
+NeoBundleLazy 'tpope/vim-bundler', {
 \     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
 \ }
 
