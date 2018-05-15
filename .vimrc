@@ -410,6 +410,11 @@ NeoBundleLazy 'digitaltoad/vim-pug', {
 \     'autoload': { 'filetypes': ['pug'] }
 \ }
 
+" TypeScript ---
+NeoBundleLazy 'leafgarland/typescript-vim', {
+\     'autoload': { 'filetypes': ['typescript'] }
+\ }
+
 " Ruby ---
 NeoBundleLazy 'vim-scripts/ruby-matchit', {
 \     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
