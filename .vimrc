@@ -162,7 +162,7 @@ set showmatch
 " 対応括弧の表示秒数を3秒にする
 set matchtime=3
 " ウィンドウの幅より長い行は折り返され、次の行に続けて表示される
-set wrap
+" set wrap
 " 入力されているテキストの最大幅を無効にする
 set textwidth=0
 " 不可視文字を表示
