@@ -74,6 +74,8 @@ if has("autocmd")
 
     " JSON編集時にconceal機能を無効化
     autocmd Filetype json setlocal conceallevel=0
+    " .rbファイル読み込み時にファイルタイプにrubyをセットする
+    autocmd BufRead,BufNewFile *.rb setf ruby
     " .scssファイル読み込み時にファイルタイプにsassをセットする
     autocmd BufRead,BufNewFile *.scss setf sass
     " .exsファイル読み込み時にファイルタイプをelixirにセットする
