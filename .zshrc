@@ -113,8 +113,8 @@ function tmux-windows {
   tmux new-window
   tmux new-window
   tmux rename-window -t 0 'server'
-  tmux rename-window -t 1 'server'
-  tmux rename-window -t 2 'server'
+  tmux rename-window -t 1 'editor'
+  tmux rename-window -t 2 'others'
   tmux select-window -t 0
 }
 
