@@ -110,11 +110,11 @@ function en() { emacs -nw $@ }
 
 # tmux
 function tmux-windows {
-  tmux rename-window 'server'
   tmux new-window
-  tmux rename-window 'editor'
   tmux new-window
-  tmux rename-window 'others'
+  tmux rename-window -t 0 'server'
+  tmux rename-window -t 1 'server'
+  tmux rename-window -t 2 'server'
   tmux select-window -t 0
 }
 
