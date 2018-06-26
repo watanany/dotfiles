@@ -314,8 +314,6 @@ NeoBundle 'w0ng/vim-hybrid'
 NeoBundle 'Shougo/neocomplcache'
 " コメントアウト
 NeoBundle 'scrooloose/nerdcommenter'
-" 対応する括弧を自動入力
-NeoBundle 'Townk/vim-autoclose'
 " f + 一文字で検索
 NeoBundle 'rhysd/clever-f.vim'
 " s + 二文字で検索
