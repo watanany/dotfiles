@@ -358,6 +358,11 @@ NeoBundle 'watanany/vim-tabs'
 " セッション保存
 NeoBundle 'tpope/vim-obsession'
 
+" 対応する括弧を自動入力
+NeoBundleLazy 'Townk/vim-autoclose', {
+\     'autoload': { 'filetypes': ['vim', 'html', 'css', 'javascript', 'c', 'cpp', 'ruby', 'eruby', 'python'] }
+\ }
+
 " HTML ---
 " HTML5 Syntax
 NeoBundleLazy 'othree/html5.vim', {
