@@ -365,9 +365,7 @@ NeoBundleLazy 'Townk/vim-autoclose', {
 
 " HTML ---
 " HTML5 Syntax
-NeoBundleLazy 'othree/html5.vim', {
-\     'autoload': { 'filetypes': ['html', 'eruby'] }
-\ }
+NeoBundle 'othree/html5.vim'
 
 " HTMLのショートカットプラグイン
 NeoBundleLazy 'mattn/emmet-vim', {
@@ -388,18 +386,14 @@ NeoBundleLazy 'slim-template/vim-slim', {
 \ }
 
 " CSS ---
-NeoBundleLazy 'hail2u/vim-css3-syntax', {
-\     'autoload': { 'filetypes': ['css', 'less', 'scss'] }
-\ }
+NeoBundle 'hail2u/vim-css3-syntax'
 
 " JavaScript ---
 NeoBundleLazy 'vim-scripts/jQuery', {
 \     'autoload': { 'filetypes': ['html', 'javascript'] }
 \ }
 
-NeoBundleLazy 'jelera/vim-javascript-syntax', {
-\     'autoload': { 'filetypes': ['html', 'javascript'] }
-\ }
+NeoBundle 'jelera/vim-javascript-syntax'
 
 NeoBundleLazy 'mattn/jscomplete-vim', {
 \     'autoload': { 'filetypes': ['html', 'javascript'] }
@@ -407,9 +401,7 @@ NeoBundleLazy 'mattn/jscomplete-vim', {
 
 " CoffeeScript ---
 " coffee scriptのsyntax + 自動compileのプラグイン
-NeoBundleLazy 'kchmck/vim-coffee-script', {
-\     'autoload': { 'filetypes': ['coffee'] }
-\ }
+NeoBundle 'kchmck/vim-coffee-script'
 
 NeoBundleLazy 'digitaltoad/vim-pug', {
 \     'autoload': { 'filetypes': ['pug'] }
