@@ -215,8 +215,6 @@ endif
 cmap w!! w !sudo tee % > /dev/null
 " 入力モード中に素早くJJと入力した場合はESCとみなす
 inoremap jj <Esc>
-" C-jをESCに設定
-imap <C-j> <Esc>
 " ESCを二回押すことでハイライトを消す
 nmap <silent> <Esc><Esc> :nohlsearch<CR>
 " カーソル下の単語を * で検索
