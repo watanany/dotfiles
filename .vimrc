@@ -238,7 +238,7 @@ vnoremap <Tab> %
 " nnoremap 0 $
 " Shift + 矢印でウィンドウサイズを変更
 nnoremap <S-Left>  <C-w><<CR>
-nnoremap <S-Right> <C-w><CR>
+nnoremap <S-Right> <C-w>><CR>
 nnoremap <S-Up>    <C-w>-<CR>
 nnoremap <S-Down>  <C-w>+<CR>
 " T + 一文字 で各種設定をトグル
