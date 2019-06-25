@@ -93,6 +93,8 @@ if has("autocmd")
     autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
     autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
     autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+    " See https://github.com/posva/vim-vue#my-syntax-highlighting-stops-working-randomly
+    autocmd FileType vue syntax sync fromstart
 else
     set autoindent      " always set autoindenting on
 endif " has("autocmd")
@@ -398,6 +400,9 @@ NeoBundleLazy 'digitaltoad/vim-pug', {
 NeoBundleLazy 'leafgarland/typescript-vim', {
 \     'autoload': { 'filetypes': ['typescript'] }
 \ }
+
+" Vue.js ---
+NeoBundle "posva/vim-vue"
 
 " Ruby ---
 NeoBundleLazy 'vim-scripts/ruby-matchit', {
