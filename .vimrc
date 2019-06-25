@@ -515,10 +515,10 @@ colorscheme hybrid
 " colorscheme twilight256
 
 " J, Kでの移動を加速する
-nmap j <Plug>(accelerated_jk_gj)
-nmap k <Plug>(accelerated_jk_gk)
+nmap j      <Plug>(accelerated_jk_gj)
+nmap k      <Plug>(accelerated_jk_gk)
 nmap <DOWN> <Plug>(accelerated_jk_gj)
-nmap <UP> <Plug>(accelerated_jk_gk)
+nmap <UP>   <Plug>(accelerated_jk_gk)
 
 " nerdcommenterの設定「,,」でコメントON/OFF切り替え
 " let g:NERDCreateDefaultMappings = 0
