@@ -437,25 +437,26 @@ NeoBundleLazy 'scrooloose/syntastic', {
 \ }
 
 " Python ---
-NeoBundleLazy 'davidhalter/jedi-vim', {
-\     'autoload': { 'filetypes': ['python', 'python3'] }
-\ }
+" NeoBundleLazy 'davidhalter/jedi-vim', {
+" \     'autoload': { 'filetypes': ['python', 'python3'] }
+" \ }
+"
+" NeoBundleLazy 'lambdalisue/vim-pyenv', {
+" \      'depends': ['davidhalter/jedi-vim'],
+" \      'autoload': {
+" \        'filetypes': ['python', 'python3'],
+" \      }
+" \ }
 
-NeoBundleLazy 'lambdalisue/vim-pyenv', {
-\      'depends': ['davidhalter/jedi-vim'],
-\      'autoload': {
-\        'filetypes': ['python', 'python3'],
-\      }
-\ }
 
 " Haskell ---
 NeoBundleLazy 'kana/vim-filetype-haskell', {
 \     'autoload': { 'filetypes': ['haskell'] }
 \ }
 
-NeoBundleLazy 'eagletmt/ghcmod-vim', {
-\     'autoload': { 'filetypes': ['haskell'] }
-\ }
+"NeoBundleLazy 'eagletmt/ghcmod-vim', {
+"\     'autoload': { 'filetypes': ['haskell'] }
+"\ }
 
 NeoBundleLazy 'ujihisa/neco-ghc', {
 \     'autoload': { 'filetypes': ['haskell'] }
