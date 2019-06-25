@@ -16,7 +16,7 @@ endif
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
-if has("vms")
+if has("vms")  " for OpenVMS OS
     set nobackup        " do not keep a backup file, use versions instead
 else
     "set backup     " keep a backup file (restore to previous version)
@@ -39,7 +39,6 @@ endif
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
-
     " Enable file type detection.
     " Use the default filetype settings, so that mail gets 'tw' set to 72,
     " 'cindent' is on in C files, etc.
@@ -50,10 +49,8 @@ if has("autocmd")
     " Put these in an autocmd group, so that we can delete them easily.
     augroup vimrcEx
         autocmd!
-
         " For all text files set 'textwidth' to 78 characters.
         autocmd FileType text setlocal textwidth=78
-
         " When editing a file, always jump to the last known cursor position.
         " Don't do it when the position is invalid or when inside an event handler
         " (happens when dropping a file on gvim).
@@ -201,8 +198,7 @@ set cmdheight=2
 set statusline=%F%r%h%=
 " 補完時の一覧表示機能有効化
 set wildmenu wildmode=list:full
-" カーソルラインの強調表示を有効化
-" CUI環境だと重い
+" カーソルラインの強調表示を有効化(CUI環境だと重い)
 "set cursorline
 " 外部でファイルに変更がされた場合は読みなおす
 set autoread
@@ -305,10 +301,6 @@ NeoBundle 'Shougo/vimproc.vim', {
 
 " カラースキーム
 NeoBundle 'w0ng/vim-hybrid'
-" NeoBundle 'altercation/vim-colors-solarized'
-" NeoBundle 'vim-scripts/BusyBee'
-" NeoBundle 'jonathanfilip/vim-lucius'
-" NeoBundle 'vim-scripts/twilight'
 
 " 補完プラグイン
 NeoBundle 'Shougo/neocomplcache'
@@ -533,7 +525,7 @@ nnoremap <silent>,b :Unite -toggle buffer<CR>
 nnoremap <silent>,m :Unite -toggle file_mru<CR>
 nnoremap <silent>,f :VimFiler -split -simple -toggle -winwidth=35 -no-quit<CR>
 
-" neocomplcache
+" neocomplcache begin -------------------------
 " Plugin key-mappings.
 inoremap <expr><C-g> neocomplcache#undo_completion()
 inoremap <expr><C-l> neocomplcache#complete_common_string()
@@ -553,6 +545,7 @@ inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
 inoremap <expr><C-y>  neocomplcache#close_popup()
 inoremap <expr><C-e>  neocomplcache#cancel_popup()
+" neocomplcache end -------------------------
 
 " インデントの深さに色をつける
 let g:indent_guides_start_level = 2
@@ -609,6 +602,7 @@ let g:neocomplcache_force_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\
 " For perlomni.vim setting.
 " https://github.com/c9s/perlomni.vim
 let g:neocomplcache_force_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+
 
 " ~/.vimrc.localが存在する場合のみ設定を読み込む
 let s:local_vimrc = expand('~/.vimrc.local')
