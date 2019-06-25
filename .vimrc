@@ -230,9 +230,6 @@ nnoremap g* g*zz
 nnoremap g# g#zz
 " vを二回で行末まで選択
 vnoremap v $h
-" TABにて対応ペアにジャンプ
-nnoremap <Tab> %
-vnoremap <Tab> %
 " キー配置に合わせて1で行頭、0で行末に移動
 " nnoremap 1 0
 " nnoremap 0 $
