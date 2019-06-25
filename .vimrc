@@ -565,7 +565,7 @@ let g:vimfiler_as_default_explorer = 1
 let g:quickrun_config={'*': {'split': 'vertical'}}
 
 " CTags
-let g:vim_tags_auto_generate = 1
+let g:vim_tags_auto_generate = 0
 
 " Light line
 let g:lightline = {}
