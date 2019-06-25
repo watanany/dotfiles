@@ -448,6 +448,8 @@ NeoBundleLazy 'scrooloose/syntastic', {
 " \      }
 " \ }
 
+" Julia ---
+NeoBundle 'JuliaEditorSupport/julia-vim'
 
 " Haskell ---
 NeoBundleLazy 'kana/vim-filetype-haskell', {
