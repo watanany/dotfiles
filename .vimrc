@@ -493,6 +493,9 @@ NeoBundleLazy 'racer-rust/vim-racer', {
 \     'autoload': { 'filetypes': ['rust'] }
 \ }
 
+" Elm ---
+NeoBundle "ElmCast/elm-vim"
+
 " Required:
 call neobundle#end()
 
