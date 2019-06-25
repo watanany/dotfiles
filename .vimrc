@@ -260,7 +260,7 @@ nnoremap <c-l> <c-w>l
 nnoremap <c-h> <c-w>h
 
 " vaで全選択
-vnoremap a <Esc>ggVG
+vnoremap A <Esc>ggVG
 
 
 " ======================================================================
