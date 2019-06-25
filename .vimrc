@@ -113,7 +113,7 @@ if has('langmap') && exists('+langnoremap')
 endif
 
 " Don't use Ex mode, use Q for formatting
-map Q gq
+noremap Q gq
 
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
@@ -212,11 +212,11 @@ else
 endif
 
 " w!! でスーパーユーザーとして保存（sudoが使える環境限定）
-cmap w!! w !sudo tee % > /dev/null
+cnoremap w!! w !sudo tee % > /dev/null
 " 入力モード中に素早くJJと入力した場合はESCとみなす
 inoremap jj <Esc>
 " ESCを二回押すことでハイライトを消す
-nmap <silent> <Esc><Esc> :nohlsearch<CR>
+nnoremap <silent> <Esc><Esc> :nohlsearch<CR>
 " カーソル下の単語を * で検索
 vnoremap <silent> * "vy/\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR><CR>
 " 検索後にジャンプした際に検索単語を画面中央に持ってくる
