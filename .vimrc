@@ -65,22 +65,18 @@ if has("autocmd")
     autocmd VimEnter,ColorScheme * :highlight IndentGuidesOdd  ctermbg=235
     autocmd VimEnter,ColorScheme * :highlight IndentGuidesEven ctermbg=237
 
-    autocmd FileType vim setlocal ts=4 et sw=4 sts=4
-    autocmd FileType c setlocal ts=4 et sw=4 sts=4
-    autocmd FileType python setlocal ts=4 et sw=4 sts=4
-
     " JSON編集時にconceal機能を無効化
     autocmd Filetype json setlocal conceallevel=0
-    " .rbファイル読み込み時にファイルタイプにrubyをセットする
-    autocmd BufRead,BufNewFile *.rb setf ruby
     " .scssファイル読み込み時にファイルタイプにsassをセットする
     autocmd BufRead,BufNewFile *.scss setf sass
     " .exsファイル読み込み時にファイルタイプをelixirにセットする
     autocmd BufRead,BufNewFile *.exs setf elixir
     " .jbuilderファイル読み込み時にファイルタイプをrubyにセットする
     autocmd BufRead,BufNewFile *.jbuilder setf ruby
-    " .slimファイル読み込み時にファイルタイプをslimにセットする
-    autocmd BufRead,BufNewFile *.slim setf slim
+    " .vppファイル読み込み時にファイルタイプにvppをセットする
+    autocmd BufRead,BufNewFile *.vpp setf vpp
+    " .vdmppファイル読み込み時にファイルタイプにvppをセットする
+    autocmd BufRead,BufNewFile *.vdmpp setf vpp
     " vimfiler表示の際は行番号を付けない
     autocmd Filetype vimfiler setlocal nonumber
     autocmd Filetype vimfiler setlocal norelativenumber
@@ -91,8 +87,10 @@ if has("autocmd")
     autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
     autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
     autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+    " Indentation Width
+    autocmd FileType ruby setlocal ts=2 et sw=2 sts=2
+
     " See https://github.com/posva/vim-vue#my-syntax-highlighting-stops-working-randomly
     autocmd FileType vue syntax sync fromstart
 else
@@ -123,13 +121,13 @@ inoremap <C-U> <C-G>u<C-U>
 
 " インデントをTabではなくスペース2つで揃える
 " タブを画面で表示する際の幅(ts)
-set tabstop=2
+set tabstop=4
 " タブを挿入する際、半角スペースに変換(et)
 set expandtab
 " インデント時に使用されるスペースの数(sw)
-set shiftwidth=2
+set shiftwidth=4
 " タブ入力時その数値分だけ半角スペースを挿入する(sts)
-set softtabstop=2
+set softtabstop=4
 
 " 環境設定系
 " エンコード
@@ -278,9 +276,6 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " Add or remove your Bundles here:
 NeoBundle 'Shougo/neosnippet.vim'
 NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'ctrlpvim/ctrlp.vim'
-NeoBundle 'flazz/vim-colorschemes'
 
 " You can specify revision/branch/tag.
 NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
@@ -296,9 +291,6 @@ NeoBundle 'Shougo/vimproc.vim', {
 \     },
 \ }
 
-" カラースキーム
-NeoBundle 'w0ng/vim-hybrid'
-
 " 補完プラグイン
 NeoBundle 'Shougo/neocomplcache'
 " コメントアウト
@@ -309,17 +301,16 @@ NeoBundle 'rhysd/clever-f.vim'
 NeoBundle 'goldfeld/vim-seek'
 " ステータスバーのプラグイン
 NeoBundle 'itchyny/lightline.vim'
+" カラースキーム
+NeoBundle 'w0ng/vim-hybrid'
 " ステータスバー用のhybridのcolorscheme
 NeoBundle 'cocopon/lightline-hybrid.vim'
 " テキストを整列させるプラグイン
 NeoBundle 'godlygeek/tabular'
-" NeoBundle 'junegunn/vim-easy-align'
 " ブラウザを開くコマンドを追加
 NeoBundle 'tyru/open-browser.vim'
 " indentの深さに色をつける
 NeoBundle 'nathanaelkane/vim-indent-guides'
-" quickrun
-NeoBundle 'thinca/vim-quickrun'
 " カーソル移動加速プラグイン
 NeoBundle 'rhysd/accelerated-jk'
 
@@ -327,9 +318,6 @@ NeoBundle 'rhysd/accelerated-jk'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'Shougo/vimfiler.vim'
-
-" reference viewer
-NeoBundle 'thinca/vim-ref'
 
 " 行末の不要な半角スペースを可視化
 NeoBundle 'ntpeters/vim-better-whitespace'
@@ -342,36 +330,15 @@ NeoBundle 'tpope/vim-repeat'
 NeoBundle 'szw/vim-tags'
 " タブ作成・移動・削除
 NeoBundle 'watanany/vim-tabs'
-" カーソル移動
-" NeoBundle 'Lokaltog/vim-easymotion'
-" セッション保存
-NeoBundle 'tpope/vim-obsession'
 
 " 対応する括弧を自動入力
-NeoBundleLazy 'Townk/vim-autoclose', {
-\     'autoload': { 'filetypes': ['vim', 'html', 'css', 'javascript', 'c', 'cpp', 'ruby', 'eruby', 'python'] }
-\ }
+NeoBundle 'Townk/vim-autoclose'
 
 " HTML ---
-" HTML5 Syntax
 NeoBundle 'othree/html5.vim'
 
-" HTMLのショートカットプラグイン
-NeoBundleLazy 'mattn/emmet-vim', {
-\     'autoload': { 'filetypes': ['html', 'eruby'] }
-\ }
-
-" Markdown, reStructuredText, textile プレビュープラグイン
-NeoBundleLazy 'kannokanno/previm', {
-\     'autoload': { 'filetypes': ['markdown'] }
-\ }
-
-NeoBundleLazy 'kannokanno/previm', {
-\     'autoload': { 'filetypes': ['markdown'] }
-\ }
-
 NeoBundleLazy 'slim-template/vim-slim', {
-\     'autoload': { 'filetypes': ['slim'] }
+\    'autoload': { 'filetypes': ['slim'] }
 \ }
 
 " CSS ---
@@ -382,119 +349,61 @@ NeoBundleLazy 'vim-scripts/jQuery', {
 \     'autoload': { 'filetypes': ['html', 'javascript'] }
 \ }
 
-NeoBundle 'jelera/vim-javascript-syntax'
-
 NeoBundleLazy 'mattn/jscomplete-vim', {
 \     'autoload': { 'filetypes': ['html', 'javascript'] }
 \ }
 
-" CoffeeScript ---
-" coffee scriptのsyntax + 自動compileのプラグイン
-NeoBundle 'kchmck/vim-coffee-script'
-
-NeoBundleLazy 'digitaltoad/vim-pug', {
-\     'autoload': { 'filetypes': ['pug'] }
-\ }
-
-" TypeScript ---
-NeoBundleLazy 'leafgarland/typescript-vim', {
-\     'autoload': { 'filetypes': ['typescript'] }
-\ }
-
 " Vue.js ---
-NeoBundle "posva/vim-vue"
-
-" Ruby ---
-NeoBundleLazy 'vim-scripts/ruby-matchit', {
-\     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
-\ }
-
-NeoBundleLazy 'tpope/vim-endwise', {
-\     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
-\ }
-
-
-NeoBundleLazy 'yuku-t/vim-ref-ri', {
-\     'depends': ['thinca/vim-ref'],
-\     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
+NeoBundleLazy "posva/vim-vue", {
+\    'autoload': { 'filetypes': ['vue.js'] }
 \ }
 
 " Ruby on Rails
+NeoBundleLazy 'tpope/vim-endwise', {
+\     'autoload': { 'filetypes': ['ruby', 'eruby', 'slim'] }
+\ }
+
 NeoBundleLazy 'tpope/vim-rails', {
-\     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
+\     'autoload': { 'filetypes': ['ruby', 'eruby', 'slim'] }
 \ }
 
 NeoBundleLazy 'tpope/vim-bundler', {
-\     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
+\     'autoload': { 'filetypes': ['ruby', 'eruby', 'slim'] }
 \ }
 
 NeoBundleLazy 'basyura/unite-rails', {
-\     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
+\     'autoload': { 'filetypes': ['ruby', 'eruby', 'slim'] }
 \ }
 
 NeoBundleLazy 'scrooloose/syntastic', {
-\     'autoload': { 'filetypes': ['ruby', 'eruby', 'haml', 'slim'] }
+\     'autoload': { 'filetypes': ['ruby', 'eruby', 'slim'] }
 \ }
-
-" Python ---
-" NeoBundleLazy 'davidhalter/jedi-vim', {
-" \     'autoload': { 'filetypes': ['python', 'python3'] }
-" \ }
-"
-" NeoBundleLazy 'lambdalisue/vim-pyenv', {
-" \      'depends': ['davidhalter/jedi-vim'],
-" \      'autoload': {
-" \        'filetypes': ['python', 'python3'],
-" \      }
-" \ }
 
 " Julia ---
 NeoBundle 'JuliaEditorSupport/julia-vim'
 
 " Haskell ---
-NeoBundleLazy 'kana/vim-filetype-haskell', {
-\     'autoload': { 'filetypes': ['haskell'] }
-\ }
-
-"NeoBundleLazy 'eagletmt/ghcmod-vim', {
-"\     'autoload': { 'filetypes': ['haskell'] }
-"\ }
-
-NeoBundleLazy 'ujihisa/neco-ghc', {
-\     'autoload': { 'filetypes': ['haskell'] }
-\ }
-
-NeoBundleLazy 'ujihisa/ref-hoogle', {
-\     'depends': ['thinca/vim-ref'],
-\     'autoload': { 'filetypes': ['haskell'] }
-\ }
-
-NeoBundleLazy 'ujihisa/unite-haskellimport', {
-\     'depends': ['Shougo/unite.vim'],
-\     'autoload': { 'filetypes': ['haskell'] }
-\ }
-
-" Scala ---
-NeoBundleLazy 'derekwyatt/vim-scala', {
-\     'autoload': { 'filetypes': ['scala'] }
-\ }
+NeoBundle 'kana/vim-filetype-haskell'
 
 " Elixir ---
-NeoBundleLazy 'elixir-lang/vim-elixir', {
+NeoBundle 'elixir-lang/vim-elixir', {
 \     'autoload': { 'filetypes': ['elixir', 'eelixir'] }
 \ }
 
 " Rust ---
-NeoBundleLazy 'rust-lang/rust.vim', {
+NeoBundle 'rust-lang/rust.vim', {
 \     'autoload': { 'filetypes': ['rust'] }
 \ }
 
-NeoBundleLazy 'racer-rust/vim-racer', {
+NeoBundle 'racer-rust/vim-racer', {
 \     'autoload': { 'filetypes': ['rust'] }
 \ }
 
 " Elm ---
 NeoBundle "ElmCast/elm-vim"
+
+" VDM++ --
+NeoBundle "vim-scripts/vpp.vim"
 
 " Required:
 call neobundle#end()
@@ -506,19 +415,32 @@ filetype plugin indent on
 " If there are uninstalled bundles found on startup,
 " this will conveniently prompt you to install them.
 NeoBundleCheck
-" --------------------------------------------------
+" ======================================================================
 
 " カラースキームをhybridに変える
 set background=dark
 colorscheme hybrid
-" colorscheme busybee
-" colorscheme twilight256
+
+" Light line
+let g:lightline = {}
+let g:lightline.colorscheme = 'hybrid'
 
 " J, Kでの移動を加速する
 nmap j      <Plug>(accelerated_jk_gj)
 nmap k      <Plug>(accelerated_jk_gk)
 nmap <DOWN> <Plug>(accelerated_jk_gj)
 nmap <UP>   <Plug>(accelerated_jk_gk)
+
+" CTags
+let g:vim_tags_auto_generate = 0
+
+" インデントの深さに色をつける
+let g:indent_guides_start_level = 2
+let g:indent_guides_auto_colors = 0
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_color_change_percent = 20
+let g:indent_guides_guide_size = 1
+let g:indent_guides_space_guides = 1
 
 " nerdcommenterの設定「,,」でコメントON/OFF切り替え
 " let g:NERDCreateDefaultMappings = 0
@@ -531,7 +453,12 @@ nnoremap <silent>,b :Unite -toggle buffer<CR>
 nnoremap <silent>,m :Unite -toggle file_mru<CR>
 nnoremap <silent>,f :VimFiler -split -simple -toggle -winwidth=35 -no-quit<CR>
 
-" neocomplcache begin -------------------------
+" VimFilerをデフォルトのファイルエクスプローラーにする
+let g:vimfiler_as_default_explorer = 1
+
+" ======================================================================
+" neocomplcache
+" ======================================================================
 " Plugin key-mappings.
 inoremap <expr><C-g> neocomplcache#undo_completion()
 inoremap <expr><C-l> neocomplcache#complete_common_string()
@@ -551,28 +478,6 @@ inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
 inoremap <expr><C-y>  neocomplcache#close_popup()
 inoremap <expr><C-e>  neocomplcache#cancel_popup()
-" neocomplcache end -------------------------
-
-" インデントの深さに色をつける
-let g:indent_guides_start_level = 2
-let g:indent_guides_auto_colors = 0
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_color_change_percent = 20
-let g:indent_guides_guide_size = 1
-let g:indent_guides_space_guides = 1
-
-" VimFilerをデフォルトのファイルエクスプローラーにする
-let g:vimfiler_as_default_explorer = 1
-
-" QuickRun
-let g:quickrun_config={'*': {'split': 'vertical'}}
-
-" CTags
-let g:vim_tags_auto_generate = 0
-
-" Light line
-let g:lightline = {}
-let g:lightline.colorscheme = 'hybrid'
 
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
@@ -608,6 +513,8 @@ let g:neocomplcache_force_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\
 " For perlomni.vim setting.
 " https://github.com/c9s/perlomni.vim
 let g:neocomplcache_force_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+" ======================================================================
+
 
 
 " ~/.vimrc.localが存在する場合のみ設定を読み込む
