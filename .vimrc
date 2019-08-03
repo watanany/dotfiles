@@ -254,7 +254,7 @@ nnoremap <c-k> <c-w>k
 nnoremap <c-l> <c-w>l
 nnoremap <c-h> <c-w>h
 
-" vaで全選択
+" vAで全選択
 vnoremap A <Esc>ggVG
 
 
