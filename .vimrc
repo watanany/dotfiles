@@ -1,5 +1,5 @@
 " Maintainer:   Watanabe Shingo <s1170087@gmail.com>
-" Last change:  2016 Sep 26
+" Last change:  2019 Aug 4
 "
 " To use it, copy it to
 "     for Unix and OS/2:  ~/.vimrc
@@ -334,17 +334,18 @@ NeoBundle 'watanany/vim-tabs'
 " 対応する括弧を自動入力
 NeoBundle 'Townk/vim-autoclose'
 
-" HTML ---
 NeoBundle 'othree/html5.vim'
-
-NeoBundleLazy 'slim-template/vim-slim', {
-\    'autoload': { 'filetypes': ['slim'] }
-\ }
-
-" CSS ---
+NeoBundle 'slim-template/vim-slim'
 NeoBundle 'hail2u/vim-css3-syntax'
+NeoBundle 'kana/vim-filetype-haskell'
+NeoBundle 'elixir-lang/vim-elixir'
+NeoBundle 'rust-lang/rust.vim'
+NeoBundle 'racer-rust/vim-racer'
+NeoBundle "ElmCast/elm-vim"
+NeoBundle "vim-scripts/vpp.vim"
+NeoBundle 'JuliaEditorSupport/julia-vim'
 
-" JavaScript ---
+
 NeoBundleLazy 'vim-scripts/jQuery', {
 \     'autoload': { 'filetypes': ['html', 'javascript'] }
 \ }
@@ -353,12 +354,11 @@ NeoBundleLazy 'mattn/jscomplete-vim', {
 \     'autoload': { 'filetypes': ['html', 'javascript'] }
 \ }
 
-" Vue.js ---
 NeoBundleLazy "posva/vim-vue", {
 \    'autoload': { 'filetypes': ['vue.js'] }
 \ }
 
-" Ruby on Rails
+" 対応する`end`を自動で入力する
 NeoBundleLazy 'tpope/vim-endwise', {
 \     'autoload': { 'filetypes': ['ruby', 'eruby', 'slim'] }
 \ }
@@ -378,32 +378,6 @@ NeoBundleLazy 'basyura/unite-rails', {
 NeoBundleLazy 'scrooloose/syntastic', {
 \     'autoload': { 'filetypes': ['ruby', 'eruby', 'slim'] }
 \ }
-
-" Julia ---
-NeoBundle 'JuliaEditorSupport/julia-vim'
-
-" Haskell ---
-NeoBundle 'kana/vim-filetype-haskell'
-
-" Elixir ---
-NeoBundle 'elixir-lang/vim-elixir', {
-\     'autoload': { 'filetypes': ['elixir', 'eelixir'] }
-\ }
-
-" Rust ---
-NeoBundle 'rust-lang/rust.vim', {
-\     'autoload': { 'filetypes': ['rust'] }
-\ }
-
-NeoBundle 'racer-rust/vim-racer', {
-\     'autoload': { 'filetypes': ['rust'] }
-\ }
-
-" Elm ---
-NeoBundle "ElmCast/elm-vim"
-
-" VDM++ --
-NeoBundle "vim-scripts/vpp.vim"
 
 " Required:
 call neobundle#end()
