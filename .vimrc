@@ -297,8 +297,6 @@ NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'scrooloose/nerdcommenter'
 " f + 一文字で検索
 NeoBundle 'rhysd/clever-f.vim'
-" s + 二文字で検索
-NeoBundle 'goldfeld/vim-seek'
 " ステータスバーのプラグイン
 NeoBundle 'itchyny/lightline.vim'
 " カラースキーム
@@ -307,8 +305,6 @@ NeoBundle 'w0ng/vim-hybrid'
 NeoBundle 'cocopon/lightline-hybrid.vim'
 " テキストを整列させるプラグイン
 NeoBundle 'godlygeek/tabular'
-" ブラウザを開くコマンドを追加
-NeoBundle 'tyru/open-browser.vim'
 " indentの深さに色をつける
 NeoBundle 'nathanaelkane/vim-indent-guides'
 " カーソル移動加速プラグイン
@@ -344,7 +340,6 @@ NeoBundle 'racer-rust/vim-racer'
 NeoBundle "ElmCast/elm-vim"
 NeoBundle "vim-scripts/vpp.vim"
 NeoBundle 'JuliaEditorSupport/julia-vim'
-
 
 NeoBundleLazy 'vim-scripts/jQuery', {
 \     'autoload': { 'filetypes': ['html', 'javascript'] }
