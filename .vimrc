@@ -349,9 +349,7 @@ NeoBundleLazy 'mattn/jscomplete-vim', {
 \     'autoload': { 'filetypes': ['html', 'javascript'] }
 \ }
 
-NeoBundleLazy "posva/vim-vue", {
-\    'autoload': { 'filetypes': ['vue.js'] }
-\ }
+NeoBundle "posva/vim-vue"
 
 " 対応する`end`を自動で入力する
 NeoBundleLazy 'tpope/vim-endwise', {
