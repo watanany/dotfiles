@@ -239,6 +239,7 @@ nnoremap <S-Down>  <C-w>+<CR>
 " T + 一文字 で各種設定をトグル
 nnoremap <silent> Ts :setlocal spell!     spell?<CR>
 nnoremap <silent> Tl :setlocal list!      list?<CR>
+nnoremap <silent> Tn :setlocal number!    number?<CR>
 nnoremap <silent> Tt :setlocal expandtab! expandtab?<CR>
 nnoremap <silent> Tw :setlocal wrap!      wrap?<CR>
 nnoremap <silent> Tp :setlocal paste!     paste?<CR>
