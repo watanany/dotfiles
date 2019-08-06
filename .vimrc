@@ -325,7 +325,7 @@ NeoBundle 'tpope/vim-repeat'
 
 " ユーザー定義のテキストオブジェクトを作成する
 NeoBundle 'kana/vim-textobj-user'
-"
+" 現在の行に似たようなインデント構造を持つテキストオブジェクトを作成する
 NeoBundle 'kana/vim-textobj-indent'
 
 " vimからctagsを使う
