@@ -323,6 +323,11 @@ NeoBundle 'ntpeters/vim-better-whitespace'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'tpope/vim-repeat'
 
+" ユーザー定義のテキストオブジェクトを作成する
+NeoBundle 'kana/vim-textobj-user'
+"
+NeoBundle 'kana/vim-textobj-indent'
+
 " vimからctagsを使う
 NeoBundle 'szw/vim-tags'
 " タブ作成・移動・削除
