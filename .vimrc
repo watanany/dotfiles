@@ -339,7 +339,7 @@ NeoBundle 'Townk/vim-autoclose'
 NeoBundle 'othree/html5.vim'
 NeoBundle 'slim-template/vim-slim'
 NeoBundle 'hail2u/vim-css3-syntax'
-NeoBundle 'kana/vim-filetype-haskell'
+NeoBundle 'dag/vim2hs'
 NeoBundle 'elixir-lang/vim-elixir'
 NeoBundle 'rust-lang/rust.vim'
 NeoBundle 'racer-rust/vim-racer'
@@ -428,6 +428,9 @@ nnoremap <silent>,f :VimFiler -split -simple -toggle -winwidth=35 -no-quit<CR>
 
 " VimFilerをデフォルトのファイルエクスプローラーにする
 let g:vimfiler_as_default_explorer = 1
+
+" Haskellで(->)と(::)をUnicode表示する
+let g:haskell_conceal_wide = 1
 
 " ======================================================================
 " neocomplcache
