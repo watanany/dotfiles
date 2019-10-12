@@ -345,7 +345,7 @@ NeoBundle 'dag/vim2hs'
 NeoBundle 'elixir-lang/vim-elixir'
 NeoBundle 'rust-lang/rust.vim'
 NeoBundle 'racer-rust/vim-racer'
-NeoBundle "ElmCast/elm-vim"
+NeoBundle 'ElmCast/elm-vim'
 NeoBundle "vim-scripts/vpp.vim"
 NeoBundle 'JuliaEditorSupport/julia-vim'
 
