@@ -95,6 +95,10 @@ if has("autocmd")
 
     " See https://github.com/posva/vim-vue#my-syntax-highlighting-stops-working-randomly
     autocmd FileType vue syntax sync fromstart
+
+    autocmd BufWrite *.hs :Autoformat
+    " Don't automatically indent on save, since vim's autoindent for haskell is buggy
+    autocmd FileType haskell let b:autoformat_autoindent=0
 else
     set autoindent      " always set autoindenting on
 endif " has("autocmd")
@@ -338,10 +342,14 @@ NeoBundle 'watanany/vim-tabs'
 " 対応する括弧を自動入力
 NeoBundle 'Townk/vim-autoclose'
 
+" 自動フォーマット(外部プログラムを使用 例: stylish-haskell)
+NeoBundle 'Chiel92/vim-autoformat'
+
 NeoBundle 'othree/html5.vim'
 NeoBundle 'slim-template/vim-slim'
 NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'dag/vim2hs'
+NeoBundle 'vmchale/dhall-vim'
 NeoBundle 'elixir-lang/vim-elixir'
 NeoBundle 'rust-lang/rust.vim'
 NeoBundle 'racer-rust/vim-racer'
@@ -431,9 +439,6 @@ nnoremap <silent>,f :VimFiler -split -simple -toggle -winwidth=35 -no-quit<CR>
 " VimFilerをデフォルトのファイルエクスプローラーにする
 let g:vimfiler_as_default_explorer = 1
 
-" Haskellで(->)と(::)をUnicode表示する
-let g:haskell_conceal_wide = 1
-
 " ======================================================================
 " neocomplcache
 " ======================================================================
@@ -493,6 +498,7 @@ let g:neocomplcache_force_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\
 let g:neocomplcache_force_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 " ======================================================================
 
+let g:haskell_conceal = 0
 
 
 " ~/.vimrc.localが存在する場合のみ設定を読み込む
