@@ -93,9 +93,6 @@ noremap <expr> <C-b> max([winheight(0) - 2, 1])
 " Disable ZZ.
 nnoremap ZZ  <Nop>
 
-" Select rectangle.
-xnoremap r <C-v>
-
 " Redraw.
 nnoremap <silent> <C-l>    :<C-u>redraw!<CR>
 
