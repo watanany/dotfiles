@@ -10,8 +10,6 @@ set smartcase
 
 " Enable incremental search.
 set incsearch
-" Don't highlight search result.
-set nohlsearch
 
 " Searches wrap around the end of the file.
 set wrapscan
@@ -322,3 +320,7 @@ set signcolumn=yes
 if exists('+previewpopup')
   set previewpopup=height:10,width:60
 endif
+
+set showmatch
+
+set scrolloff=5

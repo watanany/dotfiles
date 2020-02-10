@@ -54,12 +54,8 @@ on_if = '!has("nvim")'
 [[plugins]]
 repo = 'roxma/nvim-yarp'
 
-# [[plugins]]
-# repo = 'Shougo/deoppet.nvim'
-
-# [[plugins]]
-# repo = 'tbodt/deoplete-tabnine'
-# build = './install.sh'
+[[plugins]]
+repo = 'vim-scripts/vdm.vim'
 
 [[plugins]]
 repo = 'vim-scripts/vpp.vim'
