@@ -5,20 +5,29 @@
     "haskell": {
       "command": "hie-wrapper",
       "rootPatterns": [
-        ".stack.yaml",
+        "stack.yaml",
         "cabal.config",
         "package.yaml"
       ],
-      "filetypes": [
-        "hs",
-        "lhs",
-        "haskell"
-      ],
+      "filetypes": ["hs", "lhs", "haskell"],
       "initializationOptions": {
         "languageServerHaskell": {
           "hlint": true
         }
       }
+    },
+    "elixirLS": {
+       "command": "elixir-ls.sh",
+       "filetypes": ["elixir", "eelixir"]
+    },
+    "dhall": {
+      "command": "dhall-lsp-server",
+      "filetypes": ["dhall"]
+    },
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod"],
+      "filetypes": ["go"]
     }
   }
 }

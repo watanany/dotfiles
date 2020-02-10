@@ -2,6 +2,18 @@
 " Key-mappings:
 "
 
+" Turn off highlight by double esc
+nnoremap <silent> <Esc><Esc> :nohlsearch<CR>
+
+" Search and puts current line to center of screen
+nnoremap n nzz
+nnoremap N Nzz
+nnoremap * *zz
+nnoremap # #zz
+nnoremap g* g*zz
+nnoremap g# g#zz
+vnoremap v $h
+
 " Use <C-Space>.
 nmap <C-Space>  <C-@>
 cmap <C-Space>  <C-@>
@@ -43,6 +55,9 @@ cnoremap <C-p>          <Up>
 cnoremap <C-y>          <C-r>*
 " <C-g>: Exit.
 cnoremap <C-g>          <C-c>
+"
+cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
+cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
 
 " [Space]: Other useful commands
 " Smart space mapping.
@@ -104,12 +119,6 @@ xnoremap <expr> l foldclosed(line('.')) != -1 ? 'zogv0' : 'l'
 " Substitute.
 xnoremap s :s//g<Left><Left>
 
-" Sticky shift in English keyboard.
-" Sticky key.
-inoremap <expr> ;  vimrc#sticky_func()
-cnoremap <expr> ;  vimrc#sticky_func()
-snoremap <expr> ;  vimrc#sticky_func()
-
 " Easy escape.
 inoremap jj           <ESC>
 cnoremap <expr> j
@@ -144,7 +153,6 @@ if exists(':tnoremap')
   tnoremap   <ESC>      <C-\><C-n>
   tnoremap   jj         <C-\><C-n>
   tnoremap   j<Space>   j
-  tnoremap <expr> ;  vimrc#sticky_func()
 endif
 
 " Wordcount

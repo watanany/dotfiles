@@ -107,28 +107,6 @@ zsh = '''
 imap <buffer> <C-c> <Plug>(deol_quit)
 '''
 
-# [[plugins]]
-# repo = 'Shougo/neosnippet.vim'
-# depends = ['neosnippet-snippets', 'context_filetype.vim']
-# on_event = 'InsertCharPre'
-# on_ft = 'snippet'
-# hook_source = '''
-#   imap <silent><C-k>     <Plug>(neosnippet_jump_or_expand)
-#   smap <silent><C-k>     <Plug>(neosnippet_jump_or_expand)
-#   xmap <silent><C-k>     <Plug>(neosnippet_expand_target)
-# 
-#   let g:neosnippet#enable_snipmate_compatibility = 1
-#   let g:neosnippet#enable_completed_snippet = 1
-#   " let g:neosnippet#enable_complete_done = 1
-#   let g:neosnippet#expand_word_boundary = 1
-# 
-#   " let g:snippets_dir = '~/.vim/snippets/,~/.vim/bundle/snipmate/snippets/'
-#   let g:neosnippet#snippets_directory = '~/.vim/snippets'
-# '''
-# 
-# [[plugins]]
-# repo = 'Shougo/neosnippet-snippets'
-
 [[plugins]]
 repo = 'Shougo/denite.nvim'
 on_cmd = 'Denite'
@@ -143,12 +121,7 @@ hook_add = '''
 
   nnoremap <silent> [Window]<Space>
         \ :<C-u>Denite file/rec:~/.vim/rc<CR>
-  nnoremap <expr> / line('$') > 10000 ? '/' :
-  \ ":\<C-u>Denite -buffer-name=search -start-filter line\<CR>"
-  nnoremap <expr> n line('$') > 10000 ? 'n' :
-  \ ":\<C-u>Denite -buffer-name=search -resume -refresh -no-start-filter\<CR>"
-  nnoremap <expr> * line('$') > 10000 ? '*' :
-  \ ":\<C-u>DeniteCursorWord -buffer-name=search line\<CR>"
+
   nnoremap <silent> [Window]s :<C-u>Denite file/point file/old
         \ -sorters=sorter/rank
         \ `finddir('.git', ';') != '' ? 'file/rec/git' : 'file/rec'`
@@ -202,59 +175,6 @@ nnoremap <silent><buffer><expr> <C-r>
 
 [[plugins]]
 repo = 'Shougo/context_filetype.vim'
-
-[[plugins]]
-repo = 'Shougo/deol.nvim'
-on_source = 'denite.nvim'
-hook_add = '''
-  nnoremap <silent> [Space]s :<C-u>Deol zsh -no-start-insert<CR>
-  nnoremap <silent> N :<C-u>call deol#new(
-  \ {'command': 'zsh', 'start_insert': 0})<CR>
-  " nnoremap <silent> [Space]s :<C-u>Deol xonsh<CR>
-  nnoremap <silent> [Window]D  :<C-u>call deol#kill_editor()<CR>
-'''
-hook_source = '''
-  let g:deol#prompt_pattern = '\w*% '
-  let g:deol#shell_history_path = '~/.zsh-history'
-
-  " Set to $PATH.
-  let s:bin = dein#get('vim-themis').rtp . '/bin'
-
-  function! s:split_envpath(path) abort
-    let delimiter = has('win32') ? ';' : ':'
-    if stridx(a:path, '\' . delimiter) < 0
-      return split(a:path, delimiter)
-    endif
-    let split = split(a:path, '\\\@<!\%(\\\\\)*\zs' . delimiter)
-    return map(split,'substitute(v:val, ''\\\([\\'
-          \ . delimiter . ']\)'', "\\1", "g")')
-  endfunction
-
-  function! s:join_envpath(list, orig_path, add_path) abort
-    let delimiter = has('win32') ? ';' : ':'
-    return (stridx(a:orig_path, '\' . delimiter) < 0
-          \ && stridx(a:add_path, delimiter) < 0) ?
-          \   join(a:list, delimiter) :
-          \   join(map(copy(a:list),
-          \        "substitute(v:path, ',\\|\\\\,\\@=', '\\\\\\0', 'g')"),
-          \        delimiter)
-  endfunction
-
-  let $PATH = s:join_envpath(
-        \ dein#util#_uniq(insert(
-        \    s:split_envpath($PATH), s:bin)), $PATH, s:bin)
-  let $THEMIS_HOME = dein#get('vim-themis').rtp
-
-  unlet s:bin
-'''
-[plugins.ftplugin]
-deol = '''
-nnoremap <buffer><silent> [Space]gc
-\ :<C-u>call deol#send('git commit')<CR>
-nnoremap <buffer><silent> [Space]gA
-\ :<C-u>call deol#send('git commit --amend')<CR>
-nmap <buffer> i <Plug>(deol_edit)
-'''
 
 [[plugins]]
 repo = 'Shougo/junkfile.vim'
@@ -410,30 +330,8 @@ hook_add = '''
   nmap J <Plug>(jplus)
 '''
 
-# [[plugins]]
-# repo = 'katono/rogue.vim'
-
 [[plugins]]
 repo = 'lambdalisue/vim-findent'
-
-# [[plugins]]
-# repo = 'kana/vim-smartchr'
-# on_event = 'InsertCharPre'
-# hook_source = '''
-#   inoremap <expr> , smartchr#one_of(', ', ',')
-#   inoremap <expr> =
-#         \ search('\(&\<bar><bar>\<bar>+\<bar>-\<bar>/\<bar>>\<bar><\) \%#', 'bcn')? '<bs>= '
-#         \ : search('\(*\<bar>!\)\%#', 'bcn') ? '= '
-#         \ : smartchr#one_of(' = ', '=', ' == ')
-#   augroup MyAutoCmd
-#     " Substitute .. into -> .
-#     autocmd FileType c,cpp inoremap <buffer> <expr> .
-#           \ smartchr#loop('.', '->', '...')
-#     autocmd FileType vim inoremap <buffer> <expr> .
-#           \ smartchr#loop('.', ' . ', '..', '...')
-#     autocmd FileType lisp,scheme,clojure inoremap <buffer> <expr> = =
-#   augroup END
-# '''
 
 [[plugins]]
 repo = 'tweekmonster/helpful.vim'
@@ -455,19 +353,6 @@ help = '''
 nnoremap <silent><buffer> ,r  :<C-u>VimhelpLint!<CR>
 '''
 
-# [[plugins]]
-# repo = 'zchee/deoplete-zsh'
-# on_ft = ['zsh', 'sh']
-#
-# [[plugins]]
-# repo = 'Shougo/deoplete.nvim'
-# depends = 'context_filetype.vim'
-# on_event = 'InsertEnter'
-# hook_source = '''
-# source ~/.vim/rc/plugins/deoplete.rc.vim
-# call deoplete#enable()
-# '''
-
 [[plugins]]
 repo = 'lambdalisue/suda.vim'
 on_event = 'BufRead'
@@ -487,16 +372,6 @@ on_ft = 'go'
 hook_source = '''
 let g:go_def_mapping_enabled = 0
 '''
-
-# [[plugins]]
-# repo = 'ncm2/float-preview.nvim'
-# on_source = 'deoplete.nvim'
-# if = 'has("nvim")'
-# hook_source = '''
-# let g:float_preview#docked = 0
-# let g:float_preview#max_width = 60
-# let g:float_preview#max_height = 20
-# '''
 
 [[plugins]]
 repo = 'JuliaEditorSupport/julia-vim'

@@ -77,7 +77,16 @@ autocmd MyAutoCmd BufWritePost,FileWritePost *.vim nested
 
 autocmd MyAutoCmd BufRead,BufNewFile *.xonshrc setfiletype python
 autocmd MyAutoCmd BufRead,BufNewFile *.xsh setfiletype python
+
+autocmd MyAutoCmd BufRead,BufNewFile *.vdm setfiletype vdm
+autocmd MyAutoCmd BufRead,BufNewFile *.vdmsl setfiletype vdm
 autocmd MyAutoCmd BufRead,BufNewFile *.vdmpp setfiletype vpp
+
+" see https://vim.fandom.com/wiki/Remove_unwanted_spaces
+autocmd MyAutoCmd BufWritePre *.hs %s/\s\+$//e
+autocmd MyAutoCmd BufWritePre *.dhall %s/\s\+$//e
+autocmd MyAutoCmd BufWritePre *.jl %s/\s\+$//e
+autocmd MyAutoCmd BufWritePre *.py %s/\s\+$//e
 '''
 
 [ftplugin]
