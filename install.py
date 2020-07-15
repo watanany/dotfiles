@@ -8,7 +8,7 @@ HOME = os.getenv('HOME')
 CONFIG_ROOT = os.path.join(HOME, 'dotfiles')
 
 DIRS = ['.cache', '.local/share', '.tmux/plugins']
-LINK_LIST = ['.zsh', '.zshrc', '.vim', '.vimrc', '.tmux.conf', '.ghci', '.iex.exs', '.cache/dein', '.tmux/plugins/tpm', '.git-subcommands']
+LINK_LIST = ['.zsh', '.zshrc', '.vim', '.vimrc', '.tmux.conf', '.ghci', '.iex.exs', '.cache/dein', '.tmux/plugins/tpm', '.git-subcommands', '.doom.d']
 
 NEOVIM_CONFIG = '.config/nvim'
 
