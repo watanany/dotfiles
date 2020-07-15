@@ -83,7 +83,7 @@ export XDG_DATA_HOME=$HOME/.local/share
 export EDITOR=vim
 export PAGER=less
 export TERM=xterm-256color
-export PATH=~/.git-subcommands:~/.local/bin:~/bin:$PATH
+export PATH=~/.emacs.d/bin:~/.git-subcommands:~/.local/bin:$PATH
 
 export KERAS_BACKEND=tensorflow
 
