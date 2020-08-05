@@ -84,7 +84,7 @@
               evil-snipe-override-evil t)
 
 ;;; companyの設定
-(with-eval-after-load "company"
+(after! company
   ;; Shift + <Space>で補完ポップアップを表示する
   (global-set-key (kbd "S-SPC") 'company-complete)
   ;; 補完ポップアップ上でCtrl-jとCtrl-kを無効にする
