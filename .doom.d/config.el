@@ -102,7 +102,3 @@
      ((t (:inherit company-tooltip :weight bold :underline nil))))
    '(company-tooltip-common-selection
      ((t (:inherit company-tooltip-selection :weight bold :underline nil))))))
-
-;; haskell-modeで動的略称機能による補完を有効にする
-(after! haskell-mode
-  (set-company-backend! 'haskell-mode 'company-dabbrev-code))
