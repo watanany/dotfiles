@@ -56,6 +56,9 @@
 
 (use-package! f)
 
+(doom-load-envvars-file "~/.doom.d/myenv")
+
+
 ;; スクロール時に5行分残してスクロールする
 (setq-default scroll-margin 5)
 
