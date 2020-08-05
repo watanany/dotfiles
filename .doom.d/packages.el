@@ -50,3 +50,5 @@
 ;(unpin! t)
 
 (package! f)
+(package! request)
+(package! restclient)
