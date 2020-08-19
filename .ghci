@@ -1,4 +1,4 @@
 :def hoogle \x -> return $ ":!hoogle \"" ++ x ++ "\" | less "
 :def doc \x -> return $ ":!hoogle --info \"" ++ x ++ "\" | less "
-:set prompt "\ESC[35m\STXλ> \ESC[m\STX"
-:set editor nvim
+:set prompt "λ> "
+:set editor vim
