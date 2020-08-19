@@ -108,3 +108,15 @@
      ((t (:inherit company-tooltip :weight bold :underline nil))))
    '(company-tooltip-common-selection
      ((t (:inherit company-tooltip-selection :weight bold :underline nil))))))
+
+;;; 各メジャーモードごとのキーマップ設定
+;; eshell
+(add-hook 'eshell-mode-hook
+          (lambda ()
+            (evil-local-set-key 'insert (kbd "C-n") 'eshell-next-matching-input-from-input)
+            (evil-local-set-key 'insert (kbd "C-p") 'eshell-previous-matching-input-from-input)))
+;; GHCi
+(add-hook 'haskell-interactive-mode-hook
+          (lambda ()
+            (evil-local-set-key 'insert (kbd "C-n") 'haskell-interactive-mode-history-next)
+            (evil-local-set-key 'insert (kbd "C-p") 'haskell-interactive-mode-history-previous)))
