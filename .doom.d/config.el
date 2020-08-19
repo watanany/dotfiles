@@ -62,6 +62,9 @@
 ;; スクロール時に5行分残してスクロールする
 (setq-default scroll-margin 5)
 
+(setq-default eshell-visual-commands
+              '("vi" "vim" "less" "more" "top"))
+
 ;; `jj' でevil-insert-stateから抜ける
 (setq-default evil-escape-key-sequence "jj"
               evil-escape-delay 0.3
