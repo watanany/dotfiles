@@ -120,3 +120,10 @@
           (lambda ()
             (evil-local-set-key 'insert (kbd "C-n") 'haskell-interactive-mode-history-next)
             (evil-local-set-key 'insert (kbd "C-p") 'haskell-interactive-mode-history-previous)))
+
+;;; sql-postgresのデフォルト設定
+(setq-default sql-postgres-login-params
+      '((user :default "postgres")
+        (database :default "postgres")
+        (server :default "localhost")
+        (port :default 5432)))
