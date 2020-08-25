@@ -123,7 +123,6 @@
 
 ;;; sql-postgresのデフォルト設定
 (setq-default sql-postgres-login-params
-      '((user :default "postgres")
-        (database :default "postgres")
-        (server :default "localhost")
-        (port :default 5432)))
+              '((server :default "localhost")
+                (port :default 5432)
+                (user :default "postgres")))
