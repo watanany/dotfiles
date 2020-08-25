@@ -69,8 +69,30 @@
 ;; スクロール時に5行分残してスクロールする
 (setq-default scroll-margin 5)
 
+;; 行指向ではないコマンドを ansi-term で開くようにする
 (setq-default eshell-visual-commands
-              '("vi" "vim" "less" "more" "top"))
+              '("vi"
+                "vim"
+                "less"
+                "more"
+                "top"
+                "rlwrap"
+                "ghci"
+                "gosh"
+                "python"
+                "ipython"
+                "irb"
+                "pry"
+                "julia"
+                "psql"
+                ))
+
+(setq-default eshell-visual-subcommands
+              '(("git" "log" "diff" "show" "pretty-log")
+                ("stack" "ghci")
+                ))
+
+(setq-default eshell-destroy-buffer-when-process-dies t)
 
 ;; `jj' でevil-insert-stateから抜ける
 (setq-default evil-escape-key-sequence "jj"
