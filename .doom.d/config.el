@@ -79,6 +79,8 @@
                 "rlwrap"
                 "ghci"
                 "gosh"
+                "sbcl"
+                "csi"
                 "python"
                 "ipython"
                 "irb"
@@ -90,6 +92,7 @@
 (setq-default eshell-visual-subcommands
               '(("git" "log" "diff" "show" "pretty-log")
                 ("stack" "ghci")
+                ("ros" "run")
                 ))
 
 (setq-default eshell-destroy-buffer-when-process-dies t)
