@@ -27,6 +27,9 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-one)
 
+;; treemacs のテーマ設定
+(setq doom-themes-treemacs-theme "doom-colors")
+
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
@@ -56,59 +59,29 @@
 
 (use-package! f)
 (use-package! lsp-haskell
-  :ensure t
+  :after lsp-mode
   :config
-  (setq lsp-haskell-process-path-hie "haskell-language-server-wrapper")
-  ;; Comment/uncomment this line to see interactions between lsp client/server.
-  ;;(setq lsp-log-io t)
-  )
+  (setq lsp-haskell-process-path-hie "haskell-language-server-wrapper"))
 
+;; emacs のみの環境変数の設定ファイルを読み込む
 (doom-load-envvars-file "~/.doom.d/myenv")
 
-
 ;; スクロール時に5行分残してスクロールする
-(setq-default scroll-margin 5)
+(setq scroll-margin 5)
 
-;; 行指向ではないコマンドを ansi-term で開くようにする
-(setq-default eshell-visual-commands
-              '("vi"
-                "vim"
-                "less"
-                "more"
-                "top"
-                "rlwrap"
-                "ghci"
-                "gosh"
-                "sbcl"
-                "csi"
-                "python"
-                "ipython"
-                "irb"
-                "pry"
-                "julia"
-                "psql"
-                ))
-
-(setq-default eshell-visual-subcommands
-              '(("git" "log" "diff" "show" "pretty-log")
-                ("stack" "ghci")
-                ("ros" "run")
-                ))
-
-(setq-default eshell-destroy-buffer-when-process-dies t)
-
+;;; evilの設定
 ;; `jj' でevil-insert-stateから抜ける
-(setq-default evil-escape-key-sequence "jj"
-              evil-escape-delay 0.3
-              ;; 選択モードの時はESCキーシーケンスを無効にする
-              evil-escape-inhibit-functions '(evil-visual-state-p)
-              ;; モードによってESCキーシーケンスを無効にする
-              evil-escape-excluded-major-modes '(dired-mode))
+(setq evil-escape-key-sequence "jj"
+      evil-escape-delay 0.3
+      ;; 選択モードの時はESCキーシーケンスを無効にする
+      evil-escape-inhibit-functions '(evil-visual-state-p)
+      ;; モードによってESCキーシーケンスを無効にする
+      evil-escape-excluded-major-modes '(dired-mode))
 
 ;; 左右キーで一つ前・一つ後の行に移動できるようにする
-(setq-default evil-cross-lines t)
+(setq evil-cross-lines t)
 
-;;; evil-snipeの設定を行う
+;;; evil-snipeの設定
 (evil-define-key '(normal motion) evil-snipe-local-mode-map
   "s" 'evil-snipe-s
   "S" 'evil-snipe-S)
@@ -117,15 +90,15 @@
   "F" 'evil-snipe-F)
 
 ;; s/Sとf/Fの検索範囲を現在のバッファに設定する
-(setq-default evil-snipe-scope 'buffer
-              evil-snipe-repeat-scope 'whole-buffer)
+(setq evil-snipe-scope 'buffer
+      evil-snipe-repeat-scope 'whole-buffer)
 
 ;; s/Sとf/Fを繰り返し使えるようにする
-(setq-default evil-snipe-repeat-keys t
-              evil-snipe-override-evil t)
+(setq evil-snipe-repeat-keys t
+      evil-snipe-override-evil t)
 
 ;;; companyの設定
-(after! company
+(with-eval-after-load 'company
   ;; Shift + <Space>で補完ポップアップを表示する
   (global-set-key (kbd "S-SPC") 'company-complete)
   ;; 補完ポップアップ上でCtrl-jとCtrl-kを無効にする
@@ -141,20 +114,50 @@
    '(company-tooltip-common-selection
      ((t (:inherit company-tooltip-selection :weight bold :underline nil))))))
 
-;;; 各メジャーモードごとのキーマップ設定
-;; eshell
+;;; eshellの設定
+;; 行指向ではないコマンドを ansi-term で開くようにする
+(setq eshell-visual-commands
+      '("vi"
+        "vim"
+        "less"
+        "more"
+        "top"
+        "rlwrap"
+        "ghci"
+        "ipython"
+        "irb"
+        "pry"
+        "psql"
+        ))
+
+(setq eshell-visual-subcommands
+      '(("git" "log" "diff" "show" "pretty-log")
+        ("stack" "ghci")
+        ("ros" "run")
+        ))
+
+(setq eshell-visual-options
+      '(("stack" "--file-watch")
+        ))
+
+;; プロセス終了後に eshell を終了する
+(setq eshell-destroy-buffer-when-process-dies t)
+
+;; キーマップ設定
 (add-hook 'eshell-mode-hook
           (lambda ()
-            (evil-local-set-key 'insert (kbd "C-n") 'eshell-next-matching-input-from-input)
-            (evil-local-set-key 'insert (kbd "C-p") 'eshell-previous-matching-input-from-input)))
-;; GHCi
+            (evil-local-set-key 'insert (kbd "C-p") 'eshell-previous-matching-input-from-input)
+            (evil-local-set-key 'insert (kbd "C-n") 'eshell-next-matching-input-from-input)))
+
+;;; sql-postgresの設定
+(setq sql-postgres-login-params
+      '((server :default "localhost")
+        (port :default 5432)
+        (user :default "postgres")))
+
+;;; Haskell
+;; GHCiでのキーマップ設定
 (add-hook 'haskell-interactive-mode-hook
           (lambda ()
-            (evil-local-set-key 'insert (kbd "C-n") 'haskell-interactive-mode-history-next)
-            (evil-local-set-key 'insert (kbd "C-p") 'haskell-interactive-mode-history-previous)))
-
-;;; sql-postgresのデフォルト設定
-(setq-default sql-postgres-login-params
-              '((server :default "localhost")
-                (port :default 5432)
-                (user :default "postgres")))
+            (evil-local-set-key 'insert (kbd "C-p") 'haskell-interactive-mode-history-previous)
+            (evil-local-set-key 'insert (kbd "C-n") 'haskell-interactive-mode-history-next)))
