@@ -142,12 +142,6 @@
 ;; プロセス終了後に eshell を終了する
 (setq eshell-destroy-buffer-when-process-dies t)
 
-;; キーマップ設定
-(add-hook 'eshell-mode-hook
-          (lambda ()
-            (evil-local-set-key 'insert (kbd "C-p") 'eshell-previous-matching-input-from-input)
-            (evil-local-set-key 'insert (kbd "C-n") 'eshell-next-matching-input-from-input)))
-
 ;;; sql-postgresの設定
 (setq sql-postgres-login-params
       '((server :default "localhost")
