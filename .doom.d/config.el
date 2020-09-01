@@ -127,7 +127,6 @@
         "ipython"
         "irb"
         "pry"
-        "psql"
         ))
 
 (setq eshell-visual-subcommands
