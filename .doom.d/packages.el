@@ -50,3 +50,4 @@
 ;(unpin! t)
 
 (package! f)
+(package! dhall-mode)

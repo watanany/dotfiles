@@ -62,6 +62,11 @@
   :after lsp-mode
   :config
   (setq lsp-haskell-process-path-hie "haskell-language-server-wrapper"))
+(use-package! dhall-mode
+  :ensure t
+  :mode "\\.dhall\\'"
+  :config
+  (setq dhall-format-at-save nil))
 
 ;; emacs のみの環境変数の設定ファイルを読み込む
 (doom-load-envvars-file "~/.doom.d/myenv")
