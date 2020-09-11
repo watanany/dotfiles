@@ -81,7 +81,7 @@
       ;; 選択モードの時はESCキーシーケンスを無効にする
       evil-escape-inhibit-functions '(evil-visual-state-p)
       ;; モードによってESCキーシーケンスを無効にする
-      evil-escape-excluded-major-modes '(dired-mode))
+      evil-escape-excluded-major-modes '(dired-mode vterm-mode))
 
 ;; 左右キーで一つ前・一つ後の行に移動できるようにする
 (setq evil-cross-lines t)
@@ -159,3 +159,5 @@
           (lambda ()
             (evil-local-set-key 'insert (kbd "C-p") 'haskell-interactive-mode-history-previous)
             (evil-local-set-key 'insert (kbd "C-n") 'haskell-interactive-mode-history-next)))
+
+(setq inferior-lisp-program "ros-run")
