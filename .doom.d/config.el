@@ -58,12 +58,17 @@
 
 
 (use-package! f)
+
+(use-package! projectile
+  :config
+  (add-to-list 'projectile-project-root-files-bottom-up "Setup.hs"))
+
 (use-package! lsp-haskell
   :after lsp-mode
   :config
-  (setq lsp-haskell-process-path-hie "haskell-language-server-wrapper"))
+  (setq lsp-haskell-formatting-provider "fourmolu"))
+
 (use-package! dhall-mode
-  :ensure t
   :mode "\\.dhall\\'"
   :config
   (setq dhall-format-at-save nil))
@@ -160,4 +165,5 @@
             (evil-local-set-key 'insert (kbd "C-p") 'haskell-interactive-mode-history-previous)
             (evil-local-set-key 'insert (kbd "C-n") 'haskell-interactive-mode-history-next)))
 
+;;; Common Lisp
 (setq inferior-lisp-program "ros-run")
