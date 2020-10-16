@@ -53,7 +53,7 @@
        (evil +everywhere); come to the dark side, we have cookies
        file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
-       ;;(format +onsave)  ; automated prettiness
+       (format +onsave)  ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        ;;lispy             ; vim for lisp, for people who don't like vim
        ;;multiple-cursors  ; editing in many places at once
@@ -118,7 +118,8 @@
        ;;data              ; config/data formats
        (dart +flutter +lsp)   ; paint ui and not much else
        ;;elixir            ; erlang done right
-       elm               ; care for a cup of TEA?
+       ;;elm               ; care for a cup of TEA?
+       (elm +lsp)        ; care for a cup of TEA?
        emacs-lisp        ; drown in parentheses
        ;;erlang            ; an elegant language for a more civilized age
        ;;ess               ; emacs speaks statistics
@@ -130,7 +131,7 @@
        ;;(haskell +dante)  ; a language that's lazier than I am
        (haskell +lsp)    ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
-       ;;idris             ;
+       ;;idris             ;team-ds-1@dsfootball.test
        json              ; At least it ain't XML
        ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
        javascript        ; all(hope(abandon(ye(who(enter(here))))))
