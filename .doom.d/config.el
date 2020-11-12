@@ -59,11 +59,6 @@
 
 (use-package! f)
 
-(use-package! projectile
-  :config
-  (add-to-list 'projectile-project-root-files-bottom-up "Setup.hs")
-  (add-to-list 'projectile-project-root-files-bottom-up "pubspec.yaml"))
-
 (use-package! lsp-haskell
   :after lsp-mode
   :config
