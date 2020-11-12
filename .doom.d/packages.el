@@ -51,3 +51,4 @@
 
 (package! f)
 (package! dhall-mode)
+(package! lsp-julia)
