@@ -69,6 +69,10 @@
   :config
   (setq dhall-format-at-save nil))
 
+(use-package! lsp-julia
+  :config
+  (setq lsp-julia-default-environment "~/.julia/environments/v1.5"))
+
 ;; emacs のみの環境変数の設定ファイルを読み込む
 (doom-load-envvars-file "~/.doom.d/myenv")
 
@@ -163,3 +167,6 @@
 
 ;;; Common Lisp
 (setq inferior-lisp-program "ros-run")
+(sp-with-modes '(lisp-mode lisp-interaction-mode emacs-lisp-mode scheme-mode)
+               (sp-local-pair "(" nil :actions nil)
+               (sp-local-pair "[" nil :actions nil))
