@@ -165,8 +165,11 @@
             (evil-local-set-key 'insert (kbd "C-p") 'haskell-interactive-mode-history-previous)
             (evil-local-set-key 'insert (kbd "C-n") 'haskell-interactive-mode-history-next)))
 
+;;; Lisp
+(sp-with-modes '(lisp-mode lisp-interaction-mode emacs-lisp-mode scheme-mode clojure-mode)
+               (sp-local-pair "(" nil :actions nil)
+               (sp-local-pair "[" nil :actions nil)
+               (sp-local-pair "{" nil :actions nil))
+
 ;;; Common Lisp
 (setq inferior-lisp-program "ros-run")
-(sp-with-modes '(lisp-mode lisp-interaction-mode emacs-lisp-mode scheme-mode)
-               (sp-local-pair "(" nil :actions nil)
-               (sp-local-pair "[" nil :actions nil))
