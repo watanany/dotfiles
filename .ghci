@@ -1,4 +1,21 @@
+import Prelude
+
+:set -package pretty-simple
+import Text.Pretty.Simple (pPrint)
+:set -interactive-print pPrint
+
+:set -Wall
+:set -fno-warn-type-defaults
+:set -DGHCI
+
+:seti -XOverloadedStrings
+:seti -XScopedTypeVariables
+
+:set prompt "λ> "
+:set prompt-cont "λ|     "
+:set +m
+:set +s
+:set +t
+
 :def hoogle \x -> return $ ":!hoogle \"" ++ x ++ "\" | less "
 :def doc \x -> return $ ":!hoogle --info \"" ++ x ++ "\" | less "
-:set prompt "λ> "
-:set editor vim
