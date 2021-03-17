@@ -51,4 +51,4 @@
 
 (package! f)
 (package! dhall-mode)
-(package! lsp-julia)
+(package! evil-cleverparens)
