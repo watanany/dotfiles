@@ -61,17 +61,17 @@
 
 (use-package! lsp-haskell
   :after lsp-mode
-  :config
-  (setq lsp-haskell-formatting-provider "fourmolu"))
+  :config (setq lsp-haskell-formatting-provider "fourmolu"))
 
 (use-package! dhall-mode
   :mode "\\.dhall\\'"
-  :config
-  (setq dhall-format-at-save nil))
+  :config (setq dhall-format-at-save nil))
 
-(use-package! lsp-julia
-  :config
-  (setq lsp-julia-default-environment "~/.julia/environments/v1.5"))
+(use-package! evil-cleverparens)
+
+
+;; FIXME: https://github.com/hlissner/doom-emacs/issues/4555
+(use-package! ace-window)
 
 ;; emacs のみの環境変数の設定ファイルを読み込む
 (doom-load-envvars-file "~/.doom.d/myenv")
@@ -165,11 +165,10 @@
             (evil-local-set-key 'insert (kbd "C-p") 'haskell-interactive-mode-history-previous)
             (evil-local-set-key 'insert (kbd "C-n") 'haskell-interactive-mode-history-next)))
 
-;;; Lisp
-(sp-with-modes '(lisp-mode lisp-interaction-mode emacs-lisp-mode scheme-mode clojure-mode)
-               (sp-local-pair "(" nil :actions nil)
-               (sp-local-pair "[" nil :actions nil)
-               (sp-local-pair "{" nil :actions nil))
-
 ;;; Common Lisp
 (setq inferior-lisp-program "ros-run")
+
+;;; smartparens のキーバインドを設定
+(add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
+(add-hook 'lisp-mode-hook #'evil-cleverparens-mode)
+(add-hook 'emacs-lisp-mode-hook #'evil-cleverparens-mode)
