@@ -69,15 +69,17 @@
 
 (use-package! evil-cleverparens)
 
-
 ;; FIXME: https://github.com/hlissner/doom-emacs/issues/4555
 (use-package! ace-window)
 
 ;; emacs のみの環境変数の設定ファイルを読み込む
-(doom-load-envvars-file "~/.doom.d/myenv")
+;; (doom-load-envvars-file "~/.doom.d/myenv")
 
 ;; スクロール時に5行分残してスクロールする
 (setq scroll-margin 5)
+
+;; 行間の設定
+(setq-default line-spacing 0.15)
 
 ;;; evilの設定
 ;; `jj' でevil-insert-stateから抜ける
