@@ -210,3 +210,30 @@
 ;;; Clojure
 (add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
 
+(defvar clojure-built-in-vars
+  '(;; clojure.core
+    "accessor" "aclone"
+    "agent" "agent-errors" "aget" "alength" "alias"
+    "all-ns" "alter" "alter-meta!" "alter-var-root" "amap"
+    ;; omitted for brevity
+    ))
+
+(defvar clojure-built-in-dynamic-vars
+  '(;; clojure.test
+    "*initial-report-counters*" "*load-tests*" "*report-counters*"
+    "*stack-trace-depth*" "*test-out*" "*testing-contexts*" "*testing-vars*"
+    ;; clojure.xml
+    "*current*" "*sb*" "*stack*" "*state*"
+    ))
+
+(font-lock-add-keywords 'clojure-mode
+                        `((,(concat "(\\(?:\.*/\\)?"
+                                    (regexp-opt clojure-built-in-vars t)
+                                    "\\>")
+                           1 font-lock-builtin-face)))
+
+(font-lock-add-keywords 'clojure-mode
+                        `((,(concat "\\<"
+                                    (regexp-opt clojure-built-in-dynamic-vars t)
+                                    "\\>")
+                           0 font-lock-builtin-face)))
