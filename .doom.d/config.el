@@ -193,6 +193,9 @@
     (set-char-table-range composition-function-table (car char-regexp)
                           `([,(cdr char-regexp) 0 font-shape-gstring]))))
 
+;;; Emacs Lisp
+(add-hook 'emacs-lisp-mode-hook #'evil-cleverparens-mode)
+
 ;;; Haskell
 ;; GHCiでのキーマップ設定
 (add-hook 'haskell-interactive-mode-hook
@@ -202,8 +205,8 @@
 
 ;;; Common Lisp
 (setq inferior-lisp-program "ros-run")
-
-;;; smartparens のキーバインドを設定
-(add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
 (add-hook 'lisp-mode-hook #'evil-cleverparens-mode)
-(add-hook 'emacs-lisp-mode-hook #'evil-cleverparens-mode)
+
+;;; Clojure
+(add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
+
