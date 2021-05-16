@@ -203,3 +203,7 @@
                                     (regexp-opt clojure-built-in-dynamic-vars t)
                                     "\\>")
                            0 font-lock-builtin-face)))
+
+;;; PlantUML
+;; 拡張子 .pu を plantuml-mode に紐づける
+(add-to-list 'auto-mode-alist '("\\.pu\\'" . plantuml-mode))
