@@ -83,9 +83,6 @@
 ;; スクロール時に5行分残してスクロールする
 (setq scroll-margin 5)
 
-;; 行間の設定
-(setq-default line-spacing 0.15)
-
 ;;; evilの設定
 ;; `jj' でevil-insert-stateから抜ける
 (setq evil-escape-key-sequence "jj"
