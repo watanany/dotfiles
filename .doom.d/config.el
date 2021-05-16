@@ -74,6 +74,9 @@
 ;; FIXME: https://github.com/hlissner/doom-emacs/issues/4555
 (use-package! ace-window)
 
+;; FIXME: https://github.com/hlissner/doom-emacs/issues/3172
+(add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
+
 ;; emacs のみの環境変数の設定ファイルを読み込む
 ;; (doom-load-envvars-file "~/.doom.d/myenv")
 
