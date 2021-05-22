@@ -6,12 +6,14 @@ packages = [
     "Clustering",
     "Combinatorics",
     "Conda",
+    "CSV",
     "DataFrames",
     "DataFramesMeta",
     "Gadfly",
     "GLM",
     "Glob",
     "HDF5",
+    "HTTP",
     "HypothesisTests",
     "IJulia",
     "JSON",
@@ -25,4 +27,6 @@ packages = [
     "StatsPlots",
 ]
 
-foreach(Pkg.add, packages)
+
+Pkg.add(packages)
+
