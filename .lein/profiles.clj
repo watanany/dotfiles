@@ -9,7 +9,6 @@
                  [clj-http "3.12.0"]
                  [clj-time "0.15.2"]
                  [rm-hull/infix "0.3.3"]
-                 [rhizome "0.2.9"]
                  ]
   :injections [(require '[clojure.tools.namespace.repl :refer [refresh]])
                (require '[clojure.tools.trace :refer :all])
