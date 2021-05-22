@@ -42,8 +42,9 @@ setopt hist_ignore_dups    # 重複したコマンドリストは無視する
 setopt share_history       # コマンド履歴データを共有する
 
 # コマンド入力時にオプションを補完
+# オプションはman zshcompsysを参照
 autoload -U compinit
-compinit
+compinit -u
 
 # 補完候補一覧をカラー表示する
 #（設定してないのでlsと異なる色が表示される）
