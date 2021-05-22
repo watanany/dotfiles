@@ -81,7 +81,7 @@ limit coredumpsize 0
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
-export EDITOR=vim
+export EDITOR=nano
 export PAGER=less
 export TERM=xterm-256color
 export PATH=~/.emacs.d/bin:~/.git-subcommands:~/.local/bin:$PATH
