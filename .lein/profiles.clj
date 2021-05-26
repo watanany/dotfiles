@@ -44,7 +44,6 @@
                  [org.clojure/tools.trace "0.7.11"]
                  [clj-http "3.12.0"]
                  [clj-time "0.15.2"]
-                 [enlive "1.1.6"]
                  [expresso "0.2.2"]
                  [net.mikera/core.matrix "0.62.0"]
                  [org.tensorflow/tensorflow-core-platform "0.3.1"]
@@ -65,6 +64,5 @@
                (require '[clj-time.local :as time-local])
                (require '[clojure.core.matrix :as mat])
                (require '[infix.macros :refer [infix $=]])
-               (require '[net.cgrand.enlive-html :as enlive])
                (require '[numeric.expresso.core :as ex])
                ]}}
