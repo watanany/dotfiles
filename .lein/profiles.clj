@@ -45,6 +45,8 @@
                  [clj-http "3.12.0"]
                  [clj-time "0.15.2"]
                  [expresso "0.2.2"]
+                 [hiccup "1.0.5"]
+                 [hickory "0.7.1"]
                  [net.mikera/core.matrix "0.62.0"]
                  [org.tensorflow/tensorflow-core-platform "0.3.1"]
                  [rm-hull/infix "0.3.3"]
@@ -64,5 +66,7 @@
                (require '[clj-time.local :as time-local])
                (require '[clojure.core.matrix :as mat])
                (require '[infix.macros :refer [infix $=]])
+               (require '[hickory.core :as hickory])
+               (require '[hickory.convert :refer [hickory-to-hiccup hiccup-to-hickory]])
                (require '[numeric.expresso.core :as ex])
                ]}}
