@@ -44,6 +44,7 @@
                  [org.clojure/tools.trace "0.7.11"]
                  [clj-http "3.12.0"]
                  [clj-time "0.15.2"]
+                 [com.github.seancorfield/honeysql "2.0.0-rc2"]
                  [expresso "0.2.2"]
                  [hiccup "1.0.5"]
                  [hickory "0.7.1"]
@@ -68,5 +69,7 @@
                (require '[infix.macros :refer [infix $=]])
                (require '[hickory.core :as hickory])
                (require '[hickory.convert :refer [hickory-to-hiccup hiccup-to-hickory]])
+               (require '[honey.sql :as sql])
+               (require '[honey.sql.helpers :as sql-helpers])
                (require '[numeric.expresso.core :as ex])
                ]}}
