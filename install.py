@@ -1,14 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-import sys
 import os
 
 HOME = os.getenv('HOME')
 CONFIG_ROOT = os.path.join(HOME, 'dotfiles')
 
 DIRS = ['.cache', '.local/share', '.tmux/plugins']
-LINK_LIST = ['.zsh', '.zshrc', '.vim', '.vimrc', '.tmux.conf', '.ghci', '.iex.exs', '.cache/dein', '.tmux/plugins/tpm', '.git-subcommands', '.doom.d']
+LINK_LIST = [
+    '.zsh',
+    '.zshrc',
+    '.vim',
+    '.vimrc',
+    '.tmux.conf',
+    '.ghci',
+    '.iex.exs',
+    '.cache/dein',
+    '.tmux/plugins/tpm',
+    '.git-subcommands',
+    '.doom.d',
+    '.gitignore_global',
+]
 
 NEOVIM_CONFIG = '.config/nvim'
 
