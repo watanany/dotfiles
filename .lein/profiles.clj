@@ -1,8 +1,15 @@
 {:user
  {:plugins [[lein-ancient "0.6.15"]
             [lein-exec "0.3.7"]
-            [lein-pprint "1.3.2"]
-            ]
+            [lein-pprint "1.3.2"]]
+  :dependencies []
+  :injections [(require '[clojure.repl :refer :all])
+               (require '[clojure.pprint :refer :all])]}
+
+:watanany
+ {:plugins [[lein-ancient "0.6.15"]
+            [lein-exec "0.3.7"]
+            [lein-pprint "1.3.2"]]
   :dependencies [[org.clojure/algo.generic "0.1.3"]
                  [org.clojure/algo.monads "0.1.6"]
                  [org.clojure/core.async "1.3.618"]
@@ -42,9 +49,11 @@
                  [org.clojure/tools.namespace "1.1.0"]
                  [org.clojure/tools.reader "1.3.5"]
                  [org.clojure/tools.trace "0.7.11"]
+                 [clojupyter "0.3.2"]
                  [clj-http "3.12.0"]
                  [clj-time "0.15.2"]
                  [com.github.seancorfield/honeysql "2.0.0-rc2"]
+                 [etaoin "0.4.1"]
                  [expresso "0.2.2"]
                  [hiccup "1.0.5"]
                  [hickory "0.7.1"]
@@ -52,7 +61,9 @@
                  [org.tensorflow/tensorflow-core-platform "0.3.1"]
                  [rm-hull/infix "0.3.3"]
                  ]
-  :injections [(require '[clojure.core.match :refer [match]])
+  :injections [(require '[clojure.repl :refer :all])
+               (require '[clojure.pprint :refer :all])
+               (require '[clojure.core.match :refer [match]])
                (require '[clojure.data.csv :as csv])
                (require '[clojure.data.json :as json])
                (require '[clojure.math.numeric-tower :as math])
