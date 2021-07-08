@@ -61,7 +61,9 @@
                  [org.tensorflow/tensorflow-core-platform "0.3.1"]
                  [rm-hull/infix "0.3.3"]
                  ]
-  :injections [(require '[clojure.repl :refer :all])
+  :injections [(require '[clojure.walk :refer [keywordize-keys]])
+               (require '[clojure.stacktrace :refer [print-stack-trace]])
+               (require '[clojure.repl :refer :all])
                (require '[clojure.pprint :refer :all])
                (require '[clojure.core.match :refer [match]])
                (require '[clojure.data.csv :as csv])
