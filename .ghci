@@ -13,8 +13,14 @@ import Text.Pretty.Simple (pPrint)
 
 :set prompt "λ> "
 :set prompt-cont "λ|     "
-:set +m
+
+-- 複数行にわたるコマンドのパースを可能にする
+-- :set +m
+
+-- 式を 1 つ評価するごとに，経過時間や確保されたバイト数の統計情報を表示
 :set +s
+
+-- プロンプトに文を入力したとき，束縛された変数それぞれの型を表示
 :set +t
 
 :def hoogle \x -> return $ ":!hoogle \"" ++ x ++ "\" | less "
