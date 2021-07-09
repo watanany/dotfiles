@@ -9,7 +9,9 @@
 :watanany
  {:plugins [[lein-ancient "0.6.15"]
             [lein-exec "0.3.7"]
-            [lein-pprint "1.3.2"]]
+            [lein-pprint "1.3.2"]
+            [refactor-nrepl/refactor-nrepl "2.5.1"]
+            [cider/cider-nrepl "0.25.9"]]
   :dependencies [[org.clojure/algo.generic "0.1.3"]
                  [org.clojure/algo.monads "0.1.6"]
                  [org.clojure/core.async "1.3.618"]
@@ -58,6 +60,7 @@
                  [hiccup "1.0.5"]
                  [hickory "0.7.1"]
                  [net.mikera/core.matrix "0.62.0"]
+                 [nrepl "0.8.3"]
                  [org.tensorflow/tensorflow-core-platform "0.3.1"]
                  [rm-hull/infix "0.3.3"]
                  ]
