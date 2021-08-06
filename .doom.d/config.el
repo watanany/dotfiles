@@ -209,9 +209,14 @@
 (add-to-list 'auto-mode-alist '("\\.pu\\'" . plantuml-mode))
 
 
+;;======================================================================
+;; Host Local Config
+;;======================================================================
 ;;; 特定のモードで自動フォーマットを無効にする
 (setq +format-on-save-enabled-modes
       '(not emacs-lisp-mode  ; elisp's mechanisms are good enough
             sql-mode         ; sqlformat is currently broken
             tex-mode         ; latexindent is broken
-            latex-mode))
+            latex-mode
+            haskell-mode
+            html-mode))
