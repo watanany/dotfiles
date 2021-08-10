@@ -69,7 +69,17 @@
   :mode "\\.dhall\\'"
   :config (setq dhall-format-at-save nil))
 
-(use-package! evil-cleverparens)
+(use-package! evil-cleverparens
+  :init
+  (setq evil-cleverparens-use-additional-bindings nil)
+  :config
+  ;; terminal内のemacs使用時に矢印キーが暴走するのを修正するコード
+  ;; cf. https://github.com/luxbock/evil-cleverparens/issues/58
+  (setq evil-cleverparens-use-additional-bindings t)
+  (unless window-system
+    (setq evil-cp-additional-bindings (assoc-delete-all "M-[" evil-cp-additional-bindings))
+    (setq evil-cp-additional-bindings (assoc-delete-all "M-]" evil-cp-additional-bindings)))
+  (evil-cp-set-additional-bindings))
 
 ;; FIXME: https://github.com/hlissner/doom-emacs/issues/4555
 (use-package! ace-window)
