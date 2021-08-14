@@ -138,6 +138,12 @@
    '(company-tooltip-common-selection
      ((t (:inherit company-tooltip-selection :weight bold :underline nil))))))
 
+;; 表示化けするので org-mode 時は Ligature を無効にする
+(when (boundp '+ligatures-in-modes)
+  (if (eq (car +ligatures-in-modes) 'not)
+      (add-to-list '+ligatures-in-modes 'org-mode t)
+    (delete 'org-mode +ligatures-in-modes)))
+
 ;;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook #'evil-cleverparens-mode)
 
