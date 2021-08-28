@@ -192,6 +192,8 @@
 ;;; PlantUML
 ;; 拡張子 .pu を plantuml-mode に紐づける
 (add-to-list 'auto-mode-alist '("\\.pu\\'" . plantuml-mode))
+;; FIXME: デフォルトのsvg形式だとplantuml-previewで日本語が表示されなかったため、出力をpng形式へ変更する
+(setq plantuml-output-type "png")
 
 
 ;;======================================================================
