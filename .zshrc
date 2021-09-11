@@ -35,8 +35,8 @@ RPROMPT=$RPROMPT'${vcs_info_msg_0_}'
 
 
 export HISTFILE=~/.zsh_history
-export HISTSIZE=10000
-export SAVEHIST=10000
+export HISTSIZE=1000000
+export SAVEHIST=1000000
 export HISTTIMEFORMAT='%F %T '
 setopt hist_ignore_dups    # 重複したコマンドリストは無視する
 setopt share_history       # コマンド履歴データを共有する
