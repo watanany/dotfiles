@@ -134,15 +134,6 @@ pretty_json() {
     python -c 'import sys, json; j=json.loads(sys.stdin.read()); print(json.dumps(j, indent=4, ensure_ascii=False))'
 }
 
-# Ruby on Rails
-alias be='bundle exec'
-alias rails='bundle exec spring rails'
-alias rake='bundle exec spring rake'
-alias rspec='bundle exec spring rspec'
-alias sidekiq='bundle exec sidekiq'
-
-alias git-vimdiff='git difftool --tool=vimdiff --no-prompt'
-
 # auto-fuの設定
 # if [ -f ~/.zsh/auto-fu.zsh/auto-fu.zsh ]; then
 #     source ~/.zsh/auto-fu.zsh/auto-fu.zsh
@@ -151,6 +142,43 @@ alias git-vimdiff='git difftool --tool=vimdiff --no-prompt'
 #     zstyle ':completion:*' completer _oldlist _complete
 #     zle -N zle-keymap-select auto-fu-zle-keymap-select
 # fi
+
+#;;; Gauche
+#;; Gauche REPL alias
+alias igosh="rlwrap gosh"
+
+#;;; Ruby
+#;; rbenv
+export RBENV_ROOT="$HOME/.rbenv"
+if command -v rbenv &> /dev/null; then
+    eval "$(rbenv init -)"
+fi
+
+#;; Ruby on Rails
+alias be='bundle exec'
+alias rails='bundle exec spring rails'
+alias rake='bundle exec spring rake'
+alias rspec='bundle exec spring rspec'
+alias sidekiq='bundle exec sidekiq'
+
+#;;; Python
+#;; pyenv
+if command -v pyenv &> /dev/null; then
+    eval "$(pyenv init -)"
+fi
+
+export PATH="$HOME/.poetry/bin:$PATH"
+
+#;;; Rust
+if [ -f $HOME/.cargo/env ]; then
+    source $HOME/.cargo/env
+fi
+
+#;;; Haskell
+#;; stack's shell auto-completion
+if command -v stack &> /dev/null; then
+    eval "$(stack --bash-completion-script stack)"
+fi
 
 # .zshrc.local(実験用設定ファイル)を実行
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
