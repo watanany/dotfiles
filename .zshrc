@@ -173,13 +173,6 @@ export PATH="$HOME/.poetry/bin:$PATH"
 if [ -f $HOME/.cargo/env ]; then
     source $HOME/.cargo/env
 fi
-
-#;;; Haskell
-#;; stack's shell auto-completion
-if command -v stack &> /dev/null; then
-    eval "$(stack --bash-completion-script stack)"
-fi
-
 # .zshrc.local(実験用設定ファイル)を実行
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
