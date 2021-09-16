@@ -106,9 +106,9 @@ alias ll='ls -l'
 alias su='su -l'
 alias vimrc='vim ~/.vimrc'
 alias curl='curl -sSL'
-function cd() { builtin cd $@ && ls; }
-function em() { emacs $@ & }
-function en() { emacs -nw $@ }
+function cd { builtin cd $@ && ls; }
+function em { emacs $@ & }
+function en { emacs -nw $@ }
 
 # tmux
 function tmux-windows {
