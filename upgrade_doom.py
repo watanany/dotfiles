@@ -35,18 +35,29 @@ def install_doom():
 
 
 def restore(emacs_dir):
-    shutil.copy(
-        os.path.join(emacs_dir, ".local/etc/lsp-session"),
-        os.path.join(EMACS_DIR, ".local/etc/lsp-session"),
-    )
-    shutil.copy(
-        os.path.join(emacs_dir, ".local/cache/recentf"),
-        os.path.join(EMACS_DIR, ".local/cache/recentf"),
-    )
-    shutil.copy(
-        os.path.join(emacs_dir, ".local/cache/projectile.projects"),
-        os.path.join(EMACS_DIR, ".local/cache/projectile.projects"),
-    )
+    try:
+        shutil.copy(
+            os.path.join(emacs_dir, ".local/etc/lsp-session"),
+            os.path.join(EMACS_DIR, ".local/etc/lsp-session"),
+        )
+    except FileNotFoundError:
+        pass
+
+    try:
+        shutil.copy(
+            os.path.join(emacs_dir, ".local/cache/recentf"),
+            os.path.join(EMACS_DIR, ".local/cache/recentf"),
+        )
+    except FileNotFoundError:
+        pass
+
+    try:
+        shutil.copy(
+            os.path.join(emacs_dir, ".local/cache/projectile.projects"),
+            os.path.join(EMACS_DIR, ".local/cache/projectile.projects"),
+        )
+    except FileNotFoundError:
+        pass
 
 
 def install_plantuml():
