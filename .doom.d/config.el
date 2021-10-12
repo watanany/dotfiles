@@ -121,6 +121,11 @@
 (setq evil-snipe-repeat-keys t
       evil-snipe-override-evil t)
 
+;; カーソルの色を設定する
+(setq evil-normal-state-cursor '(box "light blue")
+      evil-insert-state-cursor '(bar "medium sea green")
+      evil-visual-state-cursor '(hollow "orange"))
+
 ;;; companyの設定
 (with-eval-after-load 'company
   ;; Shift + <Space>で補完ポップアップを表示する
