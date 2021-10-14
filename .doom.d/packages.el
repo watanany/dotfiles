@@ -54,3 +54,4 @@
 (package! evil-cleverparens)
 (package! vdm-mode)
 (package! command-log-mode)
+(package! pangu-spacing :disable t)
