@@ -1,17 +1,21 @@
 {:user
  {:plugins [[lein-ancient "0.6.15"]
             [lein-exec "0.3.7"]
-            [lein-pprint "1.3.2"]]
+            [lein-pprint "1.3.2"]
+            [lein-localrepo "0.5.4"]]
   :dependencies []
   :injections [(require '[clojure.repl :refer :all])
                (require '[clojure.pprint :refer :all])]}
 
-:watanany
+ :watanany
  {:plugins [[lein-ancient "0.6.15"]
             [lein-exec "0.3.7"]
             [lein-pprint "1.3.2"]
-            [refactor-nrepl/refactor-nrepl "2.5.1"]
-            [cider/cider-nrepl "0.25.9"]]
+            [lein-localrepo "0.5.4"]
+            ;;[refactor-nrepl/refactor-nrepl "2.5.1"]
+            [cider/cider-nrepl "0.25.9"]
+            [io.aviso/pretty "1.1"]]
+  :middleware [io.aviso.lein-pretty/inject]
   :dependencies [[org.clojure/algo.generic "0.1.3"]
                  [org.clojure/algo.monads "0.1.6"]
                  [org.clojure/core.async "1.3.618"]
@@ -50,6 +54,10 @@
                  [org.clojure/tools.namespace "1.1.0"]
                  [org.clojure/tools.reader "1.3.5"]
                  [org.clojure/tools.trace "0.7.11"]
+                 [buddy/buddy-core "1.10.1"]
+                 [buddy/buddy-auth "3.0.1"]
+                 [buddy/buddy-hashers "1.8.1"]
+                 [buddy/buddy-sign "3.4.1"]
                  [clojupyter "0.3.2"]
                  [clj-http "3.12.0"]
                  [clj-time "0.15.2"]
@@ -58,13 +66,13 @@
                  [expresso "0.2.2"]
                  [hiccup "1.0.5"]
                  [hickory "0.7.1"]
+                 [io.aviso/pretty "1.1"]
                  [net.mikera/core.matrix "0.62.0"]
                  [nrepl "0.8.3"]
                  [org.clojure.typed/runtime.jvm "1.0.1"]
                  [org.clojure.typed/checker.jvm "1.0.1"]
                  [org.tensorflow/tensorflow-core-platform "0.3.1"]
-                 [rm-hull/infix "0.3.3"]
-                 ]
+                 [rm-hull/infix "0.3.3"]]
   :injections [(require '[clojure.walk :refer [keywordize-keys]])
                (require '[clojure.stacktrace :refer [print-stack-trace]])
                (require '[clojure.repl :refer :all])
@@ -88,5 +96,4 @@
                (require '[hickory.convert :refer [hickory-to-hiccup hiccup-to-hickory]])
                (require '[honey.sql :as sql])
                (require '[honey.sql.helpers :as sql-helpers])
-               (require '[numeric.expresso.core :as ex])
-               ]}}
+               (require '[numeric.expresso.core :as ex])]}}
