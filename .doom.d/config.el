@@ -74,7 +74,7 @@
   (setq evil-cleverparens-use-additional-bindings nil)
   :config
   ;; terminal内のemacs使用時に矢印キーが暴走するのを修正するコード
-  ;; cf. https://github.com/luxbock/evil-cleverparens/issues/58
+  ;; cf. <https://github.com/luxbock/evil-cleverparens/issues/58>
   (setq evil-cleverparens-use-additional-bindings t)
   (unless window-system
     (setq evil-cp-additional-bindings (assoc-delete-all "M-[" evil-cp-additional-bindings))
@@ -91,8 +91,25 @@
 ;; FIXME: <https://github.com/hlissner/doom-emacs/issues/4555>
 (use-package! ace-window)
 
-;; FIXME: https://github.com/hlissner/doom-emacs/issues/3172
+;; FIXME: <https://github.com/hlissner/doom-emacs/issues/3172>
 (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
+
+;; FIXME: This package causes strange behavior in Prompt2(iPad app).
+;;        'q' is in current cursor position whenever cursor move.
+;; (use-package! evil-terminal-cursor-changer
+;;   :config
+;;   (remove-hook 'tty-setup-hook #'evil-terminal-cursor-changer-activate))
+
+;; FIXME: <https://github.com/emacs-evil/evil/issues/1122>
+;; <https://github.com/emacs-evil/evil/issues/1122#issuecomment-740269730>の解決方法。
+;; 何度もビジュアルモードでマーカーが出てこなくなる問題が発生しているので、問題発生時は以下の関数を手動で呼び出すようにする。
+;; [Space]-; RET (fix-transient-mark-mode)
+(defun fix-transient-mark-mode ()
+    (setq-local transient-mark-mode t))
+
+;; 現在のバッファのファイル名をコピーする関数
+(defun copy-buffer-file-name ()
+    (kill-new (buffer-file-name)))
 
 ;; emacs のみの環境変数の設定ファイルを読み込む
 ;; (doom-load-envvars-file "~/.doom.d/myenv")
@@ -209,7 +226,6 @@
 (add-to-list 'auto-mode-alist '("\\.pu\\'" . plantuml-mode))
 ;; FIXME: デフォルトのsvg形式だとplantuml-previewで日本語が表示されなかったため、出力をpng形式へ変更する
 (setq plantuml-output-type "png")
-
 
 ;;======================================================================
 ;; Host Local Config
