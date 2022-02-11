@@ -107,10 +107,6 @@
 (defun fix-transient-mark-mode ()
     (setq-local transient-mark-mode t))
 
-;; 現在のバッファのファイル名をコピーする関数
-(defun copy-buffer-file-name ()
-    (kill-new (buffer-file-name)))
-
 ;; emacs のみの環境変数の設定ファイルを読み込む
 ;; (doom-load-envvars-file "~/.doom.d/myenv")
 
@@ -167,14 +163,14 @@
    '(company-tooltip-common-selection
      ((t (:inherit company-tooltip-selection :weight bold :underline nil))))))
 
-;; 表示化けするので org-mode 時は Ligature を無効にする
+;; 表示化けするのでorg-mode時はLigatureを無効にする
 (when (boundp '+ligatures-in-modes)
   (let ((disabled-modes '(org-mode markdown-mode ruby-mode)))
     (if (eq (car +ligatures-in-modes) 'not)
         (dolist (mode disabled-modes)
-                (add-to-list '+ligatures-in-modes mode t))
+          (add-to-list '+ligatures-in-modes mode t))
       (dolist (mode disabled-modes)
-              (delete mode +ligatures-in-modes)))))
+        (delete mode +ligatures-in-modes)))))
 
 ;;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook #'evil-cleverparens-mode)
@@ -222,7 +218,7 @@
                            0 font-lock-builtin-face)))
 
 ;;; PlantUML
-;; 拡張子 .pu を plantuml-mode に紐づける
+;; 拡張子.puをplantuml-modeに紐づける
 (add-to-list 'auto-mode-alist '("\\.pu\\'" . plantuml-mode))
 ;; FIXME: デフォルトのsvg形式だとplantuml-previewで日本語が表示されなかったため、出力をpng形式へ変更する
 (setq plantuml-output-type "png")
