@@ -55,3 +55,5 @@
 (package! vdm-mode)
 (package! command-log-mode)
 (package! pangu-spacing :disable t)
+(package! protobuf-mode)
+(package! graphql-mode)

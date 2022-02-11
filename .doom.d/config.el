@@ -81,7 +81,14 @@
     (setq evil-cp-additional-bindings (assoc-delete-all "M-]" evil-cp-additional-bindings)))
   (evil-cp-set-additional-bindings))
 
-;; FIXME: https://github.com/hlissner/doom-emacs/issues/4555
+(use-package! protobuf-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-mode)))
+(use-package! graphql-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.graphql\\'" . graphql-mode)))
+
+;; FIXME: <https://github.com/hlissner/doom-emacs/issues/4555>
 (use-package! ace-window)
 
 ;; FIXME: https://github.com/hlissner/doom-emacs/issues/3172
