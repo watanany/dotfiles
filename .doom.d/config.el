@@ -60,6 +60,7 @@
 
 
 (use-package! f)
+(use-package! dash)
 
 (use-package! lsp-haskell
   :after lsp-mode

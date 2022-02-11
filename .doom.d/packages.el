@@ -50,6 +50,7 @@
 ;(unpin! t)
 
 (package! f)
+(package! dash)
 (package! dhall-mode)
 (package! evil-cleverparens)
 (package! vdm-mode)
