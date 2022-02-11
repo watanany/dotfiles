@@ -137,19 +137,104 @@ function tmux-panes {
 #     zle -N zle-keymap-select auto-fu-zle-keymap-select
 # fi
 
-#;;; Ruby
-#;; Ruby on Rails
+# Ruby on Rails
 alias be='bundle exec'
 alias rails='bundle exec spring rails'
 alias rake='bundle exec spring rake'
 alias rspec='bundle exec spring rspec'
 alias sidekiq='bundle exec sidekiq'
 
-#;;; その他
+# その他
 export KERAS_BACKEND=tensorflow
 
-# .zshrc.local(実験用設定ファイル)を実行
+#======================================================================
+# 言語ごとのツール設定
+#======================================================================
+#;;; Gauche
+#;; Gauche REPL alias
+alias igosh="rlwrap gosh"
+
+#;;; Ruby
+#;; rbenv
+case "$(uname -s)" in
+    "Darwin" )
+        export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+        ;;
+esac
+export RBENV_ROOT="$HOME/.rbenv"
+eval "$(rbenv init -)"
+
+#;;; Python
+#;; pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+eval "$(pyenv init -)"
+
+#;; poetry
+export PATH="$HOME/.poetry/bin:$PATH"
+
+#;;; Node.js
+eval "$(nodenv init -)"
+export NODE_PATH=$(npm root -g)
+
+#;;; Haskell
+#;; ghcup
+export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
+
+#;; stack's shell auto-completion
+# eval "$(stack --bash-completion-script stack)"
+
+#;;; Rust
+source $HOME/.cargo/env
+
+#;;; Java
+#;; jenv
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
+
+#;;; Golang
+export PATH="$HOME/go/bin:$PATH"
+
+#;;; Dart/Flutter
+#;; adbなどのコマンドを使えるようにする
+export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
+
+#;; Flutter
+export PATH="$PATH":"$HOME/.pub-cache/bin"
+export PATH="$HOME/fvm/default/bin:$PATH"
+
+#;;; Android emulator
+export PATH="$HOME/Library/Android/sdk/emulator:$PATH"
+
+#;;; Inkscape command
+case "$(uname -s)" in
+    "Darwin" )
+        export PATH="/Applications/Inkscape.app/Contents/MacOS:$PATH"
+        ;;
+esac
+
+#;;; GNU tools
+case "$(uname -s)" in
+    "Darwin" )
+        export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+        export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
+        export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+        export PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
+        export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
+        export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+        export MANPATH="/usr/local/opt/findutils/libexec/gnuman:$MANPATH"
+        export MANPATH="/usr/local/opt/gnu-sed/libexec/gnuman:$MANPATH"
+        export MANPATH="/usr/local/opt/gnu-tar/libexec/gnuman:$MANPATH"
+        export MANPATH="/usr/local/opt/grep/libexec/gnuman:$MANPATH"
+        ;;
+esac
+
+#;;; Google Cloud SDK
+export PATH="$HOME/.local/google-cloud-sdk/bin:$PATH"
+export GOOGLE_APPLICATION_CREDENTIALS="$HOME/.local/library-164912-e95e373384ca.json"
+
+
+#;;; .zshrc.local(実験用設定ファイル)を実行
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
-# Hello World
+#;;; Hello World
 echo "\n\e[31m*\e[m \e[33m*\e[m \e[35m*\e[m \e[36m*\e[m Hello World \e[31m*\e[m \e[33m*\e[m \e[35m*\e[m \e[36m*\e[m\n"
