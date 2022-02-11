@@ -87,8 +87,6 @@ export TERM=xterm-256color
 # export TERM=xterm-direct
 export PATH=~/.emacs.d/bin:~/.git-subcommands:~/.local/bin:$PATH
 
-export KERAS_BACKEND=tensorflow
-
 # aliasの設定
 alias mv="mv -i"
 alias cp="cp -i"
@@ -130,10 +128,6 @@ function tmux-panes {
     tmux resize-pane -D 10
 }
 
-pretty_json() {
-    python -c 'import sys, json; j=json.loads(sys.stdin.read()); print(json.dumps(j, indent=4, ensure_ascii=False))'
-}
-
 # auto-fuの設定
 # if [ -f ~/.zsh/auto-fu.zsh/auto-fu.zsh ]; then
 #     source ~/.zsh/auto-fu.zsh/auto-fu.zsh
@@ -143,17 +137,7 @@ pretty_json() {
 #     zle -N zle-keymap-select auto-fu-zle-keymap-select
 # fi
 
-#;;; Gauche
-#;; Gauche REPL alias
-alias igosh="rlwrap gosh"
-
 #;;; Ruby
-#;; rbenv
-export RBENV_ROOT="$HOME/.rbenv"
-if command -v rbenv &> /dev/null; then
-    eval "$(rbenv init -)"
-fi
-
 #;; Ruby on Rails
 alias be='bundle exec'
 alias rails='bundle exec spring rails'
@@ -161,18 +145,9 @@ alias rake='bundle exec spring rake'
 alias rspec='bundle exec spring rspec'
 alias sidekiq='bundle exec sidekiq'
 
-#;;; Python
-#;; pyenv
-if command -v pyenv &> /dev/null; then
-    eval "$(pyenv init -)"
-fi
+#;;; その他
+export KERAS_BACKEND=tensorflow
 
-export PATH="$HOME/.poetry/bin:$PATH"
-
-#;;; Rust
-if [ -f $HOME/.cargo/env ]; then
-    source $HOME/.cargo/env
-fi
 # .zshrc.local(実験用設定ファイル)を実行
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
