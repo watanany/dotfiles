@@ -257,3 +257,6 @@
             haskell-mode
             html-mode
             dhall-mode))
+
+;; org-modeのディレクトリを追加する
+(projectile-add-known-project org-directory)
