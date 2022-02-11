@@ -237,4 +237,5 @@
             tex-mode         ; latexindent is broken
             latex-mode
             haskell-mode
-            html-mode))
+            html-mode
+            dhall-mode))
