@@ -220,6 +220,13 @@
 ;; プロセス終了後に eshell を終了する
 (setq eshell-destroy-buffer-when-process-dies t)
 
+;; eshell内でBashと同じようにC-k,C-p,C-nを使用できるようにする
+(with-eval-after-load 'eshell
+  (evil-define-key 'insert eshell-mode-map
+    (kbd "C-k") 'kill-line
+    (kbd "C-p") 'eshell-previous-matching-input-from-input
+    (kbd "C-n") 'eshell-next-matching-input-from-input))
+
 ;;; sql-postgresの設定
 (setq sql-postgres-login-params
       '((server :default "localhost")
