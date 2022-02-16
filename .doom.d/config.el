@@ -205,6 +205,7 @@
         "ipython"
         "irb"
         "pry"
+        "gore"
         ))
 
 (setq eshell-visual-subcommands
