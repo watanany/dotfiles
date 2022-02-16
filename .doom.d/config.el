@@ -175,6 +175,23 @@
       (dolist (mode disabled-modes)
         (delete mode +ligatures-in-modes)))))
 
+;;; Utilities
+(defun copy-buffer-file-name ()
+  "現在のバッファのファイル名をコピーする関数"
+  (kill-new (buffer-file-name)))
+
+(defun projectile-add-projects (dir)
+  "projectileプロジェクトにdir直下の全てのプロジェクトを追加する"
+  ;; ミニバッファーから引数dirを入力できるようにする
+  (interactive (list (read-directory-name "Add to known projects: ")))
+  (let ( ;; 引数dir直下のディレクトリのリストを取得する
+        (paths
+         (-filter #'file-directory-p
+                  (file-expand-wildcards (concat dir "*")))))
+    ;; プロジェクトのリストを全てprojectileプロジェクトとして追加する
+    (dolist (path paths)
+      (projectile-add-known-project path))))
+
 ;;; eshellの設定
 ;; 行指向ではないコマンドを ansi-term で開くようにする
 (setq eshell-visual-commands
@@ -263,23 +280,6 @@
 ;;; JavaScript
 ;; 拡張子.mjsをjs-modeに紐付ける
 (add-to-list 'auto-mode-alist '("\\.mjs\\'" . js-mode))
-
-;;; Utilities
-(defun copy-buffer-file-name ()
-  "現在のバッファのファイル名をコピーする関数"
-  (kill-new (buffer-file-name)))
-
-(defun projectile-add-projects (dir)
-  "projectileプロジェクトにdir直下の全てのプロジェクトを追加する"
-  ;; ミニバッファーから引数dirを入力できるようにする
-  (interactive (list (read-directory-name "Add to known projects: ")))
-  (let ( ;; 引数dir直下のディレクトリのリストを取得する
-        (paths
-         (-filter #'file-directory-p
-                  (file-expand-wildcards (concat dir "*")))))
-    ;; プロジェクトのリストを全てprojectileプロジェクトとして追加する
-    (dolist (path paths)
-      (projectile-add-known-project path))))
 
 ;;; org
 ;; ディレクトリを追加する
