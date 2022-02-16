@@ -165,6 +165,16 @@
    '(company-tooltip-common-selection
      ((t (:inherit company-tooltip-selection :weight bold :underline nil))))))
 
+;;; Ligatureの設定
+;; 表示化けするのでorg-mode時はLigatureを無効にする
+(when (boundp '+ligatures-in-modes)
+  (let ((disabled-modes '(org-mode markdown-mode ruby-mode)))
+    (if (eq (car +ligatures-in-modes) 'not)
+        (dolist (mode disabled-modes)
+          (add-to-list '+ligatures-in-modes mode t))
+      (dolist (mode disabled-modes)
+        (delete mode +ligatures-in-modes)))))
+
 ;;; eshellの設定
 ;; 行指向ではないコマンドを ansi-term で開くようにする
 (setq eshell-visual-commands
@@ -198,15 +208,6 @@
       '((server :default "localhost")
         (port :default 5432)
         (user :default "postgres")))
-
-;; 表示化けするのでorg-mode時はLigatureを無効にする
-(when (boundp '+ligatures-in-modes)
-  (let ((disabled-modes '(org-mode markdown-mode ruby-mode)))
-    (if (eq (car +ligatures-in-modes) 'not)
-        (dolist (mode disabled-modes)
-          (add-to-list '+ligatures-in-modes mode t))
-      (dolist (mode disabled-modes)
-        (delete mode +ligatures-in-modes)))))
 
 ;;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook #'evil-cleverparens-mode)
@@ -280,10 +281,12 @@
     (dolist (path paths)
       (projectile-add-known-project path))))
 
-;;; org-modeのディレクトリを追加する
+;;; org
+;; ディレクトリを追加する
 (projectile-add-known-project org-directory)
 
-;;; 特定のモードで自動フォーマットを無効にする
+;;; formatter
+;; 特定のモードで自動フォーマットを無効にする
 (setq +format-on-save-enabled-modes
       '(not emacs-lisp-mode             ; elisp's mechanisms are good enough
             sql-mode                    ; sqlformat is currently broken
