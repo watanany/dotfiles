@@ -59,8 +59,9 @@
 ;; they are implemented.
 
 
-(use-package! f)
 (use-package! dash)
+(use-package! f)
+(use-package! s)
 
 (use-package! lsp-haskell
   :after lsp-mode

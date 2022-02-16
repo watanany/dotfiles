@@ -49,8 +49,9 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 
-(package! f)
 (package! dash)
+(package! f)
+(package! s)
 (package! dhall-mode)
 (package! evil-cleverparens)
 (package! vdm-mode)
