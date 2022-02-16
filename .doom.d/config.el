@@ -280,18 +280,13 @@
     (dolist (path paths)
       (projectile-add-known-project path))))
 
-;;======================================================================
-;; Host Local Config
-;;======================================================================
+;;; org-modeのディレクトリを追加する
+(projectile-add-known-project org-directory)
+
 ;;; 特定のモードで自動フォーマットを無効にする
 (setq +format-on-save-enabled-modes
-      '(not emacs-lisp-mode  ; elisp's mechanisms are good enough
-            sql-mode         ; sqlformat is currently broken
-            tex-mode         ; latexindent is broken
+      '(not emacs-lisp-mode             ; elisp's mechanisms are good enough
+            sql-mode                    ; sqlformat is currently broken
+            tex-mode                    ; latexindent is broken
             latex-mode
-            haskell-mode
-            html-mode
-            dhall-mode))
-
-;; org-modeのディレクトリを追加する
-(projectile-add-known-project org-directory)
+            html-mode))
