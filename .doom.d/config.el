@@ -165,6 +165,40 @@
    '(company-tooltip-common-selection
      ((t (:inherit company-tooltip-selection :weight bold :underline nil))))))
 
+;;; eshellの設定
+;; 行指向ではないコマンドを ansi-term で開くようにする
+(setq eshell-visual-commands
+      '("vi"
+        "vim"
+        "less"
+        "more"
+        "top"
+        "rlwrap"
+        "ghci"
+        "ipython"
+        "irb"
+        "pry"
+        ))
+
+(setq eshell-visual-subcommands
+      '(("git" "log" "diff" "show" "pretty-log")
+        ("stack" "ghci")
+        ("ros" "run")
+        ))
+
+(setq eshell-visual-options
+      '(("stack" "--file-watch")
+        ))
+
+;; プロセス終了後に eshell を終了する
+(setq eshell-destroy-buffer-when-process-dies t)
+
+;;; sql-postgresの設定
+(setq sql-postgres-login-params
+      '((server :default "localhost")
+        (port :default 5432)
+        (user :default "postgres")))
+
 ;; 表示化けするのでorg-mode時はLigatureを無効にする
 (when (boundp '+ligatures-in-modes)
   (let ((disabled-modes '(org-mode markdown-mode ruby-mode)))
