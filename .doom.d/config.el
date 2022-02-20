@@ -131,6 +131,10 @@
 ;; 左右キーで一つ前・一つ後の行に移動できるようにする
 (setq evil-cross-lines t)
 
+;; evilのinsert状態でC-kでカーソルから行末までの文字を削除する
+;; (evil-define-key 'insert 'global
+;;   (kbd "C-k") 'kill-line)
+
 ;;; evil-snipeの設定
 (evil-define-key '(normal motion) evil-snipe-local-mode-map
   "s" 'evil-snipe-s
