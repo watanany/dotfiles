@@ -91,6 +91,7 @@
   (add-to-list 'auto-mode-alist '("\\.graphql\\'" . graphql-mode)))
 
 ;; org-modeをGitHub風にマークダウンをエクスポートできるようにする
+;; org-gfm-export-as-markdown
 (use-package! ox-gfm
   :after org-mode)
 
