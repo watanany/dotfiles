@@ -293,7 +293,11 @@
 ;; 拡張子.mjsをjs-modeに紐付ける
 (add-to-list 'auto-mode-alist '("\\.mjs\\'" . js-mode))
 
-;;; org
+;;; org-mode
+;; 上付き文字・下付き文字を無効にする
+;; cf. https://orgmode.org/manual/Export-Settings.html
+(setq org-export-with-sub-superscripts nil)
+
 ;; ディレクトリを追加する
 (projectile-add-known-project org-directory)
 
