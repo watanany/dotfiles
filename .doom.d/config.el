@@ -210,6 +210,8 @@
         "irb"
         "pry"
         "gore"
+        "peco"
+        "fzf"
         ))
 
 (setq eshell-visual-subcommands
