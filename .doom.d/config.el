@@ -90,6 +90,10 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.graphql\\'" . graphql-mode)))
 
+;; org-modeをGitHub風にマークダウンをエクスポートできるようにする
+(use-package! ox-gfm
+  :after org-mode)
+
 ;; FIXME: <https://github.com/hlissner/doom-emacs/issues/4555>
 (use-package! ace-window)
 
