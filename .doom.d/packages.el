@@ -59,3 +59,4 @@
 (package! pangu-spacing :disable t)
 (package! protobuf-mode)
 (package! graphql-mode)
+(package! ox-gfm)
