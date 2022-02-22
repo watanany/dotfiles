@@ -297,8 +297,8 @@
 (setq plantuml-output-type "png")
 
 ;;; JavaScript
-;; 拡張子.mjsをjs-modeに紐付ける
-(add-to-list 'auto-mode-alist '("\\.mjs\\'" . js-mode))
+;; 拡張子.mjsをJavaScriptとして扱うようにする
+(add-to-list 'auto-mode-alist '("\\.mjs\\'" . js2-mode))
 
 ;;; org-mode
 ;; 上付き文字・下付き文字を無効にする
