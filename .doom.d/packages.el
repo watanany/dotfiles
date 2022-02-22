@@ -60,3 +60,4 @@
 (package! protobuf-mode)
 (package! graphql-mode)
 (package! ox-gfm)
+(package! mermaid-mode)
