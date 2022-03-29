@@ -6,7 +6,7 @@ import os
 HOME = os.getenv('HOME')
 CONFIG_ROOT = os.path.join(HOME, 'dotfiles')
 
-DIRS = ['.cache', '.local/share', '.tmux/plugins']
+DIRS = ['.config', '.cache', '.local/share', '.tmux/plugins']
 LINK_LIST = [
     '.zsh',
     '.zshrc',
@@ -15,6 +15,7 @@ LINK_LIST = [
     '.tmux.conf',
     '.ghci',
     '.iex.exs',
+    '.config/fish',
     '.cache/dein',
     '.tmux/plugins/tpm',
     '.git-subcommands',
@@ -25,7 +26,7 @@ LINK_LIST = [
 NEOVIM_CONFIG = '.config/nvim'
 
 def remove_links():
-    home_files = [os.path.join(HOME, fn) for fn in LINK_LIST]
+    home_files = [os.path.join(HOME, fn) for fn in LINK_LIST + [NEOVIM_CONFIG]]
     home_files = [path for path in home_files if os.path.exists(path) or os.path.islink(path)]
 
     for path in home_files:
