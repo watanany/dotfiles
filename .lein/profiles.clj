@@ -34,6 +34,7 @@
                  [org.clojure/data.json "2.3.1"]
                  [org.clojure/data.priority-map "1.0.0"]
                  [org.clojure/data.xml "0.2.0-alpha6"]
+                 [clj-commons/clj-yaml "0.7.0"]
                  [org.clojure/data.zip "1.0.0"]
                  [org.clojure/java.classpath "1.0.0"]
                  [org.clojure/java.data "1.0.86"]
@@ -62,6 +63,7 @@
                  [clj-http "3.12.0"]
                  [clj-time "0.15.2"]
                  [com.github.seancorfield/honeysql "2.0.0-rc2"]
+                 [com.github.seancorfield/next.jdbc "1.2.772"]
                  [etaoin "0.4.1"]
                  [expresso "0.2.2"]
                  [hiccup "1.0.5"]
@@ -71,6 +73,7 @@
                  [nrepl "0.8.3"]
                  [org.clojure.typed/runtime.jvm "1.0.1"]
                  [org.clojure.typed/checker.jvm "1.0.1"]
+                 [org.postgresql/postgresql "42.2.19"]
                  [org.tensorflow/tensorflow-core-platform "0.3.1"]
                  [rm-hull/infix "0.3.3"]]
   :injections [(require '[clojure.walk :refer [keywordize-keys]])
@@ -83,7 +86,7 @@
                (require '[clojure.math.numeric-tower :as math])
                (require '[clojure.math.combinatorics :as combo])
                (require '[clojure.set :as set])
-               (require '[clojure.string :as string])
+               (require '[clojure.string :as str])
                (require '[clojure.tools.namespace.repl :refer [refresh]])
                (require '[clojure.tools.trace :refer :all])
                (require '[clj-http.client :as http-client])
