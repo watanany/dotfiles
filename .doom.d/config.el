@@ -62,6 +62,8 @@
 (use-package! dash)
 (use-package! f)
 (use-package! s)
+(use-package! magit-delta
+  :hook (magit-mode . magit-delta-mode))
 
 (use-package! lsp-haskell
   :after lsp-mode
@@ -315,4 +317,6 @@
             sql-mode                    ; sqlformat is currently broken
             tex-mode                    ; latexindent is broken
             latex-mode
-            html-mode))
+            html-mode
+            haskell-mode
+        ))
