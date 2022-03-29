@@ -26,7 +26,7 @@ end
 
 if status is-interactive
     # Commands to run in interactive sessions can go here
-    export FZF_DEFAULT_OPTS='--no-height --layout=reverse'
+    export FZF_DEFAULT_OPTS='--layout=reverse'
 
     set -gx PATH ~/.emacs.d/bin $PATH
     set -gx PATH ~/.local/bin $PATH
