@@ -61,3 +61,4 @@
 (package! graphql-mode)
 (package! ox-gfm)
 (package! mermaid-mode)
+(package! magit-delta)
