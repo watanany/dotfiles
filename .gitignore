@@ -8,3 +8,4 @@
 /.tmux/plugins
 !/.tmux/plugins/.keep
 /.zsh/google-cloud-sdk
+/.config/fish/local_config.fish
