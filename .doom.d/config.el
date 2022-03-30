@@ -62,16 +62,6 @@
 (use-package! dash)
 (use-package! f)
 (use-package! s)
-(use-package! magit-delta
-  :hook (magit-mode . magit-delta-mode))
-
-(use-package! lsp-haskell
-  :after lsp-mode
-  :config (setq lsp-haskell-formatting-provider "fourmolu"))
-
-(use-package! dhall-mode
-  :mode "\\.dhall\\'"
-  :config (setq dhall-format-at-save nil))
 
 (use-package! evil-cleverparens
   :init
@@ -85,9 +75,21 @@
     (setq evil-cp-additional-bindings (assoc-delete-all "M-]" evil-cp-additional-bindings)))
   (evil-cp-set-additional-bindings))
 
+(use-package! lsp-haskell
+  :after lsp-mode
+  :config (setq lsp-haskell-formatting-provider "fourmolu"))
+
+(use-package! fish-mode
+  :mode "\\.fish\\'")
+
+(use-package! dhall-mode
+  :mode "\\.dhall\\'"
+  :config (setq dhall-format-at-save nil))
+
 (use-package! protobuf-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-mode)))
+
 (use-package! graphql-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.graphql\\'" . graphql-mode)))
@@ -96,6 +98,10 @@
 ;; org-gfm-export-as-markdown
 (use-package! ox-gfm
   :after org-mode)
+
+;; magitでのdiffを見やすくする
+(use-package! magit-delta
+  :hook (magit-mode . magit-delta-mode))
 
 ;; FIXME: <https://github.com/hlissner/doom-emacs/issues/4555>
 (use-package! ace-window)
