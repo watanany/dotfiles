@@ -4,6 +4,21 @@ if status is-interactive
     set -gx PATH "$HOME/.emacs.d/bin" $PATH
     set -gx PATH "$HOME/.local/bin" $PATH
     set -gx PATH "$HOME/.git-subcommands" $PATH
+
+    set -gx RBENV_ROOT "$HOME/.rbenv"
+    set -gx PATH "$RBENV_ROOT/shims" $PATH
+
+    set -gx PYENV_ROOT "$HOME/.pyenv"
+    set -gx PATH "$PYENV_ROOT/shims" $PATH
+
+    set -gx NODENV_ROOT "$HOME/.nodenv"
+    set -gx PATH "$NODENV_ROOT/shims" $PATH
+
+    set -gx PATH "$HOME/.poetry/bin" $PATH
+
+    set -gx JENV_ROOT "$HOME/.jenv"
+    set -gx PATH "$JENV_ROOT/shims" $PATH
+
     #;;; Haskell
     #;; ghcup
     set -gx PATH "$HOME/.ghcup/bin" $PATH
