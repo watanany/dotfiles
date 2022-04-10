@@ -58,6 +58,7 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+(add-load-path! "./lisp")
 
 (use-package! dash)
 (use-package! f)
@@ -79,6 +80,12 @@
   :after lsp-mode
   :config (setq lsp-haskell-formatting-provider "fourmolu"))
 
+(use-package! command-log-mode
+  :config
+  ;; emacsのコマンドのログを取るようにする
+  ;; (clm/toggle-command-log-buffer)で表示する
+  (global-command-log-mode))
+
 (use-package! fish-mode
   :mode "\\.fish\\'")
 
@@ -94,6 +101,10 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.graphql\\'" . graphql-mode)))
 
+(use-package! mermaid-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.mmd\\'" . mermaid-mode)))
+
 ;; org-modeをGitHub風にマークダウンをエクスポートできるようにする
 ;; org-gfm-export-as-markdown
 (use-package! ox-gfm
@@ -102,6 +113,10 @@
 ;; magitでのdiffを見やすくする
 (use-package! magit-delta
   :hook (magit-mode . magit-delta-mode))
+
+(use-package! golazo-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.gol\\'" . golazo-mode)))
 
 ;; FIXME: <https://github.com/hlissner/doom-emacs/issues/4555>
 (use-package! ace-window)
