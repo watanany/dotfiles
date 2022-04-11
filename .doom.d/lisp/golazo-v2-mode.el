@@ -21,15 +21,17 @@
    `(,(regexp-opt (golazo-v2-types) 'symbols)  . font-lock-type-face)
    `(,(regexp-opt (golazo-v2-functions) 'symbols) . font-lock-function-name-face)
    `("@include" . font-lock-preprocessor-face)
-   `("#.*" . font-lock-comment-face)                       ;; "#"以降はアノテーション
-   `("\\\\\\(\\w+\\)" . (1 font-lock-variable-name-face))  ;; 関数の引数
+   `("#.*" . font-lock-comment-face)                       ;; "#"以降の文字列
    `("/{\\(\\w+\\)}/" . (1 font-lock-variable-name-face))  ;; 関数の引数(パス形式)
+   `("\\\\\\(\\w+\\)" . (1 font-lock-variable-name-face))  ;; 無名関数の引数
    ))
 
 (define-derived-mode golazo-v2-mode prog-mode "Golazo v2"
-  "Simple major mode for editing Golazo v2 files."
+  "Major mode for editing Golazo-V2 code."
   :syntax-table golazo-v2-mode-syntax-table
   (setq-local font-lock-defaults '(golazo-v2-font-lock-keywords)))
+
+(add-to-list 'auto-mode-alist '("\\.gol\\'" . 'golazo-v2-mode))
 
 (provide 'golazo-v2-mode)
  ;;; golazo-v2-mode.el ends here

@@ -115,9 +115,7 @@
 (use-package! magit-delta
   :hook (magit-mode . magit-delta-mode))
 
-(use-package! golazo-v2-mode
-  :config
-  (add-to-list 'auto-mode-alist '("\\.gol\\'" . golazo-v2-mode)))
+(use-package! golazo-v2-mode)
 
 ;; FIXME: <https://github.com/hlissner/doom-emacs/issues/4555>
 (use-package! ace-window)
