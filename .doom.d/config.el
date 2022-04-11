@@ -49,6 +49,7 @@
 ;; - `add-load-path!' for adding directories to the `load-path', relative to
 ;;   this file. Emacs searches the `load-path' when you load packages with
 ;;   `require' or `use-package'.
+
 ;; - `map!' for binding new keys
 ;;
 ;; To get information about any of these functions/macros, move the cursor over
@@ -114,9 +115,9 @@
 (use-package! magit-delta
   :hook (magit-mode . magit-delta-mode))
 
-(use-package! golazo-mode
+(use-package! golazo-v2-mode
   :config
-  (add-to-list 'auto-mode-alist '("\\.gol\\'" . golazo-mode)))
+  (add-to-list 'auto-mode-alist '("\\.gol\\'" . golazo-v2-mode)))
 
 ;; FIXME: <https://github.com/hlissner/doom-emacs/issues/4555>
 (use-package! ace-window)
@@ -341,3 +342,4 @@
             html-mode
             haskell-mode
         ))
+
