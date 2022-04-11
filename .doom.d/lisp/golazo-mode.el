@@ -12,7 +12,7 @@
   '("get" "post" "put" "delete" "note" "match" "satisfy" "not"))
 
 (defun golazo-keywords ()
-  '("forall" "exists" "in" "&" "=>" "and" "or"))
+  '("forall" "exists" "in" "&" "and" "or"))
 
 (defun golazo-font-lock-keywords ()
   (list
