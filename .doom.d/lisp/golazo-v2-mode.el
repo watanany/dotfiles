@@ -1,0 +1,35 @@
+;;; $DOOMDIR/golazo-mode.el -*- lexical-binding: t; -*-
+;; Golazo v2
+
+(defvar golazo-v2-mode-syntax-table
+  (let ((table (make-syntax-table)))
+    table))
+
+(defun golazo-v2-types ()
+  '("Bool" "Natural" "Float" "Text" "URL" "UUID" "ISO8601" "ISO3166"
+    "Maybe" "List"))
+
+(defun golazo-v2-functions ()
+  '("get" "post" "put" "delete" "note" "match" "satisfy" "not"))
+
+(defun golazo-v2-keywords ()
+  '("forall" "exists" "in" "&" "and" "or"))
+
+(defun golazo-v2-font-lock-keywords ()
+  (list
+   `(,(regexp-opt (golazo-v2-keywords) 'symbols) . font-lock-keyword-face)
+   `(,(regexp-opt (golazo-v2-types) 'symbols)  . font-lock-type-face)
+   `(,(regexp-opt (golazo-v2-functions) 'symbols) . font-lock-function-name-face)
+   `("@include" . font-lock-preprocessor-face)
+   `("#.*" . font-lock-comment-face)                       ;; "#"以降はアノテーション
+   `("\\\\\\(\\w+\\)" . (1 font-lock-variable-name-face))  ;; 関数の引数
+   `("/{\\(\\w+\\)}/" . (1 font-lock-variable-name-face))  ;; 関数の引数(パス形式)
+   ))
+
+(define-derived-mode golazo-v2-mode prog-mode "Golazo v2"
+  "Simple major mode for editing Golazo v2 files."
+  :syntax-table golazo-v2-mode-syntax-table
+  (setq-local font-lock-defaults '(golazo-v2-font-lock-keywords)))
+
+(provide 'golazo-v2-mode)
+ ;;; golazo-v2-mode.el ends here
