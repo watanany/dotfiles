@@ -1,6 +1,10 @@
 ;;; $DOOMDIR/golazo-mode.el -*- lexical-binding: t; -*-
 ;; Golazo v2
 
+(defgroup golazo-v2-mode nil
+  "Major mode for editing plantuml file."
+  :group 'languages)
+
 (defvar golazo-v2-mode-syntax-table
   (let ((table (make-syntax-table)))
     table))
@@ -26,12 +30,14 @@
    `("\\\\\\(\\w+\\)" . (1 font-lock-variable-name-face))  ;; 無名関数の引数
    ))
 
+;;;###autoload
 (define-derived-mode golazo-v2-mode prog-mode "Golazo v2"
   "Major mode for editing Golazo-V2 code."
   :syntax-table golazo-v2-mode-syntax-table
   (setq-local font-lock-defaults '(golazo-v2-font-lock-keywords)))
 
-(add-to-list 'auto-mode-alist '("\\.gol\\'" . 'golazo-v2-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.gol\\'" . golazo-v2-mode))
 
 (provide 'golazo-v2-mode)
  ;;; golazo-v2-mode.el ends here
