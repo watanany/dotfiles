@@ -115,6 +115,14 @@
 (use-package! magit-delta
   :hook (magit-mode . magit-delta-mode))
 
+;; TabNineによる自動補完を有効にする
+;; M-x company-tabnine-install-binaryでTabNineをインストールする必要がある
+(use-package! company-tabnine
+  :config
+  (add-to-list 'company-backends #'company-tabnine)
+  (setq company-idle-delay 0)
+  (setq company-show-quick-access t))
+
 (use-package! golazo-v2-mode)
 
 ;; FIXME: <https://github.com/hlissner/doom-emacs/issues/4555>
