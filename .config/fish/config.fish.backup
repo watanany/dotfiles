@@ -59,6 +59,12 @@ if status is-interactive
             set -gx PATH "/Applications/Inkscape.app/Contents/MacOS" $PATH
     end
 
+    #;;; gcloud
+    switch (uname)
+        case Darwin
+            set -gx PATH "/Applications/Inkscape.app/Contents/MacOS" $PATH
+    end
+
     #;;; GNU tools
     switch (uname)
         case Darwin
@@ -78,11 +84,7 @@ if status is-interactive
 
     #;;; Google Cloud SDK
     set -gx PATH "$HOME/.local/google-cloud-sdk/bin" $PATH
-    # set -gx GOOGLE_APPLICATION_CREDENTIALS "$HOME/.config/gcloud/application_default_credentials.json"
-    set -gx GOOGLE_APPLICATION_CREDENTIALS "$HOME/.config/gcloud/library-164912-a9c3733efd02.json"
-    if test -f "$HOME/.google-cloud-sdk/path.fish.inc"
-        source "$HOME/.google-cloud-sdk/path.fish.inc"
-    end
+    set -gx GOOGLE_APPLICATION_CREDENTIALS "$HOME/.local/library-164912-e95e373384ca.json"
 end
 
 if test -f "$(status dirname)/local_config.fish"

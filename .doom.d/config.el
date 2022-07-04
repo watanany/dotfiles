@@ -102,6 +102,10 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.graphql\\'" . graphql-mode)))
 
+(use-package! markdown-mode
+  :config
+  (setq markdown-open-command "marked2"))
+
 (use-package! mermaid-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.mmd\\'" . mermaid-mode)))
@@ -124,12 +128,6 @@
   (setq company-show-quick-access t))
 
 (use-package! golazo-v2-mode)
-
-;; FIXME: <https://github.com/hlissner/doom-emacs/issues/4555>
-(use-package! ace-window)
-
-;; FIXME: <https://github.com/hlissner/doom-emacs/issues/3172>
-(add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
 
 ;; FIXME: This package causes strange behavior in Prompt2(iPad app).
 ;;        'q' is in current cursor position whenever cursor move.
@@ -334,6 +332,7 @@
 ;; 上付き文字・下付き文字を無効にする
 ;; cf. https://orgmode.org/manual/Export-Settings.html
 (setq org-export-with-sub-superscripts nil)
+(setq org-image-actual-width nil)
 
 ;; ディレクトリを追加する
 (projectile-add-known-project org-directory)
