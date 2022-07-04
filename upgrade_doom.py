@@ -27,10 +27,10 @@ def install_doom():
             "1",
             "https://github.com/hlissner/doom-emacs",
             EMACS_DIR,
-        ]
+        ],
     )
     clone_p.wait()
-    install_p = Popen(f"yes | {DOOM} install", shell=True)
+    install_p = Popen(f"{DOOM} install", shell=True)
     install_p.wait()
 
 

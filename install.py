@@ -6,7 +6,14 @@ import os
 HOME = os.getenv('HOME')
 CONFIG_ROOT = os.path.join(HOME, 'dotfiles')
 
-DIRS = ['.config', '.cache', '.local/share', '.tmux/plugins']
+DIRS = [
+    '.config',
+    '.cache',
+    '.local/bin',
+    '.local/share',
+    '.tmux/plugins',
+]
+
 LINK_LIST = [
     '.zsh',
     '.zshrc',
@@ -16,11 +23,14 @@ LINK_LIST = [
     '.ghci',
     '.iex.exs',
     '.config/fish',
+    '.config/karabiner',
+    '.local/bin/marked2',
     '.cache/dein',
     '.tmux/plugins/tpm',
     '.git-subcommands',
     '.doom.d',
     '.gitignore_global',
+    '.lein',
 ]
 
 NEOVIM_CONFIG = '.config/nvim'
