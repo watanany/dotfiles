@@ -150,6 +150,13 @@ alias sidekiq='bundle exec sidekiq'
 # その他
 export KERAS_BACKEND=tensorflow
 
+# brew
+case "$(uname -s)_$(uname -p)" in
+    "Darwin_arm" )
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+        ;;
+esac
+
 #======================================================================
 # 言語ごとのツール設定
 #======================================================================
