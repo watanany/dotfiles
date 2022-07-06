@@ -2,9 +2,9 @@
 set -euo pipefail
 
 brew install \
-    cmake git wget tree rg fd exa delta tmux \
+    cmake git wget tree rg fd exa git-delta tmux \
     binutils findutils diffutils coreutils moreutils \
-    grep gawk gzip gnu-tar gnu-sed gnu-time gnu-getopt \
+    grep gzip gnu-tar gnu-sed gnu-time gnu-getopt \
     jq yq \
     pyenv rbenv nodenv jenv go tfenv \
     llvm@12 ghcup elm leiningen \
