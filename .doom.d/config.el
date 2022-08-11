@@ -102,10 +102,6 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.graphql\\'" . graphql-mode)))
 
-(use-package! markdown-mode
-  :config
-  (setq markdown-open-command "marked2"))
-
 (use-package! mermaid-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.mmd\\'" . mermaid-mode)))
@@ -346,5 +342,8 @@
             latex-mode
             html-mode
             haskell-mode
+            typescript-mode
         ))
 
+;;;
+(projectile-add-known-project "~/dotfiles")
