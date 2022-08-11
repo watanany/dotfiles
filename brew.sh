@@ -6,7 +6,7 @@ brew install \
     binutils findutils diffutils coreutils moreutils \
     grep gzip gnu-tar gnu-sed gnu-time gnu-getopt \
     jq yq \
-    pyenv rbenv nodenv jenv go tfenv \
+    pyenv rbenv nodenv jenv tfenv goenv \
     llvm@12 ghcup elm leiningen \
     dhall dhall-json \
     awscli \
@@ -42,20 +42,21 @@ brew install --cask font-fira-code
 # - Vimari
 # - Dark Reader
 
-# brew install --cask karabiner-elements
-# brew install --cask iterm2
-# brew install --cask google-chrome
-# brew install --cask keyboardcleantool
-# brew install --cask appcleaner
-# brew install --cask docker
-# brew install --cask visual-studio-code
-# brew install --cask deepl
-# brew install --cask tableplus
-# brew install --cask discord
-# brew install --cask slack
-# brew install --cask zoom
-# brew install --cask steam
-# brew install --cask virtualbox
-# brew install --cask vagrant
-# brew install --cask bathyscaphe
-# brew install --cask brave-browser
+brew install --cask karabiner-elements
+brew install --cask iterm2
+brew install --cask google-chrome
+brew install --cask keyboardcleantool
+brew install --cask appcleaner
+brew install --cask docker
+brew install --cask visual-studio-code
+brew install --cask deepl
+brew install --cask tableplus
+brew install --cask discord
+brew install --cask slack
+brew install --cask zoom
+brew install --cask steam
+brew install --cask virtualbox
+brew install --cask vagrant
+brew install --cask bathyscaphe
+brew install --cask brave-browser
+brew install --cask dash
