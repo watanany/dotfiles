@@ -3,6 +3,7 @@
 *.log
 tmp/
 
-local_config.fish
 /.vim/bundle/
 /.vim/undodir/
+
+local_config.fish
