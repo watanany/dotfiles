@@ -138,6 +138,25 @@
 (defun fix-transient-mark-mode ()
     (setq-local transient-mark-mode t))
 
+;; FIXME: <https://github.com/akermu/emacs-libvterm/pull/617>
+;; 変更はマージされているので、更新が適用されたら以下のコードは削除する
+(after! vterm
+  (defconst vterm-control-seq-regexp
+    (concat
+     ;; A control character,
+     "\\(?:[\r\n\000\007\t\b\016\017]\\|"
+     ;; a C1 escape coded character (see [ECMA-48] section 5.3 "Elements
+     ;; of the C1 set"),
+     "\e\\(?:[DM78c=]\\|"
+     ;; another Emacs specific control sequence for term.el,
+     "AnSiT[^\n]+\n\\|"
+     ;; another Emacs specific control sequence for vterm.el
+     ;; printf "\e]%s\e\\"
+     "\\][^\e]+\e\\\\\\|"
+     ;; or an escape sequence (section 5.4 "Control Sequences"),
+     "\\[\\([\x30-\x3F]*\\)[\x20-\x2F]*[\x40-\x7E]\\)\\)")
+    "Regexp matching control sequences handled by term.el."))
+
 ;; emacs のみの環境変数の設定ファイルを読み込む
 ;; (doom-load-envvars-file "~/.doom.d/myenv")
 
