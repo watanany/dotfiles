@@ -30,7 +30,7 @@ def install_doom():
         ],
     )
     clone_p.wait()
-    install_p = Popen(f"{DOOM} install", shell=True)
+    install_p = Popen(f"yes | {DOOM} install", shell=True)
     install_p.wait()
 
 
