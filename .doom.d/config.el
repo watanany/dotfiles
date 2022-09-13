@@ -59,7 +59,9 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+;; 追加ライブラリの読み込みパスの設定
 (add-load-path! "./lisp")
+(add-load-path! "./lisp/copl-mode")
 
 (use-package! dash)
 (use-package! f)
@@ -124,6 +126,8 @@
   (setq company-show-quick-access t))
 
 (use-package! golazo-v2-mode)
+
+(use-package! copl-mode)
 
 ;; FIXME: This package causes strange behavior in Prompt2(iPad app).
 ;;        'q' is in current cursor position whenever cursor move.
