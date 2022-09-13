@@ -4,3 +4,6 @@
 [submodule ".git-subcommands"]
 	path = .git-subcommands
 	url = git@github.com:watanany/git-subcommands.git
+[submodule ".doom.d/lisp/copl-mode"]
+	path = .doom.d/lisp/copl-mode
+	url = git@github.com:igjit/copl-mode.git
