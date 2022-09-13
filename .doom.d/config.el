@@ -60,8 +60,9 @@
 ;; they are implemented.
 
 ;; 追加ライブラリの読み込みパスの設定
-(add-load-path! "./lisp")
-(add-load-path! "./lisp/copl-mode")
+;; NOTE: 相対パスだとエラーになるケースがある(?)
+(add-load-path! "~/.doom.d/lisp")
+(add-load-path! "~/.doom.d/lisp/copl-mode")
 
 (use-package! dash)
 (use-package! f)
