@@ -2,7 +2,7 @@
 set -euo pipefail
 
 brew install \
-    cmake git wget tree rg fd exa git-delta tmux \
+    cmake pcre git wget tree rg fd exa git-delta tmux \
     binutils findutils diffutils coreutils moreutils \
     grep gzip gnu-tar gnu-sed gnu-time gnu-getopt \
     jq yq \
@@ -60,3 +60,5 @@ brew install --cask vagrant
 brew install --cask bathyscaphe
 brew install --cask brave-browser
 brew install --cask dash
+brew install --cask proxyman
+brew install --cask parallels
