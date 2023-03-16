@@ -80,6 +80,11 @@
     (setq evil-cp-additional-bindings (assoc-delete-all "M-]" evil-cp-additional-bindings)))
   (evil-cp-set-additional-bindings))
 
+(use-package! projectile
+  :config
+  (dolist (file '("spago.dhall" "go.mod"))
+          (add-to-list 'projectile-project-root-files file)))
+
 (use-package! lsp-haskell
   :after lsp-mode
   :config (setq lsp-haskell-formatting-provider "fourmolu"))
@@ -114,6 +119,11 @@
 (use-package! ox-gfm
   :after org-mode)
 
+(use-package! ox-pandoc
+  :after org-mode)
+
+(use-package! org-pandoc-import :after org)
+
 ;; magitでのdiffを見やすくする
 (use-package! magit-delta
   :hook (magit-mode . magit-delta-mode))
@@ -125,6 +135,8 @@
   (add-to-list 'company-backends #'company-tabnine)
   (setq company-idle-delay 0)
   (setq company-show-quick-access t))
+
+(use-package! org-preview-html)
 
 (use-package! golazo-v2-mode)
 
@@ -365,9 +377,14 @@
             tex-mode                    ; latexindent is broken
             latex-mode
             html-mode
+            yaml-mode
             haskell-mode
             typescript-mode
         ))
+
+;;; markdown
+(cl-case system-type
+  ('darwin (setq markdown-open-command "~/.local/bin/marked2")))
 
 ;;;
 (projectile-add-known-project "~/dotfiles")

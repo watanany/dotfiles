@@ -29,9 +29,12 @@ def install_doom():
             EMACS_DIR,
         ],
     )
-    clone_p.wait()
+    if clone_p.wait() != 0:
+        raise RuntimeError("failed to clone repository")
+
     install_p = Popen(f"yes | {DOOM} install", shell=True)
-    install_p.wait()
+    if install_p.wait() != 0:
+        raise RuntimeError("failed to doom-install")
 
 
 def restore(emacs_dir):
@@ -71,7 +74,7 @@ def main():
     emacs_dir = evacuate_emacs_dir()
     try:
         install_doom()
-        install_plantuml()
+        #install_plantuml()
         if emacs_dir is not None:
             restore(emacs_dir)
     finally:
