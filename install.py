@@ -12,6 +12,7 @@ DIRS = [
     ".local/bin",
     ".local/share",
     ".tmux/plugins",
+    ".ipython/profile_default/startup",
 ]
 
 LINK_LIST = [
@@ -32,6 +33,7 @@ LINK_LIST = [
     ".doom.d",
     ".gitignore_global",
     ".lein",
+    ".ipython/profile_default/startup/00-first.py",
 ]
 
 NEOVIM_CONFIG = ".config/nvim"
