@@ -60,6 +60,7 @@
                  [buddy/buddy-hashers "1.8.1"]
                  [buddy/buddy-sign "3.4.1"]
                  [clojupyter "0.3.2"]
+                 [clj-glob "1.0.0"]
                  [clj-http "3.12.0"]
                  [clj-time "0.15.2"]
                  [com.github.seancorfield/honeysql "2.0.0-rc2"]
@@ -75,7 +76,9 @@
                  [org.clojure.typed/checker.jvm "1.0.1"]
                  [org.postgresql/postgresql "42.2.19"]
                  [org.tensorflow/tensorflow-core-platform "0.3.1"]
-                 [rm-hull/infix "0.3.3"]]
+                 [rm-hull/infix "0.3.3"]
+                 [com.fasterxml.jackson.dataformat/jackson-dataformat-yaml "2.9.1"]
+                 ]
   :injections [(require '[clojure.walk :refer [keywordize-keys]])
                (require '[clojure.stacktrace :refer [print-stack-trace]])
                (require '[clojure.repl :refer :all])
@@ -99,4 +102,6 @@
                (require '[hickory.convert :refer [hickory-to-hiccup hiccup-to-hickory]])
                (require '[honey.sql :as sql])
                (require '[honey.sql.helpers :as sql-helpers])
-               (require '[numeric.expresso.core :as ex])]}}
+               (require '[numeric.expresso.core :as ex])
+               (require '[org.satta.glob :refer [glob]])
+               ]}}

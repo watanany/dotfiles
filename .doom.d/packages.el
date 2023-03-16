@@ -54,7 +54,7 @@
 (package! f)
 (package! s)
 (package! evil-cleverparens)
-(package! pangu-spacing :disable t)
+;; (package! pangu-spacing :disable t)
 (package! command-log-mode)
 (package! fish-mode)
 (package! dhall-mode)
@@ -65,3 +65,9 @@
 (package! ox-gfm)
 (package! magit-delta)
 (package! company-tabnine)
+(package! org-preview-html)
+(package! ox-pandoc)
+(package! org-pandoc-import
+  :recipe (:host github
+           :repo "tecosaur/org-pandoc-import"
+           :files ("*.el" "filters" "preprocessors")))
