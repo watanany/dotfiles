@@ -5,12 +5,15 @@ brew install \
     cmake pcre git wget tree rg fd exa git-delta tmux \
     binutils findutils diffutils coreutils moreutils \
     grep gzip gnu-tar gnu-sed gnu-time gnu-getopt \
+    watch \
     jq yq \
     pyenv rbenv nodenv jenv tfenv goenv \
     llvm@12 ghcup elm leiningen \
     dhall dhall-json \
     awscli \
     gh ghq direnv \
+    terraform terraformer \
+    pandoc hyperfine \
     youtube-dl
 
 brew install fzf && $(brew --prefix)/opt/fzf/install
