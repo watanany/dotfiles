@@ -392,5 +392,9 @@
 (cl-case system-type
   ('darwin (setq markdown-open-command "~/.local/bin/marked2")))
 
+;;; DigDag
+;; 拡張子.dagをyaml-modeに紐づける
+(add-to-list 'auto-mode-alist '("\\.dig\\'" . yaml-mode))
+
 ;;;
 (projectile-add-known-project "~/dotfiles")
