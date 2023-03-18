@@ -74,15 +74,21 @@ if status is-interactive
             set -gx MANPATH /opt/homebrew/opt/grep/libexec/gnuman $MANPATH
     end
 
-    eval "$(direnv hook fish)"
+    #;;; MySQL
+    if test -d /opt/homebrew/opt/mysql-client
+        set -gx PATH /opt/homebrew/opt/mysql-client/bin $PATH
+    end
 
     #;;; Google Cloud SDK
     set -gx PATH "$HOME/.local/google-cloud-sdk/bin" $PATH
-    # set -gx GOOGLE_APPLICATION_CREDENTIALS "$HOME/.config/gcloud/application_default_credentials.json"
-    set -gx GOOGLE_APPLICATION_CREDENTIALS "$HOME/.config/gcloud/library-164912-a9c3733efd02.json"
     if test -f "$HOME/.google-cloud-sdk/path.fish.inc"
         source "$HOME/.google-cloud-sdk/path.fish.inc"
     end
+
+    #;;; Embulk
+    set -gx PATH "$HOME/.embulk/bin" $PATH
+
+    eval "$(direnv hook fish)"
 end
 
 if test -f "$(status dirname)/local_config.fish"
