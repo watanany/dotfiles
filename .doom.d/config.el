@@ -80,6 +80,12 @@
     (setq evil-cp-additional-bindings (assoc-delete-all "M-]" evil-cp-additional-bindings)))
   (evil-cp-set-additional-bindings))
 
+;; TODO:
+;; (use-package! pangu-spacing
+;;   :config
+;;   (dolist (mode '(python-mode))
+;;     (add-to-list 'pangu-spacing-inhibit-mode-alist mode)))
+
 (use-package! projectile
   :config
   (dolist (file '("spago.dhall" "go.mod"))
