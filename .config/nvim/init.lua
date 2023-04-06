@@ -40,12 +40,16 @@ vim.o.whichwrap = "b,s,h,l,<,>,[,]"
 
 -- カラースキームの設定
 vim.cmd [[
-  set background=dark
-  colorscheme hybrid
+  try
+    set background=dark
+    colorscheme hybrid
+  catch /E185/
+    echo 'カラースキーム「hybrid」がインストールされていません。'
+  endtry
 ]]
 
 -- fzfのコマンドのプレフィックスを設定(e.g. :Files -> :FzfFiles)
-vim.g["fzf_command_prefix"] = "Fzf"
+vim.g["fzf_command_prefix"] = "Fzf"  -- `let g:fzf_command_prefix = "Fzf"`と同じ意味
 
 ----------------------------------------------------------------------
 -- キーバインド
