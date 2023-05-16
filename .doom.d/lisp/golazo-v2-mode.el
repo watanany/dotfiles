@@ -2,7 +2,7 @@
 ;; Golazo v2
 
 (defgroup golazo-v2-mode nil
-  "Major mode for editing plantuml file."
+  "Major mode for editing Golazo v2 file."
   :group 'languages)
 
 (defvar golazo-v2-mode-syntax-table
