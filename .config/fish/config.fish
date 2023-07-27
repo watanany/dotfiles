@@ -17,6 +17,8 @@ if status is-interactive
     set -gx PYENV_ROOT "$HOME/.pyenv"
     set -gx PATH "$PYENV_ROOT/shims" $PATH
 
+    set -gx PATH "$HOME/.rye/shims" $PATH
+
     set -gx NODENV_ROOT "$HOME/.nodenv"
     set -gx PATH "$NODENV_ROOT/shims" $PATH
 
@@ -88,7 +90,26 @@ if status is-interactive
     #;;; Embulk
     set -gx PATH "$HOME/.embulk/bin" $PATH
 
+    #;;; direnv
     eval "$(direnv hook fish)"
+
+    #;;; エイリアス
+    alias mv="mv -i"
+    alias cp="cp -i"
+    alias curl='curl -sSL'
+
+    switch (uname)
+        case Darwin
+            alias ls="ls -F"
+        case '*'
+            alias ls="ls -F --color=auto"
+    end
+
+    function cd
+        builtin cd $argv && ls
+    end
+
+    source "$(status dirname)/bind.fish"
 end
 
 if test -f "$(status dirname)/local_config.fish"
