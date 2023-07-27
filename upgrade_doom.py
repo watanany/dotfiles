@@ -72,6 +72,8 @@ def install_plantuml():
 
 def main():
     emacs_dir = evacuate_emacs_dir()
+    print(f"[Info] Original {EMACS_DIR} is moved to {emacs_dir}")
+
     try:
         install_doom()
         #install_plantuml()
