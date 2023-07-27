@@ -62,6 +62,7 @@
 (package! protobuf-mode)
 (package! graphql-mode)
 (package! mermaid-mode)
+(package! hy-mode)
 (package! ox-gfm)
 (package! magit-delta)
 (package! company-tabnine)
@@ -71,3 +72,5 @@
   :recipe (:host github
            :repo "tecosaur/org-pandoc-import"
            :files ("*.el" "filters" "preprocessors")))
+(package! copilot
+  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
