@@ -39,6 +39,19 @@ local function startup(use)
   -- セッション管理
   use "rmagatti/auto-session"
 
+  use {
+    "folke/which-key.nvim",
+    config = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+      require("which-key").setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
+    end
+  }
+
   -- ファイラー
   use "lambdalisue/fern.vim"
 
@@ -47,9 +60,30 @@ local function startup(use)
   -- vim用のfzfプラグイン
   use "junegunn/fzf.vim"
 
-  use { "akinsho/toggleterm.nvim", tag = "*", config = function()
-    require("toggleterm").setup()
-  end }
+  use { "nvim-telescope/telescope.nvim", tag = "0.1.1", requires = {{"nvim-lua/plenary.nvim"}} }
+  use {
+    "nvim-telescope/telescope-file-browser.nvim",
+    requires = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+  }
+  use {
+    "nvim-telescope/telescope-project.nvim",
+    requires = { "nvim-telescope/telescope.nvim", "nvim-telescope/telescope-file-browser.nvim" },
+  }
+  use {
+    "smartpde/telescope-recent-files",
+    requires = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension("recent_files")
+    end
+  }
+
+  use { 
+    "akinsho/toggleterm.nvim",
+    tag = "*", 
+    config = function()
+      require("toggleterm").setup()
+    end
+  }
 
   -- CSVを見やすく色付け
   use "mechatroner/rainbow_csv"

@@ -37,6 +37,10 @@ vim.o.smartcase = true
 vim.o.cmdheight = 2
 -- カーソル移動の動作を変更
 vim.o.whichwrap = "b,s,h,l,<,>,[,]"
+-- ファイルを閉じてもundoできるようにする
+vim.opt.undofile = true
+-- クリップボードを設定する
+vim.opt.clipboard:append("unnamedplus")
 
 -- カラースキームの設定
 vim.cmd [[
@@ -47,6 +51,8 @@ vim.cmd [[
     echo 'カラースキーム「hybrid」がインストールされていません。'
   endtry
 ]]
+
+vim.g.mapleader = " "
 
 -- fzfのコマンドのプレフィックスを設定(e.g. :Files -> :FzfFiles)
 vim.g["fzf_command_prefix"] = "Fzf"  -- `let g:fzf_command_prefix = "Fzf"`と同じ意味
@@ -84,6 +90,33 @@ end, { noremap = true, expr = true })
 vim.keymap.set("c", "?", function()
   return (vim.fn.getcmdtype() == "?") and "\\?" or "?"
 end, { noremap = true, expr = true })
+
+-- Fernのキーバインドを設定する
+vim.keymap.set("n", "<leader>fd", ":Fern . -drawer<CR>", { noremap = true, silent = true })
+
+-- Telescopeの設定を行う
+local telescope = require("telescope")
+local telescope_builtin = require("telescope.builtin")
+
+telescope.setup {
+  extensions = {
+    project = {
+      base_dirs = {
+        { path = "~/sanctum/org", max_depth = 2 },
+        { path = "~/sanctum/projects", max_depth = 2 },
+      },
+      order_by = "asc",
+      hidden_files = true,
+    }
+  }
+}
+
+vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, { noremap= true, silent =true })
+vim.keymap.set("n", "<leader>fs", telescope_builtin.live_grep, { noremap= true, silent =true })
+vim.keymap.set("n", "<leader>fb", telescope_builtin.buffers, { noremap= true, silent =true })
+vim.keymap.set("n", "<leader>fh", telescope_builtin.help_tags, { noremap= true, silent =true })
+vim.keymap.set("n", "<leader>pp", telescope.extensions.project.project, {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>fr", telescope.extensions.recent_files.pick, { noremap = true, silent = true })
 
 ----------------------------------------------------------------------
 -- LSP
@@ -130,31 +163,31 @@ local lsp_flags = {
 }
 local lspconfig = require("lspconfig")
 lspconfig["pyright"].setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
+  on_attach = on_attach,
+  flags = lsp_flags,
 }
 lspconfig["ruby_ls"].setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
+  on_attach = on_attach,
+  flags = lsp_flags,
 }
 lspconfig["tsserver"].setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
+  on_attach = on_attach,
+  flags = lsp_flags,
 }
 lspconfig["gopls"].setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
+  on_attach = on_attach,
+  flags = lsp_flags,
 }
 lspconfig["rust_analyzer"].setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
-    -- Server-specific settings...
-    settings = {
-      ["rust-analyzer"] = {}
-    }
+  on_attach = on_attach,
+  flags = lsp_flags,
+  -- Server-specific settings...
+  settings = {
+    ["rust-analyzer"] = {}
+  }
 }
 lspconfig["hie"].setup({
-   on_attach = on_attach,
-   flags = lsp_flags,
+  on_attach = on_attach,
+  flags = lsp_flags,
 })
 
