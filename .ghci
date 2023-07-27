@@ -1,8 +1,13 @@
 import Prelude
 
+-- Unocode リテラルではなく日本語をそのまま表示できるようにする
+-- <https://haskell.jp/blog/posts/2019/unicode-show.html>
+--
+-- import qualified Text.Show.Unicode
+-- :set -interactive-print=Text.Show.Unicode.uprint
+--
 -- :set -package pretty-simple
 -- import Text.Pretty.Simple (pPrint)
--- :set -interactive-print pPrint
 
 :set -Wall
 :set -fno-warn-type-defaults
@@ -11,8 +16,10 @@ import Prelude
 :seti -XOverloadedStrings
 :seti -XScopedTypeVariables
 
-:set prompt "λ> "
-:set prompt-cont "λ|     "
+-- :set prompt "λ> "
+-- :set prompt-cont "λ|     "
+:set prompt "\ESC[1;36m\STXλ> \ESC[m\STX"
+:set prompt-cont "\ESC[1;36m\STXλ |     \ESC[m\STX"
 
 -- 複数行にわたるコマンドのパースを可能にする
 -- :set +m
@@ -23,5 +30,6 @@ import Prelude
 -- プロンプトに文を入力したとき，束縛された変数それぞれの型を表示
 :set +t
 
+-- hoogle での検索用コマンドを定義
 :def hoogle \x -> return $ ":!hoogle \"" ++ x ++ "\" | less "
 
