@@ -2,7 +2,7 @@
 set -euo pipefail
 
 brew install \
-    cmake pcre git wget tree rg fd exa git-delta tmux \
+    cmake pcre git wget tree rg fd exa git-delta tmux tig \
     binutils findutils diffutils coreutils moreutils \
     grep gzip gnu-tar gnu-sed gnu-time gnu-getopt \
     watch \
@@ -10,11 +10,11 @@ brew install \
     pyenv rbenv nodenv jenv tfenv goenv \
     llvm@12 ghcup elm leiningen \
     dhall dhall-json \
-    awscli \
+    graphviz comby act \
+    awscli slack-cli \
     gh ghq direnv \
     terraform terraformer \
-    pandoc hyperfine \
-    youtube-dl
+    pandoc hyperfine
 
 brew install fzf && $(brew --prefix)/opt/fzf/install
 
@@ -65,3 +65,6 @@ brew install --cask brave-browser
 brew install --cask dash
 brew install --cask proxyman
 brew install --cask parallels
+
+brew tap homebrew/cask-versions
+brew install --cask temurin8
