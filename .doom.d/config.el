@@ -120,6 +120,10 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.mmd\\'" . mermaid-mode)))
 
+(use-package! hy-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.hy\\'" . hy-mode)))
+
 ;; org-modeをGitHub風にマークダウンをエクスポートできるようにする
 ;; org-gfm-export-as-markdown
 (use-package! ox-gfm
@@ -142,6 +146,14 @@
   (setq company-idle-delay 0)
   (setq company-show-quick-access t))
 
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word)))
+
 (use-package! org-preview-html)
 
 (use-package! golazo-v2-mode)
@@ -157,8 +169,8 @@
 ;; FIXME: <https://github.com/emacs-evil/evil/issues/1122>
 ;; <https://github.com/emacs-evil/evil/issues/1122#issuecomment-740269730>の解決方法。
 ;; 何度もビジュアルモードでマーカーが出てこなくなる問題が発生しているので、問題発生時は以下の関数を手動で呼び出すようにする。
-;; [Space]-; RET (fix-transient-mark-mode)
-(defun fix-transient-mark-mode ()
+;; [Space]-; RET (fix-transient-mark-mode!)
+(defun fix-transient-mark-mode! ()
     (setq-local transient-mark-mode t))
 
 ;; FIXME: <https://github.com/akermu/emacs-libvterm/pull/617>
@@ -250,12 +262,31 @@
       (dolist (mode disabled-modes)
         (delete mode +ligatures-in-modes)))))
 
+;;; 言語によって、「_」を単語の一部として扱うように設定する
+(let ((hooks '(org-mode-hook
+               sh-mode
+               fish-mode
+               python-mode-hook
+               ruby-mode-hook
+               go-mode-hook
+               rjsx-mode-hook
+               js2-mode-hook
+               sql-mode
+               json-mode-hook
+               yaml-mode-hook
+               terraform-mode-hook
+               dhall-mode
+               html-mode-hook
+               css-mode-hook)))
+  (dolist (hook hooks)
+    (add-hook hook #'(lambda () (modify-syntax-entry ?_ "w")))))
+
 ;;; Utilities
-(defun copy-buffer-file-name ()
+(defun my/copy-buffer-file-name ()
   "現在のバッファのファイル名をコピーする関数"
   (kill-new (buffer-file-name)))
 
-(defun projectile-add-projects (dir)
+(defun my/projectile-add-projects (dir)
   "projectileプロジェクトにdir直下の全てのプロジェクトを追加する"
   ;; ミニバッファーから引数dirを入力できるようにする
   (interactive (list (read-directory-name "Add to known projects: ")))
@@ -266,50 +297,6 @@
     ;; プロジェクトのリストを全てprojectileプロジェクトとして追加する
     (dolist (path paths)
       (projectile-add-known-project path))))
-
-;;; eshellの設定
-;; 行指向ではないコマンドを ansi-term で開くようにする
-(setq eshell-visual-commands
-      '("vi"
-        "vim"
-        "less"
-        "more"
-        "top"
-        "rlwrap"
-        "ghci"
-        "ipython"
-        "irb"
-        "pry"
-        "gore"
-        "peco"
-        "fzf"
-        ))
-
-(setq eshell-visual-subcommands
-      '(("git" "log" "diff" "show" "pretty-log")
-        ("stack" "ghci")
-        ("ros" "run")
-        ))
-
-(setq eshell-visual-options
-      '(("stack" "--file-watch")
-        ))
-
-;; プロセス終了後に eshell を終了する
-(setq eshell-destroy-buffer-when-process-dies t)
-
-;; eshell内でBashと同じようにC-k,C-p,C-nを使用できるようにする
-(with-eval-after-load 'eshell
-  (evil-define-key 'insert eshell-mode-map
-    (kbd "C-k") 'kill-line
-    (kbd "C-p") 'eshell-previous-matching-input-from-input
-    (kbd "C-n") 'eshell-next-matching-input-from-input))
-
-;;; sql-postgresの設定
-(setq sql-postgres-login-params
-      '((server :default "localhost")
-        (port :default 5432)
-        (user :default "postgres")))
 
 ;;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook #'evil-cleverparens-mode)
@@ -362,18 +349,23 @@
 ;; FIXME: デフォルトのsvg形式だとplantuml-previewで日本語が表示されなかったため、出力をpng形式へ変更する
 (setq plantuml-output-type "png")
 
+;;; Ruby
+;; flycheck checkerに `bundle exec rubocop' を使うようにする
+;; cf. <https://emacs.stackexchange.com/a/60804>
+(add-hook 'ruby-mode-hook
+          (lambda ()
+            (setq-local flycheck-command-wrapper-function
+                        (lambda (commands) (append '("bundle" "exec") commands)))))
+
 ;;; JavaScript
 ;; 拡張子.mjsをJavaScriptとして扱うようにする
 (add-to-list 'auto-mode-alist '("\\.mjs\\'" . js2-mode))
 
 ;;; org-mode
 ;; 上付き文字・下付き文字を無効にする
-;; cf. https://orgmode.org/manual/Export-Settings.html
+;; cf. <https://orgmode.org/manual/Export-Settings.html>
 (setq org-export-with-sub-superscripts nil)
 (setq org-image-actual-width nil)
-
-;; ディレクトリを追加する
-(projectile-add-known-project org-directory)
 
 ;;; formatter
 ;; 特定のモードで自動フォーマットを無効にする
@@ -396,5 +388,7 @@
 ;; 拡張子.dagをyaml-modeに紐づける
 (add-to-list 'auto-mode-alist '("\\.dig\\'" . yaml-mode))
 
-;;;
+;;; プロジェクトの設定
+(projectile-add-known-project org-directory)
 (projectile-add-known-project "~/dotfiles")
+(my/projectile-add-projects "~/sanctum/projects")
