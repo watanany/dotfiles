@@ -235,6 +235,9 @@
       evil-insert-state-cursor '(bar "medium sea green")
       evil-visual-state-cursor '(hollow "orange"))
 
+;; カーソルの点滅を無効にする
+(blink-cursor-mode 0)
+
 ;;; companyの設定
 (with-eval-after-load 'company
   ;; Shift + <Space>で補完ポップアップを表示する
@@ -352,10 +355,10 @@
 ;;; Ruby
 ;; flycheck checkerに `bundle exec rubocop' を使うようにする
 ;; cf. <https://emacs.stackexchange.com/a/60804>
-(add-hook 'ruby-mode-hook
-          (lambda ()
-            (setq-local flycheck-command-wrapper-function
-                        (lambda (commands) (append '("bundle" "exec") commands)))))
+;; (add-hook 'ruby-mode-hook
+;;           (lambda ()
+;;             (setq-local flycheck-command-wrapper-function
+;;                         (lambda (commands) (append '("bundle" "exec") commands)))))
 
 ;;; JavaScript
 ;; 拡張子.mjsをJavaScriptとして扱うようにする
@@ -376,6 +379,7 @@
             latex-mode
             html-mode
             yaml-mode
+            ruby-mode
             haskell-mode
             typescript-mode
         ))
