@@ -52,7 +52,7 @@ vim.cmd [[
   endtry
 ]]
 
-vim.g.mapleader = " "
+-- vim.g.mapleader = " "
 
 -- fzfのコマンドのプレフィックスを設定(e.g. :Files -> :FzfFiles)
 vim.g["fzf_command_prefix"] = "Fzf"  -- `let g:fzf_command_prefix = "Fzf"`と同じ意味
@@ -92,7 +92,7 @@ vim.keymap.set("c", "?", function()
 end, { noremap = true, expr = true })
 
 -- Fernのキーバインドを設定する
-vim.keymap.set("n", "<leader>fd", ":Fern . -drawer<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<space>fd", ":Fern . -drawer<CR>", { noremap = true, silent = true })
 
 -- Telescopeの設定を行う
 local telescope = require("telescope")
@@ -102,21 +102,44 @@ telescope.setup {
   extensions = {
     project = {
       base_dirs = {
-        { path = "~/sanctum/org", max_depth = 2 },
+        { path = "~/sanctum/org", max_depth = 1 },
+        { path = "~/sanctum/dotfiles", max_depth = 1 },
         { path = "~/sanctum/projects", max_depth = 2 },
       },
       order_by = "asc",
       hidden_files = true,
     }
-  }
+  },
 }
 
-vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, { noremap= true, silent =true })
-vim.keymap.set("n", "<leader>fs", telescope_builtin.live_grep, { noremap= true, silent =true })
-vim.keymap.set("n", "<leader>fb", telescope_builtin.buffers, { noremap= true, silent =true })
-vim.keymap.set("n", "<leader>fh", telescope_builtin.help_tags, { noremap= true, silent =true })
-vim.keymap.set("n", "<leader>pp", telescope.extensions.project.project, {noremap = true, silent = true})
-vim.keymap.set("n", "<leader>fr", telescope.extensions.recent_files.pick, { noremap = true, silent = true })
+function find_files() 
+ local telescope_themes = require("telescope.themes") 
+  telescope_builtin.find_files(telescope_themes.get_ivy())
+end
+
+function live_grep()
+  local telescope_themes = require("telescope.themes")
+  telescope_builtin.live_grep(telescope_themes.get_ivy())
+end
+
+vim.keymap.set("n", "<space>ff", telescope_builtin.find_files, { noremap= true, silent = true })
+vim.keymap.set("n", "<space>pf", telescope_builtin.find_files, { noremap= true, silent = true })
+vim.keymap.set("n", "<space>fs", live_grep, { noremap= true, silent = true })
+vim.keymap.set("n", "<space>sp", live_grep, { noremap= true, silent = true })
+vim.keymap.set("n", "<space>fb", telescope_builtin.buffers, { noremap= true, silent = true })
+vim.keymap.set("n", "<space>fh", telescope_builtin.help_tags, { noremap= true, silent = true })
+vim.keymap.set("n", "<space>pp", telescope.extensions.project.project, { noremap = true, silent = true })
+vim.keymap.set("n", "<space>fr", telescope.extensions.recent_files.pick, { noremap = true, silent = true })
+
+-- ターミナルで<Esc>か<C-[>を押した時にノーマルモードに戻る
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
+vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { noremap = true, silent = true })
+
+-- ターミナルを開く
+vim.keymap.set("n", "<space>ot", (function() vim.cmd("ToggleTerm") end), { noremap = true, silent = true })
+vim.keymap.set("n", "<space>oT", (function() vim.cmd("term") end), { noremap= true, silent = true })
+vim.keymap.set("n", "<space>gg", (function() vim.cmd("Neogit") end), { noremap= true, silent = true })
+
 
 ----------------------------------------------------------------------
 -- LSP
@@ -154,7 +177,7 @@ local function on_attach(client, bufnr)
   vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, bufopts)
   vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, bufopts)
   vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
-  vim.keymap.set("n", "<space>f", function() vim.lsp.buf.format { async = true } end, bufopts)
+  vim.keymap.set("n", "<space>F", function() vim.lsp.buf.format { async = true } end, bufopts)
 end
 
 local lsp_flags = {
@@ -186,8 +209,7 @@ lspconfig["rust_analyzer"].setup{
     ["rust-analyzer"] = {}
   }
 }
-lspconfig["hie"].setup({
+lspconfig["hie"].setup {
   on_attach = on_attach,
   flags = lsp_flags,
-})
-
+}
