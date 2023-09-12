@@ -1,0 +1,10 @@
+[sqlfluff]
+dialect = snowflake
+exclude_rules = structure.else_null
+
+[sqlfluff:indentation]
+tab_space_size = 4
+indented_joins = True
+
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = lower
