@@ -90,6 +90,9 @@ if status is-interactive
     #;;; Embulk
     set -gx PATH "$HOME/.embulk/bin" $PATH
 
+    #;;; konryu & cotowali
+    set -gx PATH "$HOME/.konryu/bin" $PATH
+
     #;;; direnv
     eval "$(direnv hook fish)"
 
