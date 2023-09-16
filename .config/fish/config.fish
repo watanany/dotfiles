@@ -1,7 +1,7 @@
 if status is-interactive
-    switch "$(uname -s):$(uname -p)"
+    switch (uname -s):(uname -p)
         case "Darwin:arm"
-            eval "$(/opt/homebrew/bin/brew shellenv)"
+            eval (/opt/homebrew/bin/brew shellenv)
     end
 
     set -gx EDITOR emacsclient
@@ -94,7 +94,7 @@ if status is-interactive
     set -gx PATH "$HOME/.konryu/bin" $PATH
 
     #;;; direnv
-    eval "$(direnv hook fish)"
+    eval (direnv hook fish)
 
     #;;; エイリアス
     alias mv="mv -i"
@@ -112,9 +112,9 @@ if status is-interactive
         builtin cd $argv && ls
     end
 
-    source "$(status dirname)/bind.fish"
+    source (status dirname)/bind.fish
 end
 
-if test -f "$(status dirname)/local_config.fish"
-    source "$(status dirname)/local_config.fish"
+if test -f (status dirname)/local_config.fish
+    source (status dirname)/local_config.fish
 end
