@@ -102,8 +102,8 @@ telescope.setup {
   extensions = {
     project = {
       base_dirs = {
+        { path = "~/dotfiles", max_depth = 1 },
         { path = "~/sanctum/org", max_depth = 1 },
-        { path = "~/sanctum/dotfiles", max_depth = 1 },
         { path = "~/sanctum/projects", max_depth = 2 },
       },
       order_by = "asc",
