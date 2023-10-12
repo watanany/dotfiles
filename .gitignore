@@ -7,4 +7,5 @@ tmp/
 /.vim/undodir/
 
 local_config.fish
-.lein/repl-history
+/.lein/repl-history
+/.history
