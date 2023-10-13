@@ -108,7 +108,7 @@ telescope.setup {
       },
       order_by = "asc",
       hidden_files = true,
-    }
+    },
   },
 }
 
@@ -139,7 +139,6 @@ vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { noremap = true, silent = true })
 vim.keymap.set("n", "<space>ot", (function() vim.cmd("ToggleTerm") end), { noremap = true, silent = true })
 vim.keymap.set("n", "<space>oT", (function() vim.cmd("term") end), { noremap= true, silent = true })
 vim.keymap.set("n", "<space>gg", (function() vim.cmd("Neogit") end), { noremap= true, silent = true })
-
 
 ----------------------------------------------------------------------
 -- LSP

@@ -42,9 +42,9 @@ local function startup(use)
     config = function()
       require("auto-session").setup {
         log_level = "error",
-        auto_session_suppress_dirs = {"~/"}
+        auto_session_suppress_dirs = {"~/"},
       }
-    end
+    end,
   }
 
   -- 利用可能なキーマップを表示
@@ -92,7 +92,7 @@ local function startup(use)
     requires = { "nvim-telescope/telescope.nvim" },
     config = function()
       require("telescope").load_extension("recent_files")
-    end
+    end,
   }
 
   -- 
@@ -104,29 +104,17 @@ local function startup(use)
         size = 20,
         -- open_mapping = "<space>ot",
       }
-    end
+    end,
   }
 
   -- GitHub Copilot
   use "github/copilot.vim"
 
-  use "sindrets/diffview.nvim"
-  use {
-    "NeogitOrg/neogit",
-    requires = {
-      { "nvim-lua/plenary.nvim", opt = false },         -- required
-      { "nvim-telescope/telescope.nvim", opt = true },  -- optional
-      { "sindrets/diffview.nvim", opt = true },         -- optional
-      { "ibhagwan/fzf-lua", opt = true },               -- optional
-    },
-    config = function()
-      local neogit = require('neogit')
-      neogit.setup {}
-    end
-  }
-
   -- CSVを見やすく色付け
   use "mechatroner/rainbow_csv"
+
+  -- hy
+  use "hylang/vim-hy"
 
   -- packerがインストールされた初回のみPackerSyncを行う
   if packer_bootstrap then
@@ -140,7 +128,7 @@ local config = {
     -- <https://github.com/wbthomason/packer.nvim#using-a-floating-window>
     open_fn = function()
       return require("packer.util").float { border = "single" }
-    end
+    end,
   },
 }
 
