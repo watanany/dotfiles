@@ -362,6 +362,11 @@
 ;;             (setq-local flycheck-command-wrapper-function
 ;;                         (lambda (commands) (append '("bundle" "exec") commands)))))
 
+;; flycheckのrubocopを無効にする
+;; NOTE: 無効にしないとflycheckが何度もrubocop関係のエラーを出す
+(if (boundp 'flycheck-disabled-checkers)
+    (add-to-list 'flycheck-disabled-checkers 'ruby-rubocop)
+  (setq flycheck-disabled-checkers '(ruby-rubocop)))
 ;;; JavaScript
 ;; 拡張子.mjsをJavaScriptとして扱うようにする
 (add-to-list 'auto-mode-alist '("\\.mjs\\'" . js2-mode))
