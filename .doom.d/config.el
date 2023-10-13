@@ -140,11 +140,11 @@
 
 ;; TabNineによる自動補完を有効にする
 ;; M-x company-tabnine-install-binaryでTabNineをインストールする必要がある
-(use-package! company-tabnine
-  :config
-  (add-to-list 'company-backends #'company-tabnine)
-  (setq company-idle-delay 0)
-  (setq company-show-quick-access t))
+;; (use-package! company-tabnine
+;;   :config
+;;   (add-to-list 'company-backends #'company-tabnine)
+;;   (setq company-idle-delay 0)
+;;   (setq company-show-quick-access t))
 
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
