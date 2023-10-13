@@ -346,6 +346,8 @@
                                     "\\>")
                            0 font-lock-builtin-face)))
 
+;;; Hy
+(add-hook 'hy-mode-hook #'evil-cleverparens-mode)
 ;;; PlantUML
 ;; 拡張子.puをplantuml-modeに紐づける
 (add-to-list 'auto-mode-alist '("\\.pu\\'" . plantuml-mode))
