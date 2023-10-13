@@ -96,6 +96,10 @@ if status is-interactive
     #;;; direnv
     eval (direnv hook fish)
 
+    #;;; Bun
+    set -gx BUN_INSTALL "$HOME/.bun"
+    set -gx PATH $BUN_INSTALL/bin $PATH
+
     #;;; エイリアス
     alias mv="mv -i"
     alias cp="cp -i"
