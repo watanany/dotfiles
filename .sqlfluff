@@ -6,5 +6,8 @@ exclude_rules = structure.else_null
 tab_space_size = 4
 indented_joins = True
 
+[sqlfluff:rules:capitalisation.identifiers]
+extended_capitalisation_policy = lower
+
 [sqlfluff:rules:capitalisation.keywords]
 capitalisation_policy = lower
