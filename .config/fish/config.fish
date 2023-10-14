@@ -11,6 +11,8 @@ if status is-interactive
     set -gx PATH "$HOME/.local/bin" $PATH
     set -gx PATH "$HOME/.git-subcommands" $PATH
 
+    set -gx PATH "$HOME/.anyenv/bin" $PATH
+
     set -gx RBENV_ROOT "$HOME/.rbenv"
     set -gx PATH "$RBENV_ROOT/shims" $PATH
 
@@ -117,6 +119,8 @@ if status is-interactive
     end
 
     source $(status dirname)/bind.fish
+
+    source $(anyenv init - | psub)
 end
 
 if test -f $(status dirname)/local_config.fish
