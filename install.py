@@ -18,8 +18,6 @@ DIRS = [
 LINK_LIST = [
     ".zsh",
     ".zshrc",
-    ".vim",
-    ".vimrc",
     ".tmux.conf",
     ".ghci",
     ".iex.exs",
