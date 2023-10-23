@@ -102,6 +102,10 @@ if status is-interactive
     set -gx BUN_INSTALL "$HOME/.bun"
     set -gx PATH $BUN_INSTALL/bin $PATH
 
+    #;;; Modular
+    set -gx MODULAR_HOME "$HOME/.modular"
+    set -gx PATH $MODULAR_HOME/pkg/packages.modular.com_mojo/bin $PATH
+
     #;;; エイリアス
     alias mv="mv -i"
     alias cp="cp -i"
