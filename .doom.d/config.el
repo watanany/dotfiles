@@ -89,7 +89,7 @@
 (use-package! projectile
   :config
   (dolist (file '("spago.dhall" "go.mod"))
-          (add-to-list 'projectile-project-root-files file)))
+    (add-to-list 'projectile-project-root-files file)))
 
 (use-package! lsp-haskell
   :after lsp-mode
@@ -171,7 +171,7 @@
 ;; 何度もビジュアルモードでマーカーが出てこなくなる問題が発生しているので、問題発生時は以下の関数を手動で呼び出すようにする。
 ;; [Space]-; RET (fix-transient-mark-mode!)
 (defun fix-transient-mark-mode! ()
-    (setq-local transient-mark-mode t))
+  (setq-local transient-mark-mode t))
 
 ;; FIXME: <https://github.com/akermu/emacs-libvterm/pull/617>
 ;; 変更はマージされているので、更新が適用されたら以下のコードは削除する
@@ -381,14 +381,14 @@
 ;; 特定のモードで自動フォーマットを無効にする
 (setq +format-on-save-enabled-modes
       '(not emacs-lisp-mode             ; elisp's mechanisms are good enough
-            sql-mode                    ; sqlformat is currently broken
-            tex-mode                    ; latexindent is broken
-            latex-mode
-            html-mode
-            yaml-mode
-            ruby-mode
-            haskell-mode
-            typescript-mode
+        sql-mode                    ; sqlformat is currently broken
+        tex-mode                    ; latexindent is broken
+        latex-mode
+        html-mode
+        yaml-mode
+        ruby-mode
+        haskell-mode
+        typescript-mode
         ))
 
 ;;; markdown
