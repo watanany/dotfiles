@@ -158,6 +158,8 @@
 
 (use-package! golazo-v2-mode)
 
+(use-package! mojo-mode)
+
 (use-package! copl-mode)
 
 ;; FIXME: This package causes strange behavior in Prompt2(iPad app).
