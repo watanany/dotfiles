@@ -26,11 +26,6 @@ if status is-interactive
     set -gx PATH "$HOME/.rye/shims" $PATH
     set -gx PATH "$HOME/.poetry/bin" $PATH
 
-    #;;; Haskell
-    #;; ghcup
-    set -gx PATH "$HOME/.ghcup/bin" $PATH
-    set -gx PATH "$HOME/.cabal/bin" $PATH
-
     #;;; Golang
     set -gx PATH "$HOME/go/bin" $PATH
 
