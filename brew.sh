@@ -5,7 +5,7 @@ brew install \
     cmake pcre git wget tree rg fd exa git-delta tmux tig \
     binutils findutils diffutils coreutils moreutils \
     grep gzip gnu-tar gnu-sed gnu-time gnu-getopt \
-    watch \
+    watch rlwrap \
     jq yq \
     pyenv rbenv nodenv jenv tfenv goenv \
     llvm@12 ghcup elm leiningen \
