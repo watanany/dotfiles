@@ -63,8 +63,35 @@ local function startup(use)
       }
 
       which_key.register {
-        ["<space>fd"] = "ファイルツリーを開く",
+        ["<space>ft"] = "ファイルツリーを開く",
+        ["<space>pp"] = "プロジェクトを開く",
+        ["<space>pf"] = "ファイル名で検索する",
         ["<space>ff"] = "ファイル名で検索する",
+        ["<space>fr"] = "最近開いたファイルで検索する",
+        ["<space>fs"] = "ファイル内の文字列を検索する",
+        ["<space>sp"] = "ファイル内の文字列を検索する",
+        ["<space>fb"] = "バッファ一覧を表示する",
+        ["<space>fh"] = "ヘルプを表示する",
+        ["<space>ot"] = "ターミナルをトグルする",
+        ["<space>oT"] = "ターミナルを開く",
+        ["<space>gg"] = "Neogitを開く",
+        ["<space>e"] = "ターミナルをトグルする",
+        ["[d"] = "一つ前の診断に戻る",
+        ["]d"] = "一つ後の診断に進む",
+        ["<space>q"] = "",
+        ["gD"] = "宣言にジャンプする",
+        ["gd"] = "定義にジャンプする",
+        ["K"] = "",
+        ["gi"] = "実装にジャンプする",
+        ["<C-k>"] = "",
+        ["<space>wa"] = "",
+        ["<space>wr"] = "",
+        ["<space>wl"] = "",
+        ["<space>D"] = "型定義にジャンプする",
+        ["<space>rn"] = "変数名を変更する",
+        ["<space>ca"] = "",
+        ["gr"] = "",
+        ["<space>F"] = "バッファ内のコードをフォーマットする",
       }
     end
   }
@@ -110,7 +137,7 @@ local function startup(use)
   -- GitHub Copilot
   use "github/copilot.vim"
 
-  use({
+  use {
     "kylechui/nvim-surround",
     tag = "*", -- Use for stability; omit to use `main` branch for the latest features
     config = function()
@@ -118,7 +145,7 @@ local function startup(use)
         -- Configuration here, or leave empty to use defaults
       })
     end
-  })
+  }
 
   -- CSVを見やすく色付け
   use "mechatroner/rainbow_csv"
@@ -142,4 +169,7 @@ local config = {
   },
 }
 
-return require("packer").startup { startup, config = config } 
+return require("packer").startup { 
+  startup,
+  config = config,
+} 

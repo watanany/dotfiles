@@ -52,8 +52,6 @@ vim.cmd [[
   endtry
 ]]
 
--- vim.g.mapleader = " "
-
 -- fzfのコマンドのプレフィックスを設定(e.g. :Files -> :FzfFiles)
 vim.g["fzf_command_prefix"] = "Fzf"  -- `let g:fzf_command_prefix = "Fzf"`と同じ意味
 
@@ -92,7 +90,7 @@ vim.keymap.set("c", "?", function()
 end, { noremap = true, expr = true })
 
 -- Fernのキーバインドを設定する
-vim.keymap.set("n", "<space>fd", ":Fern . -drawer<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<space>ft", ":Fern . -drawer<CR>", { noremap = true, silent = true })
 
 -- Telescopeの設定を行う
 local telescope = require("telescope")
@@ -138,6 +136,8 @@ vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { noremap = true, silent = true })
 -- ターミナルを開く
 vim.keymap.set("n", "<space>ot", (function() vim.cmd("ToggleTerm") end), { noremap = true, silent = true })
 vim.keymap.set("n", "<space>oT", (function() vim.cmd("term") end), { noremap= true, silent = true })
+
+-- Neogit
 vim.keymap.set("n", "<space>gg", (function() vim.cmd("Neogit") end), { noremap= true, silent = true })
 
 ----------------------------------------------------------------------
@@ -147,7 +147,7 @@ vim.keymap.set("n", "<space>gg", (function() vim.cmd("Neogit") end), { noremap= 
 --
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-local opts = { noremap=true, silent=true }
+local opts = { noremap = true, silent = true }
 vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, opts)
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
@@ -183,24 +183,30 @@ local lsp_flags = {
   -- This is the default in Nvim 0.7+
   debounce_text_changes = 150,
 }
+
 local lspconfig = require("lspconfig")
-lspconfig["pyright"].setup{
+
+lspconfig["pyright"].setup {
   on_attach = on_attach,
   flags = lsp_flags,
 }
-lspconfig["ruby_ls"].setup{
+
+lspconfig["ruby_ls"].setup {
   on_attach = on_attach,
   flags = lsp_flags,
 }
-lspconfig["tsserver"].setup{
+
+lspconfig["tsserver"].setup {
   on_attach = on_attach,
   flags = lsp_flags,
 }
-lspconfig["gopls"].setup{
+
+lspconfig["gopls"].setup {
   on_attach = on_attach,
   flags = lsp_flags,
 }
-lspconfig["rust_analyzer"].setup{
+
+lspconfig["rust_analyzer"].setup {
   on_attach = on_attach,
   flags = lsp_flags,
   -- Server-specific settings...
@@ -208,6 +214,7 @@ lspconfig["rust_analyzer"].setup{
     ["rust-analyzer"] = {}
   }
 }
+
 lspconfig["hie"].setup {
   on_attach = on_attach,
   flags = lsp_flags,
