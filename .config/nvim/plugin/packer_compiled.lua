@@ -110,6 +110,12 @@ _G.packer_plugins = {
     path = "/Users/watanabe.s/.local/share/nvim/site/pack/packer/start/fzf.vim",
     url = "https://github.com/junegunn/fzf.vim"
   },
+  ["lsp-format.nvim"] = {
+    config = { "\27LJ\2\n<\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\15lsp-format\frequire\0" },
+    loaded = true,
+    path = "/Users/watanabe.s/.local/share/nvim/site/pack/packer/start/lsp-format.nvim",
+    url = "https://github.com/lukas-reineke/lsp-format.nvim"
+  },
   ["nvim-lspconfig"] = {
     loaded = true,
     path = "/Users/watanabe.s/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
@@ -142,6 +148,7 @@ _G.packer_plugins = {
     url = "https://github.com/nvim-telescope/telescope-file-browser.nvim"
   },
   ["telescope-project.nvim"] = {
+    config = { "\27LJ\2\nL\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0'\2\3\0B\0\2\1K\0\1\0\fproject\19load_extension\14telescope\frequire\0" },
     loaded = true,
     path = "/Users/watanabe.s/.local/share/nvim/site/pack/packer/start/telescope-project.nvim",
     url = "https://github.com/nvim-telescope/telescope-project.nvim"
@@ -173,8 +180,13 @@ _G.packer_plugins = {
     path = "/Users/watanabe.s/.local/share/nvim/site/pack/packer/start/vim-hybrid",
     url = "https://github.com/w0ng/vim-hybrid"
   },
+  ["vim-tabs"] = {
+    loaded = true,
+    path = "/Users/watanabe.s/.local/share/nvim/site/pack/packer/start/vim-tabs",
+    url = "https://github.com/watanany/vim-tabs"
+  },
   ["which-key.nvim"] = {
-    config = { "\27LJ\2\n�\b\0\0\4\0\t\0\0186\0\0\0009\0\1\0+\1\2\0=\1\2\0006\0\0\0009\0\1\0)\1,\1=\1\3\0006\0\4\0'\2\5\0B\0\2\0029\1\6\0004\3\0\0B\1\2\0019\1\a\0005\3\b\0B\1\2\1K\0\1\0\1\0\29\14<space>sp/ファイル内の文字列を検索する\14<space>wl\5\14<space>ff#ファイル名で検索する\14<space>fb&バッファ一覧を表示する\14<space>fh\29ヘルプを表示する\14<space>pp プロジェクトを開く\agd 定義にジャンプする\n<C-k>\5\14<space>fr/最近開いたファイルで検索する\14<space>ot&ターミナルをトグルする\14<space>oT\29ターミナルを開く\6K\5\a]d 一つ後の診断に進む\14<space>gg\20Neogitを開く\a[d 一つ前の診断に戻る\agD 宣言にジャンプする\r<space>e&ターミナルをトグルする\r<space>q\5\agi 実装にジャンプする\14<space>wa\5\14<space>wr\5\14<space>ft#ファイルツリーを開く\r<space>D#型定義にジャンプする\r<space>F;バッファ内のコードをフォーマットする\agr\5\14<space>ca\5\14<space>rn\29変数名を変更する\14<space>pf#ファイル名で検索する\14<space>fs/ファイル内の文字列を検索する\rregister\nsetup\14which-key\frequire\15timeoutlen\ftimeout\6o\bvim\0" },
+    config = { "\27LJ\2\nt\0\0\4\0\a\0\0156\0\0\0009\0\1\0+\1\2\0=\1\2\0006\0\0\0009\0\1\0)\1,\1=\1\3\0006\0\4\0'\2\5\0B\0\2\0029\1\6\0004\3\0\0B\1\2\1K\0\1\0\nsetup\14which-key\frequire\15timeoutlen\ftimeout\6o\bvim\0" },
     loaded = true,
     path = "/Users/watanabe.s/.local/share/nvim/site/pack/packer/start/which-key.nvim",
     url = "https://github.com/folke/which-key.nvim"
@@ -182,26 +194,34 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: toggleterm.nvim
-time([[Config for toggleterm.nvim]], true)
-try_loadstring("\27LJ\2\nF\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\tsize\3\20\nsetup\15toggleterm\frequire\0", "config", "toggleterm.nvim")
-time([[Config for toggleterm.nvim]], false)
--- Config for: nvim-surround
-time([[Config for nvim-surround]], true)
-try_loadstring("\27LJ\2\n?\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\18nvim-surround\frequire\0", "config", "nvim-surround")
-time([[Config for nvim-surround]], false)
--- Config for: telescope-recent-files
-time([[Config for telescope-recent-files]], true)
-try_loadstring("\27LJ\2\nQ\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0'\2\3\0B\0\2\1K\0\1\0\17recent_files\19load_extension\14telescope\frequire\0", "config", "telescope-recent-files")
-time([[Config for telescope-recent-files]], false)
+-- Config for: telescope-project.nvim
+time([[Config for telescope-project.nvim]], true)
+try_loadstring("\27LJ\2\nL\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0'\2\3\0B\0\2\1K\0\1\0\fproject\19load_extension\14telescope\frequire\0", "config", "telescope-project.nvim")
+time([[Config for telescope-project.nvim]], false)
+-- Config for: which-key.nvim
+time([[Config for which-key.nvim]], true)
+try_loadstring("\27LJ\2\nt\0\0\4\0\a\0\0156\0\0\0009\0\1\0+\1\2\0=\1\2\0006\0\0\0009\0\1\0)\1,\1=\1\3\0006\0\4\0'\2\5\0B\0\2\0029\1\6\0004\3\0\0B\1\2\1K\0\1\0\nsetup\14which-key\frequire\15timeoutlen\ftimeout\6o\bvim\0", "config", "which-key.nvim")
+time([[Config for which-key.nvim]], false)
 -- Config for: auto-session
 time([[Config for auto-session]], true)
 try_loadstring("\27LJ\2\n{\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\2B\0\2\1K\0\1\0\31auto_session_suppress_dirs\1\2\0\0\a~/\1\0\1\14log_level\nerror\nsetup\17auto-session\frequire\0", "config", "auto-session")
 time([[Config for auto-session]], false)
--- Config for: which-key.nvim
-time([[Config for which-key.nvim]], true)
-try_loadstring("\27LJ\2\n�\b\0\0\4\0\t\0\0186\0\0\0009\0\1\0+\1\2\0=\1\2\0006\0\0\0009\0\1\0)\1,\1=\1\3\0006\0\4\0'\2\5\0B\0\2\0029\1\6\0004\3\0\0B\1\2\0019\1\a\0005\3\b\0B\1\2\1K\0\1\0\1\0\29\14<space>sp/ファイル内の文字列を検索する\14<space>wl\5\14<space>ff#ファイル名で検索する\14<space>fb&バッファ一覧を表示する\14<space>fh\29ヘルプを表示する\14<space>pp プロジェクトを開く\agd 定義にジャンプする\n<C-k>\5\14<space>fr/最近開いたファイルで検索する\14<space>ot&ターミナルをトグルする\14<space>oT\29ターミナルを開く\6K\5\a]d 一つ後の診断に進む\14<space>gg\20Neogitを開く\a[d 一つ前の診断に戻る\agD 宣言にジャンプする\r<space>e&ターミナルをトグルする\r<space>q\5\agi 実装にジャンプする\14<space>wa\5\14<space>wr\5\14<space>ft#ファイルツリーを開く\r<space>D#型定義にジャンプする\r<space>F;バッファ内のコードをフォーマットする\agr\5\14<space>ca\5\14<space>rn\29変数名を変更する\14<space>pf#ファイル名で検索する\14<space>fs/ファイル内の文字列を検索する\rregister\nsetup\14which-key\frequire\15timeoutlen\ftimeout\6o\bvim\0", "config", "which-key.nvim")
-time([[Config for which-key.nvim]], false)
+-- Config for: toggleterm.nvim
+time([[Config for toggleterm.nvim]], true)
+try_loadstring("\27LJ\2\nF\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\tsize\3\20\nsetup\15toggleterm\frequire\0", "config", "toggleterm.nvim")
+time([[Config for toggleterm.nvim]], false)
+-- Config for: lsp-format.nvim
+time([[Config for lsp-format.nvim]], true)
+try_loadstring("\27LJ\2\n<\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\15lsp-format\frequire\0", "config", "lsp-format.nvim")
+time([[Config for lsp-format.nvim]], false)
+-- Config for: telescope-recent-files
+time([[Config for telescope-recent-files]], true)
+try_loadstring("\27LJ\2\nQ\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0'\2\3\0B\0\2\1K\0\1\0\17recent_files\19load_extension\14telescope\frequire\0", "config", "telescope-recent-files")
+time([[Config for telescope-recent-files]], false)
+-- Config for: nvim-surround
+time([[Config for nvim-surround]], true)
+try_loadstring("\27LJ\2\n?\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\18nvim-surround\frequire\0", "config", "nvim-surround")
+time([[Config for nvim-surround]], false)
 
 _G._packer.inside_compile = false
 if _G._packer.needs_bufread == true then

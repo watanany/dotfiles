@@ -53,7 +53,7 @@ vim.cmd [[
 ]]
 
 -- fzfのコマンドのプレフィックスを設定(e.g. :Files -> :FzfFiles)
-vim.g["fzf_command_prefix"] = "Fzf"  -- `let g:fzf_command_prefix = "Fzf"`と同じ意味
+vim.g["fzf_command_prefix"] = "Fzf" -- `let g:fzf_command_prefix = "Fzf"`と同じ意味
 
 ----------------------------------------------------------------------
 -- キーバインド
@@ -78,7 +78,7 @@ vim.keymap.set("n", "g#", "g#zz", { noremap = true, silent = true })
 vim.keymap.set("n", "j", "<Plug>(accelerated_jk_gj)", { silent = true })
 vim.keymap.set("n", "k", "<Plug>(accelerated_jk_gk)", { silent = true })
 vim.keymap.set("n", "<DOWN>", "<Plug>(accelerated_jk_gj)", { silent = true })
-vim.keymap.set("n", "<UP>", "<Plug>(accelerated_jk_gk)", { silent = true})
+vim.keymap.set("n", "<UP>", "<Plug>(accelerated_jk_gk)", { silent = true })
 
 -- /{pattern}の入力中は「/」をタイプすると自動で「\/」が入力されるようになる
 vim.keymap.set("c", "/", function()
@@ -100,8 +100,8 @@ telescope.setup {
   extensions = {
     project = {
       base_dirs = {
-        { path = "~/dotfiles", max_depth = 1 },
-        { path = "~/sanctum/org", max_depth = 1 },
+        { path = "~/dotfiles",         max_depth = 1 },
+        { path = "~/sanctum/org",      max_depth = 1 },
         { path = "~/sanctum/projects", max_depth = 2 },
       },
       order_by = "asc",
@@ -110,22 +110,20 @@ telescope.setup {
   },
 }
 
-function find_files() 
- local telescope_themes = require("telescope.themes") 
-  telescope_builtin.find_files(telescope_themes.get_ivy())
+function find_files()
+  telescope_builtin.find_files({ hidden = true })
 end
 
 function live_grep()
-  local telescope_themes = require("telescope.themes")
-  telescope_builtin.live_grep(telescope_themes.get_ivy())
+  telescope_builtin.live_grep({ hidden = true })
 end
 
-vim.keymap.set("n", "<space>ff", telescope_builtin.find_files, { noremap= true, silent = true })
-vim.keymap.set("n", "<space>pf", telescope_builtin.find_files, { noremap= true, silent = true })
-vim.keymap.set("n", "<space>fs", live_grep, { noremap= true, silent = true })
-vim.keymap.set("n", "<space>sp", live_grep, { noremap= true, silent = true })
-vim.keymap.set("n", "<space>fb", telescope_builtin.buffers, { noremap= true, silent = true })
-vim.keymap.set("n", "<space>fh", telescope_builtin.help_tags, { noremap= true, silent = true })
+vim.keymap.set("n", "<space>ff", find_files, { noremap = true, silent = true })
+vim.keymap.set("n", "<space>pf", find_files, { noremap = true, silent = true })
+vim.keymap.set("n", "<space>fs", live_grep, { noremap = true, silent = true })
+vim.keymap.set("n", "<space>sp", live_grep, { noremap = true, silent = true })
+vim.keymap.set("n", "<space>fb", telescope_builtin.buffers, { noremap = true, silent = true })
+vim.keymap.set("n", "<space>fh", telescope_builtin.help_tags, { noremap = true, silent = true })
 vim.keymap.set("n", "<space>pp", telescope.extensions.project.project, { noremap = true, silent = true })
 vim.keymap.set("n", "<space>fr", telescope.extensions.recent_files.pick, { noremap = true, silent = true })
 
@@ -135,10 +133,7 @@ vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { noremap = true, silent = true })
 
 -- ターミナルを開く
 vim.keymap.set("n", "<space>ot", (function() vim.cmd("ToggleTerm") end), { noremap = true, silent = true })
-vim.keymap.set("n", "<space>oT", (function() vim.cmd("term") end), { noremap= true, silent = true })
-
--- Neogit
-vim.keymap.set("n", "<space>gg", (function() vim.cmd("Neogit") end), { noremap= true, silent = true })
+vim.keymap.set("n", "<space>oT", (function() vim.cmd("term") end), { noremap = true, silent = true })
 
 ----------------------------------------------------------------------
 -- LSP
@@ -155,13 +150,13 @@ vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist, opts)
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
-local function on_attach(client, bufnr)
+local function on_attach(client, buffer)
   -- Enable completion triggered by <c-x><c-o>
-  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+  vim.api.nvim_buf_set_option(buffer, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
-  local bufopts = { noremap = true, silent = true, buffer = bufnr }
+  local bufopts = { noremap = true, silent = true, buffer = buffer }
   vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
   vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
   vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
@@ -177,6 +172,8 @@ local function on_attach(client, bufnr)
   vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, bufopts)
   vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
   vim.keymap.set("n", "<space>F", function() vim.lsp.buf.format { async = true } end, bufopts)
+
+  require("lsp-format").on_attach(client, buffer, { sync = true })
 end
 
 local lsp_flags = {
@@ -186,9 +183,23 @@ local lsp_flags = {
 
 local lspconfig = require("lspconfig")
 
+lspconfig["lua_ls"].setup {
+  on_attach = on_attach,
+  flags = lsp_flags,
+}
+
 lspconfig["pyright"].setup {
   on_attach = on_attach,
   flags = lsp_flags,
+  settings = {
+    python = {
+      venvPath = ".",
+      pythonPath = ".venv/bin/python",
+      analysis = {
+        extraPaths = { "." },
+      },
+    },
+  },
 }
 
 lspconfig["ruby_ls"].setup {
@@ -218,4 +229,70 @@ lspconfig["rust_analyzer"].setup {
 lspconfig["hie"].setup {
   on_attach = on_attach,
   flags = lsp_flags,
+}
+
+----------------------------------------------------------------------
+-- augroup / autocmd
+----------------------------------------------------------------------
+local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
+
+-- Yank時にハイライトを行う
+augroup('YankHighlight', { clear = true })
+autocmd('TextYankPost', {
+  group = 'YankHighlight',
+  callback = function()
+    vim.highlight.on_yank({ higroup = 'IncSearch', timeout = '50' })
+  end
+})
+
+-- 保存時に行末の空白を削除する
+autocmd('BufWritePre', {
+  pattern = '',
+  command = ":%s/\\s\\+$//e"
+})
+
+-- ターミナルを開いた時にinsertモードを開始する
+autocmd('TermOpen', {
+  pattern = '',
+  command = 'startinsert'
+})
+
+-- ターミナルのバッファを離れた時にinsertモードを終了する
+autocmd('BufLeave', {
+  pattern = 'term://*',
+  command = 'stopinsert'
+})
+
+
+require('which-key').register {
+  ["<space>ft"] = "ファイルツリーを開く",
+  ["<space>pp"] = "プロジェクトを開く",
+  ["<space>pf"] = "ファイル名で検索する",
+  ["<space>ff"] = "ファイル名で検索する",
+  ["<space>fr"] = "最近開いたファイルで検索する",
+  ["<space>fs"] = "ファイル内の文字列を検索する",
+  ["<space>sp"] = "ファイル内の文字列を検索する",
+  ["<space>fb"] = "バッファ一覧を表示する",
+  ["<space>fh"] = "ヘルプを表示する",
+  ["<space>ot"] = "ターミナルをトグルする",
+  ["<space>oT"] = "ターミナルを開く",
+  ["<space>gg"] = "Neogitを開く",
+  ["<space>e"] = "ターミナルをトグルする",
+  ["[d"] = "一つ前の診断に戻る",
+  ["]d"] = "一つ後の診断に進む",
+  ["<space>q"] = "フローティングウィンドウにカーソルの下にあるシンボルに関する情報を表示します。2回呼び出すと、フローティング ウィンドウにジャンプします。",
+  ["gD"] = "宣言にジャンプする",
+  ["gd"] = "定義にジャンプする",
+  ["K"] = "ホバーを表示する",
+  ["gi"] = "実装にジャンプする",
+  ["<C-k>"] = "シグネチャヘルプを表示する",
+  ["<space>wa"] = "ワークスペースにフォルダを追加する",
+  ["<space>wr"] = "ワークスペースからフォルダを削除する",
+  ["<space>wl"] = "ワークスペースのフォルダを表示する",
+  ["<space>D"] = "型定義にジャンプする",
+  ["<space>rn"] = "変数名を変更する",
+  ["<space>ca"] = "現在のカーソル位置で利用可能なコードアクションを選択する",
+  ["gr"] = "リファレンス一覧を表示する",
+  ["<space>F"] = "バッファ内のコードをフォーマットする",
 }
