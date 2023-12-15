@@ -9,7 +9,7 @@ local function ensure_packer()
   local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 
   if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-    vim.fn.system {"git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path}
+    vim.fn.system { "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path }
     vim.cmd [[
       packadd packer.nvim
     ]]
@@ -42,7 +42,7 @@ local function startup(use)
     config = function()
       require("auto-session").setup {
         log_level = "error",
-        auto_session_suppress_dirs = {"~/"},
+        auto_session_suppress_dirs = { "~/" },
       }
     end,
   }
@@ -61,38 +61,6 @@ local function startup(use)
         -- or leave it empty to use the default settings
         -- refer to the configuration section below
       }
-
-      which_key.register {
-        ["<space>ft"] = "ファイルツリーを開く",
-        ["<space>pp"] = "プロジェクトを開く",
-        ["<space>pf"] = "ファイル名で検索する",
-        ["<space>ff"] = "ファイル名で検索する",
-        ["<space>fr"] = "最近開いたファイルで検索する",
-        ["<space>fs"] = "ファイル内の文字列を検索する",
-        ["<space>sp"] = "ファイル内の文字列を検索する",
-        ["<space>fb"] = "バッファ一覧を表示する",
-        ["<space>fh"] = "ヘルプを表示する",
-        ["<space>ot"] = "ターミナルをトグルする",
-        ["<space>oT"] = "ターミナルを開く",
-        ["<space>gg"] = "Neogitを開く",
-        ["<space>e"] = "ターミナルをトグルする",
-        ["[d"] = "一つ前の診断に戻る",
-        ["]d"] = "一つ後の診断に進む",
-        ["<space>q"] = "",
-        ["gD"] = "宣言にジャンプする",
-        ["gd"] = "定義にジャンプする",
-        ["K"] = "",
-        ["gi"] = "実装にジャンプする",
-        ["<C-k>"] = "",
-        ["<space>wa"] = "",
-        ["<space>wr"] = "",
-        ["<space>wl"] = "",
-        ["<space>D"] = "型定義にジャンプする",
-        ["<space>rn"] = "変数名を変更する",
-        ["<space>ca"] = "",
-        ["gr"] = "",
-        ["<space>F"] = "バッファ内のコードをフォーマットする",
-      }
     end
   }
 
@@ -105,7 +73,7 @@ local function startup(use)
   use "junegunn/fzf.vim"
 
   -- ファジーファインダー
-  use { "nvim-telescope/telescope.nvim", tag = "*", requires = {{"nvim-lua/plenary.nvim"}} }
+  use { "nvim-telescope/telescope.nvim", tag = "*", requires = { { "nvim-lua/plenary.nvim" } } }
   use {
     "nvim-telescope/telescope-file-browser.nvim",
     requires = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
@@ -113,6 +81,9 @@ local function startup(use)
   use {
     "nvim-telescope/telescope-project.nvim",
     requires = { "nvim-telescope/telescope.nvim", "nvim-telescope/telescope-file-browser.nvim" },
+    config = function()
+      require("telescope").load_extension("project")
+    end,
   }
   use {
     "smartpde/telescope-recent-files",
@@ -122,10 +93,10 @@ local function startup(use)
     end,
   }
 
-  -- 
-  use { 
+  --
+  use {
     "akinsho/toggleterm.nvim",
-    tag = "*", 
+    tag = "*",
     config = function()
       require("toggleterm").setup {
         size = 20,
@@ -150,8 +121,19 @@ local function startup(use)
   -- CSVを見やすく色付け
   use "mechatroner/rainbow_csv"
 
+  --
+  use {
+    "lukas-reineke/lsp-format.nvim",
+    config = function()
+      require("lsp-format").setup {}
+    end,
+  }
+
   -- hy
   use "hylang/vim-hy"
+
+  -- タブ制御
+  use "watanany/vim-tabs"
 
   -- packerがインストールされた初回のみPackerSyncを行う
   if packer_bootstrap then
@@ -169,7 +151,7 @@ local config = {
   },
 }
 
-return require("packer").startup { 
+return require("packer").startup {
   startup,
   config = config,
-} 
+}
