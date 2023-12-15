@@ -14,7 +14,8 @@ brew install \
     awscli slack-cli \
     gh ghq direnv \
     terraform terraformer \
-    pandoc hyperfine
+    pandoc hyperfine \
+    mermaid-cli lua-language-server
 
 brew install fzf && $(brew --prefix)/opt/fzf/install
 
