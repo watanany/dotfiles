@@ -71,6 +71,7 @@
 (use-package! evil-cleverparens
   :init
   (setq evil-cleverparens-use-additional-bindings nil)
+
   :config
   ;; terminal内のemacs使用時に矢印キーが暴走するのを修正するコード
   ;; cf. <https://github.com/luxbock/evil-cleverparens/issues/58>
@@ -159,7 +160,6 @@
 (use-package! golazo-v2-mode)
 
 (use-package! mojo-mode)
-
 (use-package! copl-mode)
 
 ;; FIXME: This package causes strange behavior in Prompt2(iPad app).
@@ -350,6 +350,7 @@
 
 ;;; Hy
 (add-hook 'hy-mode-hook #'evil-cleverparens-mode)
+
 ;;; PlantUML
 ;; 拡張子.puをplantuml-modeに紐づける
 (add-to-list 'auto-mode-alist '("\\.pu\\'" . plantuml-mode))
@@ -369,6 +370,7 @@
 (if (boundp 'flycheck-disabled-checkers)
     (add-to-list 'flycheck-disabled-checkers 'ruby-rubocop)
   (setq flycheck-disabled-checkers '(ruby-rubocop)))
+
 ;;; JavaScript
 ;; 拡張子.mjsをJavaScriptとして扱うようにする
 (add-to-list 'auto-mode-alist '("\\.mjs\\'" . js2-mode))
@@ -405,3 +407,4 @@
 (projectile-add-known-project org-directory)
 (projectile-add-known-project "~/dotfiles")
 (my/projectile-add-projects "~/sanctum/projects")
+
