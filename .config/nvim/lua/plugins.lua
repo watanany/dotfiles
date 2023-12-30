@@ -30,6 +30,43 @@ local function startup(use)
   -- カラースキーム
   use "w0ng/vim-hybrid"
 
+  --
+  use {
+    "nvim-treesitter/nvim-treesitter",
+    run = function()
+      local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
+      ts_update()
+    end,
+    config = function()
+      require("nvim-treesitter.configs").setup {
+        ensure_installed = {
+          "c", "lua", "vim", "vimdoc", "query",
+          "json", "yaml", "toml", "bash", "fish", "dockerfile",
+          "hcl", "terraform",
+          "python", "ruby", "go", "rust",
+          "typescript", "javascript", "tsx", "html", "css", "tsx",
+          "org",
+        },
+        auto_install = true,
+        highlight = {
+          enable = true,
+        },
+        indent = {
+          enable = true,
+        },
+      }
+
+      -- ISSUE: <https://github.com/nvim-treesitter/nvim-treesitter/wiki/Installation#packernvim>
+      -- vim.api.nvim_create_autocmd({ 'BufEnter', 'BufAdd', 'BufNew', 'BufNewFile', 'BufWinEnter' }, {
+      --   group = vim.api.nvim_create_augroup('TS_FOLD_WORKAROUND', {}),
+      --   callback = function()
+      --     vim.opt.foldmethod = 'expr'
+      --     vim.opt.foldexpr   = 'nvim_treesitter#foldexpr()'
+      --   end
+      -- })
+    end
+  }
+
   -- カーソル移動加速プラグイン
   use "rainbowhxch/accelerated-jk.nvim"
 
@@ -37,15 +74,15 @@ local function startup(use)
   use "rhysd/clever-f.vim"
 
   -- セッション管理
-  use {
-    "rmagatti/auto-session",
-    config = function()
-      require("auto-session").setup {
-        log_level = "error",
-        auto_session_suppress_dirs = { "~/" },
-      }
-    end,
-  }
+  -- use {
+  --   "rmagatti/auto-session",
+  --   config = function()
+  --     require("auto-session").setup {
+  --       log_level = "error",
+  --       auto_session_suppress_dirs = { "~/" },
+  --     }
+  --   end,
+  -- }
 
   -- 利用可能なキーマップを表示
   use {
@@ -54,13 +91,7 @@ local function startup(use)
       vim.o.timeout = true
       vim.o.timeoutlen = 300
 
-      local which_key = require("which-key")
-
-      which_key.setup {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-      }
+      require("which-key").setup {}
     end
   }
 
@@ -73,11 +104,17 @@ local function startup(use)
   use "junegunn/fzf.vim"
 
   -- ファジーファインダー
-  use { "nvim-telescope/telescope.nvim", tag = "*", requires = { { "nvim-lua/plenary.nvim" } } }
+  use {
+    "nvim-telescope/telescope.nvim",
+    tag = "*",
+    requires = { { "nvim-lua/plenary.nvim" } },
+  }
+
   use {
     "nvim-telescope/telescope-file-browser.nvim",
     requires = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
   }
+
   use {
     "nvim-telescope/telescope-project.nvim",
     requires = { "nvim-telescope/telescope.nvim", "nvim-telescope/telescope-file-browser.nvim" },
@@ -85,6 +122,7 @@ local function startup(use)
       require("telescope").load_extension("project")
     end,
   }
+
   use {
     "smartpde/telescope-recent-files",
     requires = { "nvim-telescope/telescope.nvim" },
@@ -93,7 +131,14 @@ local function startup(use)
     end,
   }
 
-  --
+  use {
+    "nvim-telescope/telescope-frecency.nvim",
+    config = function()
+      require("telescope").load_extension("frecency")
+    end,
+  }
+
+  -- ターミナルをトグルする機能を追加
   use {
     "akinsho/toggleterm.nvim",
     tag = "*",
@@ -104,17 +149,27 @@ local function startup(use)
       }
     end,
   }
+  -- 対応する文字を閉じる
+  use {
+    'm4xshen/autoclose.nvim',
+    config = function()
+      require("autoclose").setup {
+        ["{"] = { escape = true, close = true, pair = "}", disabled_filetypes = {} },
+        ["["] = { escape = true, close = true, pair = "[", disabled_filetypes = {} },
+        ["("] = { escape = true, close = true, pair = ")", disabled_filetypes = {} },
+      }
+    end,
+  }
 
   -- GitHub Copilot
   use "github/copilot.vim"
 
+  -- surroundを追加
   use {
     "kylechui/nvim-surround",
     tag = "*", -- Use for stability; omit to use `main` branch for the latest features
     config = function()
-      require("nvim-surround").setup({
-        -- Configuration here, or leave empty to use defaults
-      })
+      require("nvim-surround").setup {}
     end
   }
 
@@ -129,11 +184,39 @@ local function startup(use)
     end,
   }
 
-  -- hy
-  use "hylang/vim-hy"
+  -- git
+  use "sindrets/diffview.nvim"
+
+  use {
+    "NeogitOrg/neogit",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "sindrets/diffview.nvim",
+      "nvim-telescope/telescope.nvim"
+    },
+    config = function()
+      require("neogit").setup {}
+    end
+  }
 
   -- タブ制御
   use "watanany/vim-tabs"
+
+  -- org-mode
+  -- use {
+  --   "nvim-orgmode/orgmode",
+  --   requires = { "nvim-treesitter/nvim-treesitter" },
+  --   config = function()
+  --     local orgmode = require("orgmode")
+  --     orgmode.setup_ts_grammer()
+  --     orgmode.setup {
+  --       org_agenda_files = { "~/sanctum/org/**/*.org" },
+  --     }
+  --   end,
+  -- }
+
+  -- hy
+  use "hylang/vim-hy"
 
   -- packerがインストールされた初回のみPackerSyncを行う
   if packer_bootstrap then

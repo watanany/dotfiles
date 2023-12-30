@@ -125,7 +125,11 @@ vim.keymap.set("n", "<space>sp", live_grep, { noremap = true, silent = true })
 vim.keymap.set("n", "<space>fb", telescope_builtin.buffers, { noremap = true, silent = true })
 vim.keymap.set("n", "<space>fh", telescope_builtin.help_tags, { noremap = true, silent = true })
 vim.keymap.set("n", "<space>pp", telescope.extensions.project.project, { noremap = true, silent = true })
-vim.keymap.set("n", "<space>fr", telescope.extensions.recent_files.pick, { noremap = true, silent = true })
+-- vim.keymap.set("n", "<space>fr", telescope.extensions.recent_files.pick, { noremap = true, silent = true })
+vim.keymap.set("n", "<space>fr", ":Telescope frecency<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<space>fR", ":Telescope frecency workspace=CWD<CR>", { noremap = true, silent = true })
+
+vim.keymap.set("n", "<space>gg", require("neogit").open, { noremap = true, silent = true })
 
 -- ターミナルで<Esc>か<C-[>を押した時にノーマルモードに戻る
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
@@ -134,6 +138,13 @@ vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { noremap = true, silent = true })
 -- ターミナルを開く
 vim.keymap.set("n", "<space>ot", (function() vim.cmd("ToggleTerm") end), { noremap = true, silent = true })
 vim.keymap.set("n", "<space>oT", (function() vim.cmd("term") end), { noremap = true, silent = true })
+
+vim.keymap.set("n", "<space>hrr", (function() require("packer").sync() end), { noremap = true, silent = true })
+
+vim.keymap.set("n", "<space>Tl", (function() vim.wo.list = not vim.wo.list end), { noremap = true, silent = true })
+vim.keymap.set("n", "<space>Tn", (function() vim.wo.number = not vim.wo.number end), { noremap = true, silent = true })
+vim.keymap.set("n", "<space>Tw", (function() vim.wo.wrap = not vim.wo.wrap end), { noremap = true, silent = true })
+vim.keymap.set("n", "<space>Tp", (function() vim.o.paste = not vim.o.paste end), { noremap = true, silent = true })
 
 ----------------------------------------------------------------------
 -- LSP
@@ -191,15 +202,15 @@ lspconfig["lua_ls"].setup {
 lspconfig["pyright"].setup {
   on_attach = on_attach,
   flags = lsp_flags,
-  settings = {
-    python = {
-      venvPath = ".",
-      pythonPath = ".venv/bin/python",
-      analysis = {
-        extraPaths = { "." },
-      },
-    },
-  },
+  -- settings = {
+  --   python = {
+  --     venvPath = ".",
+  --     pythonPath = ".venv/bin/python",
+  --     analysis = {
+  --       extraPaths = { "." },
+  --     },
+  --   },
+  -- },
 }
 
 lspconfig["ruby_ls"].setup {
@@ -231,6 +242,11 @@ lspconfig["hie"].setup {
   flags = lsp_flags,
 }
 
+lspconfig["terraformls"].setup {
+  on_attach = on_attach,
+  flags = lsp_flags,
+}
+
 ----------------------------------------------------------------------
 -- augroup / autocmd
 ----------------------------------------------------------------------
@@ -242,7 +258,10 @@ augroup('YankHighlight', { clear = true })
 autocmd('TextYankPost', {
   group = 'YankHighlight',
   callback = function()
-    vim.highlight.on_yank({ higroup = 'IncSearch', timeout = '50' })
+    vim.highlight.on_yank {
+      higroup = 'IncSearch',
+      timeout = '50',
+    }
   end
 })
 
@@ -264,13 +283,13 @@ autocmd('BufLeave', {
   command = 'stopinsert'
 })
 
-
 require('which-key').register {
   ["<space>ft"] = "ファイルツリーを開く",
   ["<space>pp"] = "プロジェクトを開く",
   ["<space>pf"] = "ファイル名で検索する",
   ["<space>ff"] = "ファイル名で検索する",
   ["<space>fr"] = "最近開いたファイルで検索する",
+  ["<space>fR"] = "最近開いたファイルで検索する(カレントディレクトリ)",
   ["<space>fs"] = "ファイル内の文字列を検索する",
   ["<space>sp"] = "ファイル内の文字列を検索する",
   ["<space>fb"] = "バッファ一覧を表示する",
@@ -295,4 +314,8 @@ require('which-key').register {
   ["<space>ca"] = "現在のカーソル位置で利用可能なコードアクションを選択する",
   ["gr"] = "リファレンス一覧を表示する",
   ["<space>F"] = "バッファ内のコードをフォーマットする",
+  ["<space>Tl"] = "不可視文字を表示をトグルする",
+  ["<space>Tn"] = "行番号の表示をトグルする",
+  ["<space>Tw"] = "折り返しをトグルする",
+  ["<space>Tp"] = "ペーストモードをトグルする",
 }
