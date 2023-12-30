@@ -22,7 +22,9 @@
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 ;;
-(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'light))
+;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'light))
+(setq doom-font (font-spec :family "Firple" :size 12 :weight 'regular))
+(setq doom-symbol-font doom-font)
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -87,8 +89,7 @@
 ;;   (dolist (mode '(python-mode))
 ;;     (add-to-list 'pangu-spacing-inhibit-mode-alist mode)))
 
-(use-package! projectile
-  :config
+(after! projectile
   (dolist (file '("spago.dhall" "go.mod"))
     (add-to-list 'projectile-project-root-files file)))
 
@@ -123,7 +124,8 @@
 
 (use-package! hy-mode
   :config
-  (add-to-list 'auto-mode-alist '("\\.hy\\'" . hy-mode)))
+  (add-to-list 'auto-mode-alist '("\\.hy\\'" . hy-mode))
+  (add-hook 'hy-mode-hook #'evil-cleverparens-mode))
 
 ;; org-modeをGitHub風にマークダウンをエクスポートできるようにする
 ;; org-gfm-export-as-markdown
@@ -137,6 +139,7 @@
 
 ;; magitでのdiffを見やすくする
 (use-package! magit-delta
+  :after magit
   :hook (magit-mode . magit-delta-mode))
 
 ;; TabNineによる自動補完を有効にする
@@ -157,9 +160,15 @@
 
 (use-package! org-preview-html)
 
+(use-package! org-download
+  :config
+  (add-hook 'dired-mode-hook 'org-download-enable)
+  (setq-default org-download-image-dir "~/sanctum/org/assets/images"))
+
 (use-package! golazo-v2-mode)
 
 (use-package! mojo-mode)
+
 (use-package! copl-mode)
 
 ;; FIXME: This package causes strange behavior in Prompt2(iPad app).
@@ -287,11 +296,11 @@
     (add-hook hook #'(lambda () (modify-syntax-entry ?_ "w")))))
 
 ;;; Utilities
-(defun my/copy-buffer-file-name ()
+(defun copy-buffer-file-name ()
   "現在のバッファのファイル名をコピーする関数"
   (kill-new (buffer-file-name)))
 
-(defun my/projectile-add-projects (dir)
+(defun projectile-add-projects (dir)
   "projectileプロジェクトにdir直下の全てのプロジェクトを追加する"
   ;; ミニバッファーから引数dirを入力できるようにする
   (interactive (list (read-directory-name "Add to known projects: ")))
@@ -348,9 +357,6 @@
                                     "\\>")
                            0 font-lock-builtin-face)))
 
-;;; Hy
-(add-hook 'hy-mode-hook #'evil-cleverparens-mode)
-
 ;;; PlantUML
 ;; 拡張子.puをplantuml-modeに紐づける
 (add-to-list 'auto-mode-alist '("\\.pu\\'" . plantuml-mode))
@@ -383,8 +389,8 @@
 
 ;;; formatter
 ;; 特定のモードで自動フォーマットを無効にする
-(setq +format-on-save-enabled-modes
-      '(not emacs-lisp-mode             ; elisp's mechanisms are good enough
+(setq +format-on-save-disabled-modes
+      '(emacs-lisp-mode             ; elisp's mechanisms are good enough
         sql-mode                    ; sqlformat is currently broken
         tex-mode                    ; latexindent is broken
         latex-mode
@@ -392,8 +398,7 @@
         yaml-mode
         ruby-mode
         haskell-mode
-        typescript-mode
-        ))
+        typescript-mode))
 
 ;;; markdown
 (cl-case system-type
@@ -406,5 +411,4 @@
 ;;; プロジェクトの設定
 (projectile-add-known-project org-directory)
 (projectile-add-known-project "~/dotfiles")
-(my/projectile-add-projects "~/sanctum/projects")
-
+(projectile-add-projects "~/sanctum/projects")
