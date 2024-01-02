@@ -32,10 +32,8 @@ LINK_LIST = [
     ".gitignore_global",
     ".lein",
     ".ipython/profile_default/startup/00-first.py",
+    ".config/nvim",
 ]
-
-NEOVIM_CONFIG = ".config/nvim"
-
 
 def remove_links():
     home_files = [os.path.join(HOME, fn) for fn in LINK_LIST + [NEOVIM_CONFIG]]
@@ -57,12 +55,6 @@ def link_files():
         os.symlink(dot_file, home_file)
 
 
-def link_neovim_config():
-    vim = os.path.join(CONFIG_ROOT, ".vim")
-    neovim = os.path.join(HOME, NEOVIM_CONFIG)
-    os.symlink(vim, neovim)
-
-
 def make_dirs():
     pathes = [os.path.join(HOME, d) for d in DIRS]
     pathes = [p for p in pathes if not os.path.exists(p)]
@@ -74,7 +66,6 @@ def main():
     make_dirs()
     remove_links()
     link_files()
-    link_neovim_config()
 
 
 if __name__ == "__main__":
