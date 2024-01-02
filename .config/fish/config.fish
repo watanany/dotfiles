@@ -4,7 +4,7 @@ if status is-interactive
             eval $(/opt/homebrew/bin/brew shellenv)
     end
 
-    set -gx EDITOR emacsclient
+    set -gx EDITOR nvim
     set -gx FZF_DEFAULT_OPTS "--layout=reverse"
 
     set -gx PATH "$HOME/.emacs.d/bin" $PATH
