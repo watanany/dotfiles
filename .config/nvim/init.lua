@@ -95,6 +95,7 @@ vim.keymap.set("n", "<space>ft", ":Fern . -drawer<CR>", { noremap = true, silent
 -- Telescopeの設定を行う
 local telescope = require("telescope")
 local telescope_builtin = require("telescope.builtin")
+local telescope_actions = require("telescope.actions")
 
 telescope.setup {
   extensions = {
@@ -108,21 +109,36 @@ telescope.setup {
       hidden_files = true,
     },
   },
+  defaults = {
+    mappings = {
+      i = {
+        -- 最初のESCでTelescopeを閉じる
+        -- cf. <https://www.reddit.com/r/neovim/comments/pzxw8h/telescope_quit_on_first_single_esc/>
+        ["<esc>"] = telescope_actions.close,
+      },
+    },
+  },
 }
 
-function find_files()
+local function find_files()
   telescope_builtin.find_files({ hidden = true })
 end
 
-function live_grep()
+local function live_grep()
   telescope_builtin.live_grep({ hidden = true })
+end
+
+local function find_neovim_configs()
+  telescope_builtin.find_files({ cwd = "~/.config/nvim", hidden = true })
 end
 
 vim.keymap.set("n", "<space>ff", find_files, { noremap = true, silent = true })
 vim.keymap.set("n", "<space>pf", find_files, { noremap = true, silent = true })
+vim.keymap.set("n", "<space>fp", find_neovim_configs, { noremap = true, silent = true })
 vim.keymap.set("n", "<space>fs", live_grep, { noremap = true, silent = true })
 vim.keymap.set("n", "<space>sp", live_grep, { noremap = true, silent = true })
 vim.keymap.set("n", "<space>fb", telescope_builtin.buffers, { noremap = true, silent = true })
+vim.keymap.set("n", "<space>bB", telescope_builtin.buffers, { noremap = true, silent = true })
 vim.keymap.set("n", "<space>fh", telescope_builtin.help_tags, { noremap = true, silent = true })
 vim.keymap.set("n", "<space>pp", telescope.extensions.project.project, { noremap = true, silent = true })
 -- vim.keymap.set("n", "<space>fr", telescope.extensions.recent_files.pick, { noremap = true, silent = true })
@@ -288,11 +304,13 @@ require('which-key').register {
   ["<space>pp"] = "プロジェクトを開く",
   ["<space>pf"] = "ファイル名で検索する",
   ["<space>ff"] = "ファイル名で検索する",
+  ["<space>fp"] = "neovimの設定ファイルを検索する",
   ["<space>fr"] = "最近開いたファイルで検索する",
   ["<space>fR"] = "最近開いたファイルで検索する(カレントディレクトリ)",
   ["<space>fs"] = "ファイル内の文字列を検索する",
   ["<space>sp"] = "ファイル内の文字列を検索する",
   ["<space>fb"] = "バッファ一覧を表示する",
+  ["<space>bB"] = "バッファ一覧を表示する",
   ["<space>fh"] = "ヘルプを表示する",
   ["<space>ot"] = "ターミナルをトグルする",
   ["<space>oT"] = "ターミナルを開く",

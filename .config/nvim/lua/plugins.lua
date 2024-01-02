@@ -107,7 +107,7 @@ local function startup(use)
   use {
     "nvim-telescope/telescope.nvim",
     tag = "*",
-    requires = { { "nvim-lua/plenary.nvim" } },
+    requires = { "nvim-lua/plenary.nvim" },
   }
 
   use {
@@ -117,7 +117,10 @@ local function startup(use)
 
   use {
     "nvim-telescope/telescope-project.nvim",
-    requires = { "nvim-telescope/telescope.nvim", "nvim-telescope/telescope-file-browser.nvim" },
+    requires = {
+      "nvim-telescope/telescope.nvim",
+      "nvim-telescope/telescope-file-browser.nvim",
+    },
     config = function()
       require("telescope").load_extension("project")
     end,
