@@ -315,7 +315,7 @@ autocmd('BufLeave', {
   command = 'stopinsert'
 })
 
-require('which-key').register {
+local which_key = {
   ["<space>ft"] = "ファイルツリーを開く",
   ["<space>pp"] = "プロジェクトを開く",
   ["<space>pf"] = "ファイル名で検索する",
@@ -352,4 +352,16 @@ require('which-key').register {
   ["<space>Tn"] = "行番号の表示をトグルする",
   ["<space>Tw"] = "折り返しをトグルする",
   ["<space>Tp"] = "ペーストモードをトグルする",
+  ["<space><tab>n"] = "タブを作成する",
+  ["<space><tab>d"] = "タブを削除する",
+  ["<space><tab>["] = "タブを一つ前に移動する",
+  ["<space><tab>]"] = "タブを一つ後に移動する",
 }
+
+for i = 1, 9 do
+  local key = string.format("<space><tab>%d", i)
+  local desc = string.format("タブ[%d]に移動する", i)
+  which_key[key] = desc
+end
+
+require('which-key').register(which_key)
