@@ -143,6 +143,7 @@ vim.keymap.set("n", "<space>fb", telescope_builtin.buffers, { noremap = true, si
 vim.keymap.set("n", "<space>bB", telescope_builtin.buffers, { noremap = true, silent = true })
 vim.keymap.set("n", "<space>fh", telescope_builtin.help_tags, { noremap = true, silent = true })
 vim.keymap.set("n", "<space>pp", telescope.extensions.project.project, { noremap = true, silent = true })
+vim.keymap.set("n", "<space>pP", telescope.extensions.projects.projects, { noremap = true, silent = true })
 -- vim.keymap.set("n", "<space>fr", telescope.extensions.recent_files.pick, { noremap = true, silent = true })
 vim.keymap.set("n", "<space>fr", ":Telescope frecency<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<space>fR", ":Telescope frecency workspace=CWD<CR>", { noremap = true, silent = true })
@@ -286,33 +287,33 @@ local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 
 -- Yank時にハイライトを行う
-augroup('YankHighlight', { clear = true })
-autocmd('TextYankPost', {
-  group = 'YankHighlight',
+augroup("YankHighlight", { clear = true })
+autocmd("TextYankPost", {
+  group = "YankHighlight",
   callback = function()
     vim.highlight.on_yank {
-      higroup = 'IncSearch',
-      timeout = '50',
+      higroup = "IncSearch",
+      timeout = "50",
     }
-  end
+  end,
 })
 
 -- 保存時に行末の空白を削除する
-autocmd('BufWritePre', {
-  pattern = '',
-  command = ":%s/\\s\\+$//e"
+autocmd("BufWritePre", {
+  pattern = "",
+  command = ":%s/\\s\\+$//e",
 })
 
 -- ターミナルを開いた時にinsertモードを開始する
-autocmd('TermOpen', {
-  pattern = '',
-  command = 'startinsert'
+autocmd("TermOpen", {
+  pattern = "",
+  command = "startinsert",
 })
 
 -- ターミナルのバッファを離れた時にinsertモードを終了する
-autocmd('BufLeave', {
-  pattern = 'term://*',
-  command = 'stopinsert'
+autocmd("BufLeave", {
+  pattern = "term://*",
+  command = "stopinsert",
 })
 
 local which_key = {
@@ -364,4 +365,4 @@ for i = 1, 9 do
   which_key[key] = desc
 end
 
-require('which-key').register(which_key)
+require("which-key").register(which_key)
