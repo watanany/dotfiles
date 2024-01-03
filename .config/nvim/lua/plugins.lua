@@ -57,11 +57,11 @@ local function startup(use)
       }
 
       -- ISSUE: <https://github.com/nvim-treesitter/nvim-treesitter/wiki/Installation#packernvim>
-      -- vim.api.nvim_create_autocmd({ 'BufEnter', 'BufAdd', 'BufNew', 'BufNewFile', 'BufWinEnter' }, {
-      --   group = vim.api.nvim_create_augroup('TS_FOLD_WORKAROUND', {}),
+      -- vim.api.nvim_create_autocmd({ "BufEnter", "BufAdd", "BufNew", "BufNewFile", "BufWinEnter" }, {
+      --   group = vim.api.nvim_create_augroup("TS_FOLD_WORKAROUND", {}),
       --   callback = function()
-      --     vim.opt.foldmethod = 'expr'
-      --     vim.opt.foldexpr   = 'nvim_treesitter#foldexpr()'
+      --     vim.opt.foldmethod = "expr"
+      --     vim.opt.foldexpr   = "nvim_treesitter#foldexpr()"
       --   end
       -- })
     end
@@ -170,7 +170,7 @@ local function startup(use)
 
   -- 対応する文字を閉じる
   use {
-    'm4xshen/autoclose.nvim',
+    "m4xshen/autoclose.nvim",
     config = function()
       require("autoclose").setup {
         ["{"] = { escape = true, close = true, pair = "}", disabled_filetypes = {} },
