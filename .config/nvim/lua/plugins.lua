@@ -37,34 +37,6 @@ local function startup(use)
       local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
       ts_update()
     end,
-    config = function()
-      require("nvim-treesitter.configs").setup {
-        ensure_installed = {
-          "c", "lua", "vim", "vimdoc", "query",
-          "json", "yaml", "toml", "bash", "fish", "dockerfile",
-          "hcl", "terraform",
-          "python", "ruby", "go", "rust",
-          "typescript", "javascript", "tsx", "html", "css", "tsx",
-          "org",
-        },
-        auto_install = true,
-        highlight = {
-          enable = true,
-        },
-        indent = {
-          enable = true,
-        },
-      }
-
-      -- ISSUE: <https://github.com/nvim-treesitter/nvim-treesitter/wiki/Installation#packernvim>
-      -- vim.api.nvim_create_autocmd({ "BufEnter", "BufAdd", "BufNew", "BufNewFile", "BufWinEnter" }, {
-      --   group = vim.api.nvim_create_augroup("TS_FOLD_WORKAROUND", {}),
-      --   callback = function()
-      --     vim.opt.foldmethod = "expr"
-      --     vim.opt.foldexpr   = "nvim_treesitter#foldexpr()"
-      --   end
-      -- })
-    end
   }
 
   -- カーソル移動加速プラグイン
@@ -178,6 +150,11 @@ local function startup(use)
         ["("] = { escape = true, close = true, pair = ")", disabled_filetypes = {} },
       }
     end,
+  }
+
+  use {
+    "RRethy/nvim-treesitter-endwise",
+    requires = { "nvim-treesitter/nvim-treesitter" },
   }
 
   -- GitHub Copilot

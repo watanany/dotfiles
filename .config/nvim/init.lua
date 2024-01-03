@@ -280,6 +280,33 @@ lspconfig["terraformls"].setup {
   flags = lsp_flags,
 }
 
+
+----------------------------------------------------------------------
+-- nvim-treesitter
+----------------------------------------------------------------------
+require("nvim-treesitter.configs").setup {
+  ensure_installed = {
+    "c", "lua", "vim", "vimdoc", "query",
+    "json", "yaml", "toml", "bash", "fish", "dockerfile",
+    "hcl", "terraform",
+    "python", "ruby", "go", "rust",
+    "typescript", "javascript", "tsx", "html", "css", "tsx",
+    "org",
+  },
+  auto_install = true,
+  highlight = {
+    enable = true,
+  },
+  indent = {
+    enable = true,
+  },
+
+  -- RRethy/nvim-treesitter-endwise
+  endwise = {
+    enable = true,
+  },
+}
+
 ----------------------------------------------------------------------
 -- augroup / autocmd
 ----------------------------------------------------------------------
@@ -316,6 +343,9 @@ autocmd("BufLeave", {
   command = "stopinsert",
 })
 
+----------------------------------------------------------------------
+-- which-key
+----------------------------------------------------------------------
 local which_key = {
   ["<space>ft"] = "ファイルツリーを開く",
   ["<space>pp"] = "プロジェクトを開く",
