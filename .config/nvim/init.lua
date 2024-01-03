@@ -91,6 +91,41 @@ vim.keymap.set("c", "?", function()
   return (vim.fn.getcmdtype() == "?") and "\\?" or "?"
 end, { noremap = true, expr = true })
 
+-- neogit
+vim.keymap.set("n", "<space>gg", require("neogit").open, { noremap = true, silent = true })
+
+-- ターミナルで<Esc>か<C-[>を押した時にノーマルモードに戻る
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
+vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { noremap = true, silent = true })
+
+-- ターミナルを開く
+vim.keymap.set("n", "<space>ot", (function() vim.cmd("ToggleTerm") end), { noremap = true, silent = true })
+vim.keymap.set("n", "<space>oT", (function() vim.cmd("term") end), { noremap = true, silent = true })
+
+-- :PackerSync
+vim.keymap.set("n", "<space>hrr", (function() require("packer").sync() end), { noremap = true, silent = true })
+
+-- 各種設定のトグル
+vim.keymap.set("n", "<space>Tl", (function() vim.wo.list = not vim.wo.list end), { noremap = true, silent = true })
+vim.keymap.set("n", "<space>Tn", (function() vim.wo.number = not vim.wo.number end), { noremap = true, silent = true })
+vim.keymap.set("n", "<space>Tw", (function() vim.wo.wrap = not vim.wo.wrap end), { noremap = true, silent = true })
+vim.keymap.set("n", "<space>Tp", (function() vim.o.paste = not vim.o.paste end), { noremap = true, silent = true })
+
+-- タブ関連
+vim.keymap.set("n", "<space><tab>n", ":tablast | tabnew<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<space><tab>d", ":tabclose<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<space><tab>[", ":tabnext<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<space><tab>]", ":tabprev<CR>", { noremap = true, silent = true })
+
+for i = 1, 9 do
+  local key = string.format("<space><tab>%d", i)
+  local cmd = string.format(":tabnext %d<CR>", i)
+  vim.keymap.set("n", key, cmd, { noremap = true, silent = true })
+end
+
+----------------------------------------------------------------------
+-- Telescope
+----------------------------------------------------------------------
 -- Fernのキーバインドを設定する
 vim.keymap.set("n", "<space>ft", ":Fern . -drawer<CR>", { noremap = true, silent = true })
 
@@ -147,37 +182,6 @@ vim.keymap.set("n", "<space>pP", telescope.extensions.projects.projects, { norem
 -- vim.keymap.set("n", "<space>fr", telescope.extensions.recent_files.pick, { noremap = true, silent = true })
 vim.keymap.set("n", "<space>fr", ":Telescope frecency<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<space>fR", ":Telescope frecency workspace=CWD<CR>", { noremap = true, silent = true })
-
-vim.keymap.set("n", "<space>gg", require("neogit").open, { noremap = true, silent = true })
-
--- ターミナルで<Esc>か<C-[>を押した時にノーマルモードに戻る
-vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
-vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { noremap = true, silent = true })
-
--- ターミナルを開く
-vim.keymap.set("n", "<space>ot", (function() vim.cmd("ToggleTerm") end), { noremap = true, silent = true })
-vim.keymap.set("n", "<space>oT", (function() vim.cmd("term") end), { noremap = true, silent = true })
-
--- :PackerSync
-vim.keymap.set("n", "<space>hrr", (function() require("packer").sync() end), { noremap = true, silent = true })
-
--- 各種設定のトグル
-vim.keymap.set("n", "<space>Tl", (function() vim.wo.list = not vim.wo.list end), { noremap = true, silent = true })
-vim.keymap.set("n", "<space>Tn", (function() vim.wo.number = not vim.wo.number end), { noremap = true, silent = true })
-vim.keymap.set("n", "<space>Tw", (function() vim.wo.wrap = not vim.wo.wrap end), { noremap = true, silent = true })
-vim.keymap.set("n", "<space>Tp", (function() vim.o.paste = not vim.o.paste end), { noremap = true, silent = true })
-
--- タブ関連
-vim.keymap.set("n", "<space><tab>n", ":tablast | tabnew<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<space><tab>d", ":tabclose<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<space><tab>[", ":tabnext<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<space><tab>]", ":tabprev<CR>", { noremap = true, silent = true })
-
-for i = 1, 9 do
-  local key = string.format("<space><tab>%d", i)
-  local cmd = string.format(":tabnext %d<CR>", i)
-  vim.keymap.set("n", key, cmd, { noremap = true, silent = true })
-end
 
 ----------------------------------------------------------------------
 -- LSP
