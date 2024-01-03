@@ -141,6 +141,14 @@ local function startup(use)
     end,
   }
 
+  use {
+    "ahmedkhalf/project.nvim",
+    config = function()
+      require("project_nvim").setup {}
+      require("telescope").load_extension("projects")
+    end,
+  }
+
   -- ターミナルをトグルする機能を追加
   use {
     "akinsho/toggleterm.nvim",
