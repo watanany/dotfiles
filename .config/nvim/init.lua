@@ -33,6 +33,8 @@ vim.opt.listchars = {
 vim.o.ignorecase = true
 -- ただし大文字も含めた検索の場合はその通りに検索する
 vim.o.smartcase = true
+-- ステータスラインを常に表示する
+vim.o.laststatus = 2
 -- ステータスラインを2行にする
 vim.o.cmdheight = 2
 -- カーソル移動の動作を変更
@@ -155,12 +157,26 @@ vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { noremap = true, silent = true })
 vim.keymap.set("n", "<space>ot", (function() vim.cmd("ToggleTerm") end), { noremap = true, silent = true })
 vim.keymap.set("n", "<space>oT", (function() vim.cmd("term") end), { noremap = true, silent = true })
 
+-- :PackerSync
 vim.keymap.set("n", "<space>hrr", (function() require("packer").sync() end), { noremap = true, silent = true })
 
+-- 各種設定のトグル
 vim.keymap.set("n", "<space>Tl", (function() vim.wo.list = not vim.wo.list end), { noremap = true, silent = true })
 vim.keymap.set("n", "<space>Tn", (function() vim.wo.number = not vim.wo.number end), { noremap = true, silent = true })
 vim.keymap.set("n", "<space>Tw", (function() vim.wo.wrap = not vim.wo.wrap end), { noremap = true, silent = true })
 vim.keymap.set("n", "<space>Tp", (function() vim.o.paste = not vim.o.paste end), { noremap = true, silent = true })
+
+-- タブ関連
+vim.keymap.set("n", "<space><tab>n", ":tablast | tabnew<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<space><tab>d", ":tabclose<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<space><tab>[", ":tabnext<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<space><tab>]", ":tabprev<CR>", { noremap = true, silent = true })
+
+for i = 1, 9 do
+  local key = string.format("<space><tab>%d", i)
+  local cmd = string.format(":tabnext %d<CR>", i)
+  vim.keymap.set("n", key, cmd, { noremap = true, silent = true })
+end
 
 ----------------------------------------------------------------------
 -- LSP

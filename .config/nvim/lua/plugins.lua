@@ -152,6 +152,14 @@ local function startup(use)
       }
     end,
   }
+
+  use {
+    "samjwill/nvim-unception",
+    setup = function()
+      vim.g.unception_open_buffer_in_new_tab = true
+    end,
+  }
+
   -- 対応する文字を閉じる
   use {
     'm4xshen/autoclose.nvim',
@@ -199,11 +207,16 @@ local function startup(use)
     },
     config = function()
       require("neogit").setup {}
-    end
+    end,
   }
 
   -- タブ制御
-  use "watanany/vim-tabs"
+  use {
+    "crispgm/nvim-tabline",
+    config = function()
+      require("tabline").setup {}
+    end,
+  }
 
   -- org-mode
   -- use {
