@@ -1,7 +1,6 @@
 require("plugins")
 
 -- プラグイン管理ファイルに書き込みが行われた場合、PackerCompileを行うようにする
--- (test)
 vim.cmd [[
   augroup packer_user_config
     autocmd!
@@ -91,9 +90,6 @@ vim.keymap.set("c", "?", function()
   return (vim.fn.getcmdtype() == "?") and "\\?" or "?"
 end, { noremap = true, expr = true })
 
--- neogit
-vim.keymap.set("n", "<space>gg", require("neogit").open, { noremap = true, silent = true })
-
 -- ターミナルで<Esc>か<C-[>を押した時にノーマルモードに戻る
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
 vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { noremap = true, silent = true })
@@ -106,10 +102,10 @@ vim.keymap.set("n", "<space>oT", (function() vim.cmd("term") end), { noremap = t
 vim.keymap.set("n", "<space>hrr", (function() require("packer").sync() end), { noremap = true, silent = true })
 
 -- 各種設定のトグル
-vim.keymap.set("n", "<space>Tl", (function() vim.wo.list = not vim.wo.list end), { noremap = true, silent = true })
-vim.keymap.set("n", "<space>Tn", (function() vim.wo.number = not vim.wo.number end), { noremap = true, silent = true })
-vim.keymap.set("n", "<space>Tw", (function() vim.wo.wrap = not vim.wo.wrap end), { noremap = true, silent = true })
-vim.keymap.set("n", "<space>Tp", (function() vim.o.paste = not vim.o.paste end), { noremap = true, silent = true })
+vim.keymap.set("n", "Tl", (function() vim.wo.list = not vim.wo.list end), { noremap = true, silent = true })
+vim.keymap.set("n", "Tn", (function() vim.wo.number = not vim.wo.number end), { noremap = true, silent = true })
+vim.keymap.set("n", "Tw", (function() vim.wo.wrap = not vim.wo.wrap end), { noremap = true, silent = true })
+vim.keymap.set("n", "Tp", (function() vim.o.paste = not vim.o.paste end), { noremap = true, silent = true })
 
 -- タブ関連
 vim.keymap.set("n", "<space><tab>n", ":tablast | tabnew<CR>", { noremap = true, silent = true })
@@ -122,6 +118,9 @@ for i = 1, 9 do
   local cmd = string.format(":tabnext %d<CR>", i)
   vim.keymap.set("n", key, cmd, { noremap = true, silent = true })
 end
+
+-- neogit
+vim.keymap.set("n", "<space>gg", require("neogit").open, { noremap = true, silent = true })
 
 ----------------------------------------------------------------------
 -- Telescope
@@ -351,6 +350,23 @@ autocmd("BufLeave", {
 -- which-key
 ----------------------------------------------------------------------
 local which_key = {
+  ["<space>ot"] = "ターミナルをトグルする",
+  ["<space>oT"] = "ターミナルを開く",
+
+  ["<space>hrr"] = ":PackerSync",
+
+  ["Tl"] = "不可視文字を表示をトグルする",
+  ["Tn"] = "行番号の表示をトグルする",
+  ["Tw"] = "折り返しをトグルする",
+  ["Tp"] = "ペーストモードをトグルする",
+
+  ["<space><tab>n"] = "タブを作成する",
+  ["<space><tab>d"] = "タブを削除する",
+  ["<space><tab>["] = "タブを一つ前に移動する",
+  ["<space><tab>]"] = "タブを一つ後に移動する",
+
+  ["<space>gg"] = "Neogitを開く",
+
   ["<space>ft"] = "ファイルツリーを開く",
   ["<space>pp"] = "プロジェクトを開く",
   ["<space>pf"] = "ファイル名で検索する",
@@ -363,10 +379,7 @@ local which_key = {
   ["<space>fb"] = "バッファ一覧を表示する",
   ["<space>bB"] = "バッファ一覧を表示する",
   ["<space>fh"] = "ヘルプを表示する",
-  ["<space>ot"] = "ターミナルをトグルする",
-  ["<space>oT"] = "ターミナルを開く",
-  ["<space>gg"] = "Neogitを開く",
-  ["<space>e"] = "ターミナルをトグルする",
+
   ["[d"] = "一つ前の診断に戻る",
   ["]d"] = "一つ後の診断に進む",
   ["<space>q"] = "フローティングウィンドウにカーソルの下にあるシンボルに関する情報を表示します。2回呼び出すと、フローティング ウィンドウにジャンプします。",
@@ -383,14 +396,6 @@ local which_key = {
   ["<space>ca"] = "現在のカーソル位置で利用可能なコードアクションを選択する",
   ["gr"] = "リファレンス一覧を表示する",
   ["<space>F"] = "バッファ内のコードをフォーマットする",
-  ["<space>Tl"] = "不可視文字を表示をトグルする",
-  ["<space>Tn"] = "行番号の表示をトグルする",
-  ["<space>Tw"] = "折り返しをトグルする",
-  ["<space>Tp"] = "ペーストモードをトグルする",
-  ["<space><tab>n"] = "タブを作成する",
-  ["<space><tab>d"] = "タブを削除する",
-  ["<space><tab>["] = "タブを一つ前に移動する",
-  ["<space><tab>]"] = "タブを一つ後に移動する",
 }
 
 for i = 1, 9 do
