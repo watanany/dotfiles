@@ -46,15 +46,15 @@ local function startup(use)
   use "rhysd/clever-f.vim"
 
   -- セッション管理
-  -- use {
-  --   "rmagatti/auto-session",
-  --   config = function()
-  --     require("auto-session").setup {
-  --       log_level = "error",
-  --       auto_session_suppress_dirs = { "~/" },
-  --     }
-  --   end,
-  -- }
+  use {
+    "rmagatti/auto-session",
+    config = function()
+      require("auto-session").setup {
+        log_level = "error",
+        auto_session_suppress_dirs = { "~/" },
+      }
+    end,
+  }
 
   -- 利用可能なキーマップを表示
   use {
@@ -239,4 +239,3 @@ return require("packer").startup {
   startup,
   config = config,
 }
-
