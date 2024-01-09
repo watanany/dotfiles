@@ -154,9 +154,9 @@ local function startup(use)
     "m4xshen/autoclose.nvim",
     config = function()
       require("autoclose").setup {
-        ["{"] = { escape = true, close = true, pair = "}", disabled_filetypes = {} },
-        ["["] = { escape = true, close = true, pair = "[", disabled_filetypes = {} },
-        ["("] = { escape = true, close = true, pair = ")", disabled_filetypes = {} },
+        options = {
+          disable_when_touch = true,
+        },
       }
     end,
   }
