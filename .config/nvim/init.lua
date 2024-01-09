@@ -42,6 +42,9 @@ vim.o.whichwrap = "b,s,h,l,<,>,[,]"
 vim.opt.undofile = true
 -- クリップボードを設定する
 vim.opt.clipboard:append("unnamedplus")
+-- :mksession時に絶対パスで保存するように強制する(curdir,sesdirを削除)
+-- cf. <https://www.reddit.com/r/vim/comments/adtnfv/comment/edk34ky/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button>
+vim.o.sessionoptions = "blank,buffers,folds,help,tabpages,winsize,terminal"
 
 -- カラースキームの設定
 vim.cmd [[
@@ -93,6 +96,33 @@ end, { noremap = true, expr = true })
 -- ターミナルで<Esc>か<C-[>を押した時にノーマルモードに戻る
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
 vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { noremap = true, silent = true })
+
+-- インサートモード中はEmacsのキーバインドを使用できるようにする
+vim.keymap.set("i", "<C-p>", "<Up>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-n>", "<Down>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-f>", "<Right>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-b>", "<Left>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-a>", "<Home>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-e>", "<End>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-d>", "<Del>", { noremap = true, silent = true })
+
+-- インサートモード中に<C-k>で行末まで削除する
+local function kill_line()
+  local _row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  local line = vim.api.nvim_get_current_line()
+  local end_col = #line
+
+  if col >= end_col then
+    -- カーソルが行末にある場合は、次の行と結合
+    vim.api.nvim_command("normal! J")
+  else
+    -- カーソル位置から行末までを削除
+    local new_line = line:sub(1, col)
+    vim.api.nvim_set_current_line(new_line)
+  end
+end
+
+vim.keymap.set("i", "<C-k>", kill_line, { noremap = true, silent = true })
 
 -- ターミナルを開く
 vim.keymap.set("n", "<space>ot", (function() vim.cmd("ToggleTerm") end), { noremap = true, silent = true })
@@ -177,7 +207,6 @@ vim.keymap.set("n", "<space>fb", telescope_builtin.buffers, { noremap = true, si
 vim.keymap.set("n", "<space>bB", telescope_builtin.buffers, { noremap = true, silent = true })
 vim.keymap.set("n", "<space>fh", telescope_builtin.help_tags, { noremap = true, silent = true })
 vim.keymap.set("n", "<space>pp", telescope.extensions.project.project, { noremap = true, silent = true })
-vim.keymap.set("n", "<space>pP", telescope.extensions.projects.projects, { noremap = true, silent = true })
 -- vim.keymap.set("n", "<space>fr", telescope.extensions.recent_files.pick, { noremap = true, silent = true })
 vim.keymap.set("n", "<space>fr", ":Telescope frecency<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<space>fR", ":Telescope frecency workspace=CWD<CR>", { noremap = true, silent = true })
@@ -294,11 +323,11 @@ require("nvim-treesitter.configs").setup {
     "hcl", "terraform",
     "python", "ruby", "go", "rust",
     "typescript", "javascript", "tsx", "html", "css", "tsx",
-    "org",
+    "org", "norg",
   },
-  auto_install = true,
   highlight = {
     enable = true,
+    disable = { "markdown" },
   },
   indent = {
     enable = true,
