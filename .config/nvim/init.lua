@@ -110,8 +110,8 @@ vim.keymap.set("n", "Tp", (function() vim.o.paste = not vim.o.paste end), { nore
 -- タブ関連
 vim.keymap.set("n", "<space><tab>n", ":tablast | tabnew<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<space><tab>d", ":tabclose<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<space><tab>[", ":tabnext<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<space><tab>]", ":tabprev<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<space><tab>[", ":tabprev<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<space><tab>]", ":tabnext<CR>", { noremap = true, silent = true })
 
 for i = 1, 9 do
   local key = string.format("<space><tab>%d", i)
