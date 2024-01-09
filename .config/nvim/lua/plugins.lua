@@ -80,8 +80,15 @@ local function startup(use)
 
   -- fzf本体(CLI)
   use { "junegunn/fzf", run = ":call fzf#install()" }
+
   -- vim用のfzfプラグイン
-  use "junegunn/fzf.vim"
+  use {
+    "junegunn/fzf.vim",
+    setup = function()
+      -- fzfのコマンドのプレフィックスを設定(e.g. :Files -> :FzfFiles)
+      vim.g.fzf_command_prefix = "Fzf"
+    end,
+  }
 
   -- ファジーファインダー
   use {
