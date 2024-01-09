@@ -18,6 +18,8 @@ vim.o.fileencoding = "utf-8"
 vim.o.number = true
 -- スクロールする時に下が見えるようにする
 vim.o.scrolloff = 5
+-- .swapファイルを作らない
+vim.o.swapfile = false
 -- 不可視文字を表示
 vim.o.list = true
 vim.opt.listchars = {
@@ -56,12 +58,11 @@ vim.cmd [[
   endtry
 ]]
 
--- fzfのコマンドのプレフィックスを設定(e.g. :Files -> :FzfFiles)
-vim.g["fzf_command_prefix"] = "Fzf" -- `let g:fzf_command_prefix = "Fzf"`と同じ意味
-
 ----------------------------------------------------------------------
 -- キーバインド
 ----------------------------------------------------------------------
+-- w!! でスーパーユーザーとして保存(sudoが使える環境限定)
+vim.keymap.set("c", "w!!", "!sudo tee % > /dev/null")
 -- 入力モード中に素早くJJと入力した場合はESCとみなす
 vim.keymap.set("i", "jj", "<Esc>", { noremap = true, silent = true })
 -- ESCを二回押すことでハイライトを消す
@@ -88,6 +89,7 @@ vim.keymap.set("n", "<UP>", "<Plug>(accelerated_jk_gk)", { silent = true })
 vim.keymap.set("c", "/", function()
   return (vim.fn.getcmdtype() == "/") and "\\/" or "/"
 end, { noremap = true, expr = true })
+
 -- ?{pattern}の入力中は「?」をタイプすると自動で「\?」が入力されるようになる
 vim.keymap.set("c", "?", function()
   return (vim.fn.getcmdtype() == "?") and "\\?" or "?"
@@ -367,6 +369,12 @@ autocmd("BufWritePre", {
 autocmd("TermOpen", {
   pattern = "",
   command = "startinsert",
+})
+
+-- ターミナルを開いた時に行番号を非表示にする
+autocmd("TermOpen", {
+  pattern = "",
+  command = "setlocal nonumber norelativenumber",
 })
 
 -- ターミナルのバッファを離れた時にinsertモードを終了する
