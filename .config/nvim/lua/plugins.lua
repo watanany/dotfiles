@@ -56,6 +56,14 @@ local function startup(use)
     end,
   }
 
+  use {
+    "Shatur/neovim-session-manager",
+    requires = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("session_manager").setup {}
+    end
+  }
+
   -- 利用可能なキーマップを表示
   use {
     "folke/which-key.nvim",
@@ -133,6 +141,7 @@ local function startup(use)
     end,
   }
 
+  -- ターミナル内でneovimを開けるようにする
   use {
     "samjwill/nvim-unception",
     setup = function()
@@ -168,9 +177,6 @@ local function startup(use)
       require("nvim-surround").setup {}
     end
   }
-
-  -- CSVを見やすく色付け
-  use "mechatroner/rainbow_csv"
 
   --
   use {
@@ -209,12 +215,90 @@ local function startup(use)
   --   requires = { "nvim-treesitter/nvim-treesitter" },
   --   config = function()
   --     local orgmode = require("orgmode")
-  --     orgmode.setup_ts_grammer()
   --     orgmode.setup {
   --       org_agenda_files = { "~/sanctum/org/**/*.org" },
   --     }
   --   end,
   -- }
+
+  use {
+    "nvim-neorg/neorg",
+    config = function()
+      require("neorg").setup {
+        load = {
+          ["core.defaults"] = {},  -- Loads default behaviour
+          ["core.concealer"] = {}, -- Adrs pretty icons to your documents
+          ["core.dirman"] = {      -- Manages Neorg workspaces
+            config = {
+              workspaces = {
+                notes = "~/sanctum/org",
+              },
+            },
+          },
+        },
+      }
+    end,
+    run = ":Neorg sync-parsers",
+    requires = { "nvim-lua/plenary.nvim" },
+  }
+
+  -- TODOコメントのハイライト
+  -- インストール方法(brew):
+  --   $ brew tap homebrew/cask-fonts
+  --   $ brew install font-hack-nerd-font
+  use {
+    "folke/todo-comments.nvim",
+    requires = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("todo-comments").setup {}
+    end
+  }
+
+  -- CSVを見やすく色付け
+  use "mechatroner/rainbow_csv"
+
+  -- markdown
+  use {
+    "ellisonleao/glow.nvim",
+    config = function()
+      require("glow").setup {}
+    end,
+  }
+
+  use {
+    "iamcco/markdown-preview.nvim",
+    run = function()
+      vim.fn["mkdp#util#install"]()
+    end,
+  }
+
+  -- use "godlygeek/tabular"
+  -- use "preservim/vim-markdown"
+  use {
+    "SidOfc/mkdx",
+    setup = function()
+      vim.g.mkdx = {
+        settings = {
+          highlight = { enable = true },
+          enter = { shift = true },
+          links = { external = { enable = true } },
+          toc = { text = "Table of Contents", update_on_write = true },
+          fold = { enable = false },
+        },
+      }
+    end
+  }
+
+  use "dhruvasagar/vim-table-mode"
+
+  use {
+    "yaocccc/nvim-hl-mdcodeblock.lua",
+    after = "nvim-treesitter",
+    requires = { "nvim-treesitter/nvim-treesitter" },
+    config = function()
+      require("hl-mdcodeblock").setup {}
+    end,
+  }
 
   -- hy
   use "hylang/vim-hy"
