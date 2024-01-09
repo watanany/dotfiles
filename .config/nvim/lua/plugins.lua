@@ -64,15 +64,17 @@ local function startup(use)
     end
   }
 
-  -- 利用可能なキーマップを表示
+  -- タブ制御
   use {
-    "folke/which-key.nvim",
+    "crispgm/nvim-tabline",
     config = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 300
+      require("tabline").setup {}
+    end,
+  }
 
-      require("which-key").setup {}
-    end
+  -- バッファ削除時にウィンドウを閉じないようにする
+  use {
+    "famiu/bufdelete.nvim",
   }
 
   -- ファイラー
@@ -173,9 +175,6 @@ local function startup(use)
     requires = { "nvim-treesitter/nvim-treesitter" },
   }
 
-  -- GitHub Copilot
-  use "github/copilot.vim"
-
   -- surroundを追加
   use {
     "kylechui/nvim-surround",
@@ -185,12 +184,37 @@ local function startup(use)
     end
   }
 
-  --
+  -- ファイル保存時にLSPでフォーマットする
   use {
     "lukas-reineke/lsp-format.nvim",
     config = function()
       require("lsp-format").setup {}
     end,
+  }
+
+  --
+  use {
+    "rcarriga/nvim-notify",
+    setup = function()
+      vim.opt.termguicolors = true
+    end,
+    config = function()
+      vim.notify = require("notify")
+    end,
+  }
+
+  -- GitHub Copilot
+  use "github/copilot.vim"
+
+  -- 利用可能なキーマップを表示
+  use {
+    "folke/which-key.nvim",
+    config = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+
+      require("which-key").setup {}
+    end
   }
 
   -- git
@@ -205,14 +229,6 @@ local function startup(use)
     },
     config = function()
       require("neogit").setup {}
-    end,
-  }
-
-  -- タブ制御
-  use {
-    "crispgm/nvim-tabline",
-    config = function()
-      require("tabline").setup {}
     end,
   }
 
@@ -298,6 +314,7 @@ local function startup(use)
 
   use "dhruvasagar/vim-table-mode"
 
+  -- markdown内のコードブロック内をシンタックスハイライト
   use {
     "yaocccc/nvim-hl-mdcodeblock.lua",
     after = "nvim-treesitter",
