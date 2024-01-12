@@ -61,7 +61,7 @@ local function startup(use)
     requires = { "nvim-lua/plenary.nvim" },
     config = function()
       require("session_manager").setup {}
-    end
+    end,
   }
 
   -- タブ制御
@@ -70,11 +70,6 @@ local function startup(use)
     config = function()
       require("tabline").setup {}
     end,
-  }
-
-  -- バッファ削除時にウィンドウを閉じないようにする
-  use {
-    "famiu/bufdelete.nvim",
   }
 
   -- ファイラー
@@ -145,7 +140,8 @@ local function startup(use)
     config = function()
       require("toggleterm").setup {
         size = 20,
-        -- open_mapping = "<space>ot",
+        open_mapping = "<Space>ot",
+        close_on_exit = true,
       }
     end,
   }
@@ -165,6 +161,7 @@ local function startup(use)
       require("autoclose").setup {
         options = {
           disable_when_touch = true,
+          touch_regex = "[%w(%[{ぁ-んァ-ヶー一-龯]"
         },
       }
     end,
@@ -181,7 +178,7 @@ local function startup(use)
     tag = "*", -- Use for stability; omit to use `main` branch for the latest features
     config = function()
       require("nvim-surround").setup {}
-    end
+    end,
   }
 
   -- ファイル保存時にLSPでフォーマットする
@@ -196,15 +193,58 @@ local function startup(use)
   use {
     "rcarriga/nvim-notify",
     setup = function()
-      vim.opt.termguicolors = true
+      vim.o.termguicolors = true
     end,
     config = function()
       vim.notify = require("notify")
     end,
   }
 
-  -- GitHub Copilot
-  use "github/copilot.vim"
+  --
+  use {
+    "hrsh7th/nvim-cmp",
+  }
+
+  use {
+    "hrsh7th/cmp-nvim-lsp",
+    requires = { "hrsh7th/nvim-cmp" },
+  }
+
+  use {
+    "hrsh7th/cmp-buffer",
+    requires = { "hrsh7th/nvim-cmp" },
+  }
+
+  use {
+    "hrsh7th/cmp-path",
+    requires = { "hrsh7th/nvim-cmp" },
+  }
+
+  use {
+    "hrsh7th/cmp-cmdline",
+    requires = { "hrsh7th/nvim-cmp", "hrsh7th/cmp-buffer" },
+  }
+
+  use {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup {
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+      }
+    end,
+  }
+
+  use {
+    "zbirenbaum/copilot-cmp",
+    requires = { "zbirenbaum/copilot.lua" },
+    after = { "copilot.lua" },
+    config = function()
+      require("copilot_cmp").setup()
+    end,
+  }
 
   -- 利用可能なキーマップを表示
   use {
@@ -214,7 +254,7 @@ local function startup(use)
       vim.o.timeoutlen = 300
 
       require("which-key").setup {}
-    end
+    end,
   }
 
   -- git
@@ -232,7 +272,7 @@ local function startup(use)
     end,
   }
 
-  -- org-mode
+  -- -- org-mode
   -- use {
   --   "nvim-orgmode/orgmode",
   --   requires = { "nvim-treesitter/nvim-treesitter" },
@@ -246,6 +286,8 @@ local function startup(use)
 
   use {
     "nvim-neorg/neorg",
+    requires = { "nvim-lua/plenary.nvim" },
+    run = ":Neorg sync-parsers",
     config = function()
       require("neorg").setup {
         load = {
@@ -261,8 +303,6 @@ local function startup(use)
         },
       }
     end,
-    run = ":Neorg sync-parsers",
-    requires = { "nvim-lua/plenary.nvim" },
   }
 
   -- TODOコメントのハイライト
@@ -274,7 +314,7 @@ local function startup(use)
     requires = { "nvim-lua/plenary.nvim" },
     config = function()
       require("todo-comments").setup {}
-    end
+    end,
   }
 
   -- CSVを見やすく色付け
@@ -295,8 +335,6 @@ local function startup(use)
     end,
   }
 
-  -- use "godlygeek/tabular"
-  -- use "preservim/vim-markdown"
   use {
     "SidOfc/mkdx",
     setup = function()
@@ -309,7 +347,7 @@ local function startup(use)
           fold = { enable = false },
         },
       }
-    end
+    end,
   }
 
   use "dhruvasagar/vim-table-mode"
@@ -326,6 +364,23 @@ local function startup(use)
 
   -- hy
   use "hylang/vim-hy"
+
+  -- インデントガイドラインの追加
+  use {
+    "lukas-reineke/indent-blankline.nvim",
+    requires = { "nvim-treesitter/nvim-treesitter" },
+    config = function()
+      require("ibl").setup {}
+    end,
+  }
+
+  -- 外部ツールのインストール
+  use {
+    "williamboman/mason.nvim",
+    config = function()
+      require("mason").setup {}
+    end,
+  }
 
   -- packerがインストールされた初回のみPackerSyncを行う
   if packer_bootstrap then
