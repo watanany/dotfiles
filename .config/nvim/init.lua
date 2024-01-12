@@ -127,11 +127,11 @@ end
 vim.keymap.set("i", "<C-k>", kill_line, { noremap = true, silent = true })
 
 -- ターミナルを開く
-vim.keymap.set("n", "<space>ot", (function() vim.cmd("ToggleTerm") end), { noremap = true, silent = true })
-vim.keymap.set("n", "<space>oT", (function() vim.cmd("term") end), { noremap = true, silent = true })
+-- vim.keymap.set("n", "<Space>ot", (function() vim.cmd("ToggleTerm") end), { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>oT", (function() vim.cmd("term") end), { noremap = true, silent = true })
 
 -- :PackerSync
-vim.keymap.set("n", "<space>hrr", (function() require("packer").sync() end), { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>hrr", (function() require("packer").sync() end), { noremap = true, silent = true })
 
 -- 各種設定のトグル
 vim.keymap.set("n", "Tl", (function() vim.wo.list = not vim.wo.list end), { noremap = true, silent = true })
@@ -140,25 +140,25 @@ vim.keymap.set("n", "Tw", (function() vim.wo.wrap = not vim.wo.wrap end), { nore
 vim.keymap.set("n", "Tp", (function() vim.o.paste = not vim.o.paste end), { noremap = true, silent = true })
 
 -- タブ関連
-vim.keymap.set("n", "<space><tab>n", ":tablast | tabnew<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<space><tab>d", ":tabclose<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<space><tab>[", ":tabprev<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<space><tab>]", ":tabnext<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<Space><Tab>n", ":tablast | tabnew<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<Space><Tab>d", ":tabclose<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<Space><Tab>[", ":tabprev<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<Space><Tab>]", ":tabnext<CR>", { noremap = true, silent = true })
 
 for i = 1, 9 do
-  local key = string.format("<space><tab>%d", i)
+  local key = string.format("<Space><Tab>%d", i)
   local cmd = string.format(":tabnext %d<CR>", i)
   vim.keymap.set("n", key, cmd, { noremap = true, silent = true })
 end
 
 -- neogit
-vim.keymap.set("n", "<space>gg", require("neogit").open, { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>gg", require("neogit").open, { noremap = true, silent = true })
 
 ----------------------------------------------------------------------
 -- Telescope
 ----------------------------------------------------------------------
 -- Fernのキーバインドを設定する
-vim.keymap.set("n", "<space>ft", ":Fern . -drawer<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>ft", ":Fern . -drawer<CR>", { noremap = true, silent = true })
 
 -- Telescopeの設定を行う
 local telescope = require("telescope")
@@ -188,30 +188,43 @@ telescope.setup {
   },
 }
 
-local function find_files()
-  telescope_builtin.find_files({ hidden = true })
+local function find_files(params)
+  params = params or {}
+  params["hidden"] = true
+  telescope_builtin.find_files(params)
 end
 
-local function live_grep()
-  telescope_builtin.live_grep({ hidden = true })
+local function live_grep(params)
+  params = params or {}
+  params["hidden"] = true
+  telescope_builtin.live_grep(params)
 end
 
 local function find_neovim_configs()
   telescope_builtin.find_files({ cwd = "~/.config/nvim", hidden = true })
 end
 
-vim.keymap.set("n", "<space>ff", find_files, { noremap = true, silent = true })
-vim.keymap.set("n", "<space>pf", find_files, { noremap = true, silent = true })
-vim.keymap.set("n", "<space>fp", find_neovim_configs, { noremap = true, silent = true })
-vim.keymap.set("n", "<space>fs", live_grep, { noremap = true, silent = true })
-vim.keymap.set("n", "<space>sp", live_grep, { noremap = true, silent = true })
-vim.keymap.set("n", "<space>fb", telescope_builtin.buffers, { noremap = true, silent = true })
-vim.keymap.set("n", "<space>bB", telescope_builtin.buffers, { noremap = true, silent = true })
-vim.keymap.set("n", "<space>fh", telescope_builtin.help_tags, { noremap = true, silent = true })
-vim.keymap.set("n", "<space>pp", telescope.extensions.project.project, { noremap = true, silent = true })
--- vim.keymap.set("n", "<space>fr", telescope.extensions.recent_files.pick, { noremap = true, silent = true })
-vim.keymap.set("n", "<space>fr", ":Telescope frecency<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<space>fR", ":Telescope frecency workspace=CWD<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>ff", find_files, { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>pf", find_files, { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>fp", find_neovim_configs, { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>fs", live_grep, { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>sp", live_grep, { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>fb", telescope_builtin.buffers, { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>bB", telescope_builtin.buffers, { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>fh", telescope_builtin.help_tags, { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>pp", telescope.extensions.project.project, { noremap = true, silent = true })
+-- vim.keymap.set("n", "<Space>fr", telescope.extensions.recent_files.pick, { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>fr", ":Telescope frecency<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>fR", ":Telescope frecency workspace=CWD<CR>", { noremap = true, silent = true })
+
+vim.keymap.set("n", "<Space>fd",
+  function() find_files({ cwd = vim.fn.expand("%:h") }) end,
+  { noremap = true, silent = true }
+)
+vim.keymap.set("n", "<Space>sd",
+  function() live_grep({ cwd = vim.fn.expand("%:h") }) end,
+  { noremap = true, silent = true }
+)
 
 ----------------------------------------------------------------------
 -- LSP
@@ -221,10 +234,10 @@ vim.keymap.set("n", "<space>fR", ":Telescope frecency workspace=CWD<CR>", { nore
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap = true, silent = true }
-vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, opts)
+vim.keymap.set("n", "<Space>e", vim.diagnostic.open_float, opts)
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist, opts)
+vim.keymap.set("n", "<Space>q", vim.diagnostic.setloclist, opts)
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -240,16 +253,16 @@ local function on_attach(client, buffer)
   vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
   vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
   vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, bufopts)
-  vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, bufopts)
-  vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
-  vim.keymap.set("n", "<space>wl", function()
+  vim.keymap.set("n", "<Space>wa", vim.lsp.buf.add_workspace_folder, bufopts)
+  vim.keymap.set("n", "<Space>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
+  vim.keymap.set("n", "<Space>wl", function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, bufopts)
-  vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, bufopts)
-  vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, bufopts)
-  vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, bufopts)
+  vim.keymap.set("n", "<Space>D", vim.lsp.buf.type_definition, bufopts)
+  vim.keymap.set("n", "<Space>rn", vim.lsp.buf.rename, bufopts)
+  vim.keymap.set("n", "<Space>ca", vim.lsp.buf.code_action, bufopts)
   vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
-  vim.keymap.set("n", "<space>F", function() vim.lsp.buf.format { async = true } end, bufopts)
+  vim.keymap.set("n", "<Space>F", function() vim.lsp.buf.format { async = true } end, bufopts)
 
   require("lsp-format").on_attach(client, buffer, { sync = true })
 end
@@ -269,15 +282,15 @@ lspconfig["lua_ls"].setup {
 lspconfig["pyright"].setup {
   on_attach = on_attach,
   flags = lsp_flags,
-  -- settings = {
-  --   python = {
-  --     venvPath = ".",
-  --     pythonPath = ".venv/bin/python",
-  --     analysis = {
-  --       extraPaths = { "." },
-  --     },
-  --   },
-  -- },
+  settings = {
+    python = {
+      venvPath = ".",
+      pythonPath = ".venv/bin/python",
+      analysis = {
+        extraPaths = { "." },
+      },
+    },
+  },
 }
 
 lspconfig["ruby_ls"].setup {
@@ -314,6 +327,27 @@ lspconfig["terraformls"].setup {
   flags = lsp_flags,
 }
 
+----------------------------------------------------------------------
+-- nvim-cmp
+----------------------------------------------------------------------
+local cmp = require("cmp")
+
+cmp.setup {
+  mapping = cmp.mapping.preset.insert {
+    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-f>"] = cmp.mapping.scroll_docs(4),
+    ["<C-Space>"] = cmp.mapping.complete(),
+    ["<Esc>"] = cmp.mapping.abort(),
+    ["<Tab>"] = cmp.mapping.confirm({ select = true }),
+    ["<CR>"] = cmp.mapping.confirm({ select = true }),
+  },
+  sources = cmp.config.sources {
+    { name = "nvim_lsp" },
+    { name = "buffer" },
+    { name = "path" },
+    { name = "copilot" },
+  },
+}
 
 ----------------------------------------------------------------------
 -- nvim-treesitter
@@ -387,56 +421,58 @@ autocmd("BufLeave", {
 -- which-key
 ----------------------------------------------------------------------
 local which_key = {
-  ["<space>ot"] = "ターミナルをトグルする",
-  ["<space>oT"] = "ターミナルを開く",
+  ["<Space>ot"] = "ターミナルをトグルする",
+  ["<Space>oT"] = "ターミナルを開く",
 
-  ["<space>hrr"] = ":PackerSync",
+  ["<Space>hrr"] = ":PackerSync",
 
   ["Tl"] = "不可視文字を表示をトグルする",
   ["Tn"] = "行番号の表示をトグルする",
   ["Tw"] = "折り返しをトグルする",
   ["Tp"] = "ペーストモードをトグルする",
 
-  ["<space><tab>n"] = "タブを作成する",
-  ["<space><tab>d"] = "タブを削除する",
-  ["<space><tab>["] = "タブを一つ前に移動する",
-  ["<space><tab>]"] = "タブを一つ後に移動する",
+  ["<Space><Tab>n"] = "タブを作成する",
+  ["<Space><Tab>d"] = "タブを削除する",
+  ["<Space><Tab>["] = "タブを一つ前に移動する",
+  ["<Space><Tab>]"] = "タブを一つ後に移動する",
 
-  ["<space>gg"] = "Neogitを開く",
+  ["<Space>gg"] = "Neogitを開く",
 
-  ["<space>ft"] = "ファイルツリーを開く",
-  ["<space>pp"] = "プロジェクトを開く",
-  ["<space>pf"] = "ファイル名で検索する",
-  ["<space>ff"] = "ファイル名で検索する",
-  ["<space>fp"] = "neovimの設定ファイルを検索する",
-  ["<space>fr"] = "最近開いたファイルで検索する",
-  ["<space>fR"] = "最近開いたファイルで検索する(カレントディレクトリ)",
-  ["<space>fs"] = "ファイル内の文字列を検索する",
-  ["<space>sp"] = "ファイル内の文字列を検索する",
-  ["<space>fb"] = "バッファ一覧を表示する",
-  ["<space>bB"] = "バッファ一覧を表示する",
-  ["<space>fh"] = "ヘルプを表示する",
+  ["<Space>ft"] = "ファイルツリーを開く",
+  ["<Space>pp"] = "プロジェクトを開く",
+  ["<Space>pf"] = "ファイル名で検索する",
+  ["<Space>ff"] = "ファイル名で検索する",
+  ["<Space>fp"] = "neovimの設定ファイルを検索する",
+  ["<Space>fr"] = "最近開いたファイルで検索する",
+  ["<Space>fR"] = "最近開いたファイルで検索する(workspace=CWD)",
+  ["<Space>fs"] = "ファイル内の文字列を検索する",
+  ["<Space>sp"] = "ファイル内の文字列を検索する",
+  ["<Space>fb"] = "バッファ一覧を表示する",
+  ["<Space>bB"] = "バッファ一覧を表示する",
+  ["<Space>fh"] = "ヘルプを表示する",
+  ["<Space>fd"] = "ファイル名で検索する(cwd=%:h)",
+  ["<Space>sd"] = "ファイル内の文字列を検索する(cwd=%:h)",
 
   ["[d"] = "一つ前の診断に戻る",
   ["]d"] = "一つ後の診断に進む",
-  ["<space>q"] = "フローティングウィンドウにカーソルの下にあるシンボルに関する情報を表示します。2回呼び出すと、フローティング ウィンドウにジャンプします。",
+  ["<Space>q"] = "フローティングウィンドウにカーソルの下にあるシンボルに関する情報を表示します。2回呼び出すと、フローティング ウィンドウにジャンプします。",
   ["gD"] = "宣言にジャンプする",
   ["gd"] = "定義にジャンプする",
   ["K"] = "ホバーを表示する",
   ["gi"] = "実装にジャンプする",
   ["<C-k>"] = "シグネチャヘルプを表示する",
-  ["<space>wa"] = "ワークスペースにフォルダを追加する",
-  ["<space>wr"] = "ワークスペースからフォルダを削除する",
-  ["<space>wl"] = "ワークスペースのフォルダを表示する",
-  ["<space>D"] = "型定義にジャンプする",
-  ["<space>rn"] = "変数名を変更する",
-  ["<space>ca"] = "現在のカーソル位置で利用可能なコードアクションを選択する",
+  ["<Space>wa"] = "ワークスペースにフォルダを追加する",
+  ["<Space>wr"] = "ワークスペースからフォルダを削除する",
+  ["<Space>wl"] = "ワークスペースのフォルダを表示する",
+  ["<Space>D"] = "型定義にジャンプする",
+  ["<Space>rn"] = "変数名を変更する",
+  ["<Space>ca"] = "現在のカーソル位置で利用可能なコードアクションを選択する",
   ["gr"] = "リファレンス一覧を表示する",
-  ["<space>F"] = "バッファ内のコードをフォーマットする",
+  ["<Space>F"] = "バッファ内のコードをフォーマットする",
 }
 
 for i = 1, 9 do
-  local key = string.format("<space><tab>%d", i)
+  local key = string.format("<Space><Tab>%d", i)
   local desc = string.format("タブ[%d]に移動する", i)
   which_key[key] = desc
 end
