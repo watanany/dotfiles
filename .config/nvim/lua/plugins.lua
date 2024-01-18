@@ -370,7 +370,9 @@ local function startup(use)
     "lukas-reineke/indent-blankline.nvim",
     requires = { "nvim-treesitter/nvim-treesitter" },
     config = function()
-      require("ibl").setup {}
+      require("ibl").setup {
+        scope = { enabled = false },
+      }
     end,
   }
 
@@ -379,6 +381,13 @@ local function startup(use)
     "williamboman/mason.nvim",
     config = function()
       require("mason").setup {}
+    end,
+  }
+
+  use {
+    "aserowy/tmux.nvim",
+    config = function()
+      require("tmux").setup {}
     end,
   }
 

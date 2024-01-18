@@ -47,6 +47,8 @@ vim.opt.clipboard:append("unnamedplus")
 -- :mksession時に絶対パスで保存するように強制する(curdir,sesdirを削除)
 -- cf. <https://www.reddit.com/r/vim/comments/adtnfv/comment/edk34ky/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button>
 vim.o.sessionoptions = "blank,buffers,folds,help,tabpages,winsize,terminal"
+-- 行番号表示部分にサインを表示するようにする
+vim.o.signcolumn = "number"
 
 -- カラースキームの設定
 vim.cmd [[
@@ -337,7 +339,7 @@ cmp.setup {
     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-Space>"] = cmp.mapping.complete(),
-    ["<Esc>"] = cmp.mapping.abort(),
+    ["<C-q>"] = cmp.mapping.abort(),
     ["<Tab>"] = cmp.mapping.confirm({ select = true }),
     ["<CR>"] = cmp.mapping.confirm({ select = true }),
   },
@@ -415,6 +417,17 @@ autocmd("TermOpen", {
 autocmd("BufLeave", {
   pattern = "term://*",
   command = "stopinsert",
+})
+
+-- *.digはYAMLとして扱う
+autocmd("BufRead", {
+  pattern = "*.dig",
+  command = "setf yaml",
+})
+
+autocmd("BufNewFile", {
+  pattern = "*.dig",
+  command = "setf yaml",
 })
 
 ----------------------------------------------------------------------
