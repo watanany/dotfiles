@@ -1,1 +1,0 @@
-/Users/watanany/dotfiles/.vim
