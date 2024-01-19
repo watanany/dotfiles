@@ -101,16 +101,8 @@ end, { noremap = true, expr = true })
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
 vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { noremap = true, silent = true })
 
--- インサートモード中はEmacsのキーバインドを使用できるようにする
-vim.keymap.set("i", "<C-p>", "<Up>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-n>", "<Down>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-f>", "<Right>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-b>", "<Left>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-a>", "<Home>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-e>", "<End>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-d>", "<Del>", { noremap = true, silent = true })
-
--- インサートモード中に<C-k>で行末まで削除する
+-- Emacsのキーバインドを使用できるようにする
+-- 現在のカーソル位置から行末までを削除する関数
 local function kill_line()
   local _row, col = unpack(vim.api.nvim_win_get_cursor(0))
   local line = vim.api.nvim_get_current_line()
@@ -126,7 +118,20 @@ local function kill_line()
   end
 end
 
+vim.keymap.set("i", "<C-p>", "<Up>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-n>", "<Down>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-f>", "<Right>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-b>", "<Left>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-a>", "<Home>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-e>", "<End>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-d>", "<Del>", { noremap = true, silent = true })
 vim.keymap.set("i", "<C-k>", kill_line, { noremap = true, silent = true })
+
+vim.keymap.set("c", "<C-f>", "<Right>", { noremap = true })
+vim.keymap.set("c", "<C-b>", "<Left>", { noremap = true })
+vim.keymap.set("c", "<C-a>", "<Home>", { noremap = true })
+vim.keymap.set("c", "<C-e>", "<End>", { noremap = true })
+vim.keymap.set("c", "<C-d>", "<Del>", { noremap = true })
 
 -- ターミナルを開く
 -- vim.keymap.set("n", "<Space>ot", (function() vim.cmd("ToggleTerm") end), { noremap = true, silent = true })
@@ -348,6 +353,7 @@ cmp.setup {
     { name = "buffer" },
     { name = "path" },
     { name = "copilot" },
+    { name = "command" },
   },
 }
 

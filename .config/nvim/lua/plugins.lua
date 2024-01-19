@@ -200,7 +200,7 @@ local function startup(use)
     end,
   }
 
-  --
+  -- 補完プラグライン
   use {
     "hrsh7th/nvim-cmp",
   }
