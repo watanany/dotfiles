@@ -134,7 +134,7 @@ vim.keymap.set("c", "<C-e>", "<End>", { noremap = true })
 vim.keymap.set("c", "<C-d>", "<Del>", { noremap = true })
 
 -- ターミナルを開く
--- vim.keymap.set("n", "<Space>ot", (function() vim.cmd("ToggleTerm") end), { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>ot", (function() vim.cmd("TabToggleTerm!") end), { noremap = true, silent = true })
 vim.keymap.set("n", "<Space>oT", (function() vim.cmd("term") end), { noremap = true, silent = true })
 
 -- :PackerSync

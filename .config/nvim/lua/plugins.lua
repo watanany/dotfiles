@@ -135,13 +135,10 @@ local function startup(use)
 
   -- ターミナルをトグルする機能を追加
   use {
-    "akinsho/toggleterm.nvim",
-    tag = "*",
+    "watanany/tabtoggleterm.nvim",
     config = function()
-      require("toggleterm").setup {
+      require("tabtoggleterm").setup {
         size = 20,
-        open_mapping = "<Space>ot",
-        close_on_exit = true,
       }
     end,
   }
