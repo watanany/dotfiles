@@ -49,6 +49,8 @@ vim.opt.clipboard:append("unnamedplus")
 vim.o.sessionoptions = "blank,buffers,folds,help,tabpages,winsize,terminal"
 -- 行番号表示部分にサインを表示するようにする
 vim.o.signcolumn = "number"
+-- 折り畳みさせないようにする
+vim.o.foldenable = false
 
 -- カラースキームの設定
 vim.cmd [[
@@ -189,7 +191,7 @@ telescope.setup {
       i = {
         -- 最初のESCでTelescopeを閉じる
         -- cf. <https://www.reddit.com/r/neovim/comments/pzxw8h/telescope_quit_on_first_single_esc/>
-        ["<esc>"] = telescope_actions.close,
+        ["<Esc>"] = telescope_actions.close,
       },
     },
   },
@@ -284,6 +286,15 @@ local lspconfig = require("lspconfig")
 lspconfig["lua_ls"].setup {
   on_attach = on_attach,
   flags = lsp_flags,
+
+  -- "folke/neodev.nvim"
+  settings = {
+    Lua = {
+      completion = {
+        callSnippet = "Replace",
+      },
+    },
+  },
 }
 
 lspconfig["pyright"].setup {
@@ -340,6 +351,11 @@ lspconfig["terraformls"].setup {
 local cmp = require("cmp")
 
 cmp.setup {
+  snippet = {
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body)
+    end,
+  },
   mapping = cmp.mapping.preset.insert {
     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
@@ -354,8 +370,11 @@ cmp.setup {
     { name = "path" },
     { name = "copilot" },
     { name = "command" },
+    { name = "calc" },
+    { name = "nvim_lua" },
   },
 }
+
 
 ----------------------------------------------------------------------
 -- nvim-treesitter
