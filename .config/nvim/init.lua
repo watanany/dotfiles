@@ -62,11 +62,13 @@ vim.cmd [[
   endtry
 ]]
 
+
 ----------------------------------------------------------------------
 -- キーバインド
 ----------------------------------------------------------------------
 -- w!! でスーパーユーザーとして保存(sudoが使える環境限定)
-vim.keymap.set("c", "w!!", "!sudo tee % > /dev/null")
+-- FIXME: 「:\w」でwhich-keyで候補が表示されてしまう
+-- vim.keymap.set("c", "w!!", "!sudo tee % > /dev/null")
 -- 入力モード中に素早くJJと入力した場合はESCとみなす
 vim.keymap.set("i", "jj", "<Esc>", { noremap = true, silent = true })
 -- ESCを二回押すことでハイライトを消す
@@ -163,6 +165,7 @@ end
 -- neogit
 vim.keymap.set("n", "<Space>gg", require("neogit").open, { noremap = true, silent = true })
 
+
 ----------------------------------------------------------------------
 -- Telescope
 ----------------------------------------------------------------------
@@ -235,58 +238,13 @@ vim.keymap.set("n", "<Space>sd",
   { noremap = true, silent = true }
 )
 
+
 ----------------------------------------------------------------------
 -- LSP
 ----------------------------------------------------------------------
--- <https://github.com/neovim/nvim-lspconfig#suggested-configuration>より引用
---
--- Mappings.
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
-local opts = { noremap = true, silent = true }
-vim.keymap.set("n", "<Space>e", vim.diagnostic.open_float, opts)
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-vim.keymap.set("n", "<Space>q", vim.diagnostic.setloclist, opts)
-
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-local function on_attach(client, buffer)
-  -- Enable completion triggered by <c-x><c-o>
-  vim.api.nvim_buf_set_option(buffer, "omnifunc", "v:lua.vim.lsp.omnifunc")
-
-  -- Mappings.
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  local bufopts = { noremap = true, silent = true, buffer = buffer }
-  vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
-  vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
-  vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
-  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
-  vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, bufopts)
-  vim.keymap.set("n", "<Space>wa", vim.lsp.buf.add_workspace_folder, bufopts)
-  vim.keymap.set("n", "<Space>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
-  vim.keymap.set("n", "<Space>wl", function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, bufopts)
-  vim.keymap.set("n", "<Space>D", vim.lsp.buf.type_definition, bufopts)
-  vim.keymap.set("n", "<Space>rn", vim.lsp.buf.rename, bufopts)
-  vim.keymap.set("n", "<Space>ca", vim.lsp.buf.code_action, bufopts)
-  vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
-  vim.keymap.set("n", "<Space>F", function() vim.lsp.buf.format { async = true } end, bufopts)
-
-  require("lsp-format").on_attach(client, buffer, { sync = true })
-end
-
-local lsp_flags = {
-  -- This is the default in Nvim 0.7+
-  debounce_text_changes = 150,
-}
-
 local lspconfig = require("lspconfig")
 
-lspconfig["lua_ls"].setup {
-  on_attach = on_attach,
-  flags = lsp_flags,
-
+lspconfig.lua_ls.setup {
   -- "folke/neodev.nvim"
   settings = {
     Lua = {
@@ -297,9 +255,7 @@ lspconfig["lua_ls"].setup {
   },
 }
 
-lspconfig["pyright"].setup {
-  on_attach = on_attach,
-  flags = lsp_flags,
+lspconfig.pyright.setup {
   settings = {
     python = {
       venvPath = ".",
@@ -311,39 +267,69 @@ lspconfig["pyright"].setup {
   },
 }
 
-lspconfig["ruby_ls"].setup {
-  on_attach = on_attach,
-  flags = lsp_flags,
+lspconfig.ruby_ls.setup {}
+
+lspconfig.tsserver.setup {
+  -- cf. <https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#tsserver>
+  filetypes = {
+    -- "javascript",
+    -- "javascriptreact",
+    -- "javascript.jsx",
+    "typescript",
+    "typescriptreact",
+    "typescript.tsx",
+  },
 }
 
-lspconfig["tsserver"].setup {
-  on_attach = on_attach,
-  flags = lsp_flags,
-}
+lspconfig.gopls.setup {}
 
-lspconfig["gopls"].setup {
-  on_attach = on_attach,
-  flags = lsp_flags,
-}
+lspconfig.terraformls.setup {}
 
-lspconfig["rust_analyzer"].setup {
-  on_attach = on_attach,
-  flags = lsp_flags,
-  -- Server-specific settings...
-  settings = {
-    ["rust-analyzer"] = {}
-  }
-}
+-- lspconfig["hie"].setup {}
 
-lspconfig["hie"].setup {
-  on_attach = on_attach,
-  flags = lsp_flags,
-}
+-- lspconfig["rust_analyzer"].setup {
+--   -- Server-specific settings...
+--   settings = {
+--     ["rust-analyzer"] = {}
+--   }
+-- }
 
-lspconfig["terraformls"].setup {
-  on_attach = on_attach,
-  flags = lsp_flags,
-}
+vim.keymap.set("n", "<Space>e", vim.diagnostic.open_float, { noremap = true, silent = true })
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { noremap = true, silent = true })
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>q", vim.diagnostic.setloclist, { noremap = true, silent = true })
+
+-- Use LspAttach autocommand to only map the following keys
+-- after the language server attaches to the current buffer
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+  callback = function(ev)
+    -- Enable completion triggered by <c-x><c-o>
+    vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+
+    -- Buffer local mappings.
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    local opts = { buffer = ev.buf }
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+    vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+    vim.keymap.set("n", "<Space>wa", vim.lsp.buf.add_workspace_folder, opts)
+    vim.keymap.set("n", "<Space>wr", vim.lsp.buf.remove_workspace_folder, opts)
+    vim.keymap.set("n", "<Space>wl", function()
+      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, opts)
+    vim.keymap.set("n", "<Space>D", vim.lsp.buf.type_definition, opts)
+    vim.keymap.set("n", "<Space>rn", vim.lsp.buf.rename, opts)
+    vim.keymap.set({ "n", "v" }, "<Space>ca", vim.lsp.buf.code_action, opts)
+    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+    vim.keymap.set("n", "<Space>F", function()
+      vim.lsp.buf.format { async = true }
+    end, opts)
+  end,
+})
+
 
 ----------------------------------------------------------------------
 -- nvim-cmp
@@ -402,6 +388,7 @@ require("nvim-treesitter.configs").setup {
   },
 }
 
+
 ----------------------------------------------------------------------
 -- augroup / autocmd
 ----------------------------------------------------------------------
@@ -454,6 +441,7 @@ autocmd("BufNewFile", {
   pattern = "*.dig",
   command = "setf yaml",
 })
+
 
 ----------------------------------------------------------------------
 -- which-key

@@ -179,12 +179,12 @@ local function startup(use)
   }
 
   -- ファイル保存時にLSPでフォーマットする
-  use {
-    "lukas-reineke/lsp-format.nvim",
-    config = function()
-      require("lsp-format").setup {}
-    end,
-  }
+  -- use {
+  --   "lukas-reineke/lsp-format.nvim",
+  --   config = function()
+  --     require("lsp-format").setup {}
+  --   end,
+  -- }
 
   --
   use {
@@ -313,7 +313,6 @@ local function startup(use)
           },
           ["core.esupports.indent"] = {},
           ["core.clipboard.code-blocks"] = {},
-          ["core.esupports.metagen"] = {},
         },
       }
     end,
@@ -403,6 +402,9 @@ local function startup(use)
       require("mason").setup {}
     end,
   }
+
+  -- LookML
+  use { "chrismaher/vim-lookml" }
 
   -- packerがインストールされた初回のみPackerSyncを行う
   if packer_bootstrap then
