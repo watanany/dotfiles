@@ -197,6 +197,10 @@ local function startup(use)
     end,
   }
 
+  -- スニペット
+  use "hrsh7th/cmp-vsnip"
+  use "hrsh7th/vim-vsnip"
+
   -- 補完プラグライン
   use {
     "hrsh7th/nvim-cmp",
@@ -220,6 +224,18 @@ local function startup(use)
   use {
     "hrsh7th/cmp-cmdline",
     requires = { "hrsh7th/nvim-cmp", "hrsh7th/cmp-buffer" },
+  }
+
+  use {
+    "hrsh7th/cmp-nvim-lua",
+    requires = { "hrsh7th/nvim-cmp" },
+  }
+
+  use {
+    "folke/neodev.nvim",
+    config = function()
+      require("neodev").setup {}
+    end,
   }
 
   use {
@@ -255,14 +271,12 @@ local function startup(use)
   }
 
   -- git
-  use "sindrets/diffview.nvim"
-
   use {
     "NeogitOrg/neogit",
     requires = {
-      "nvim-lua/plenary.nvim",
-      "sindrets/diffview.nvim",
-      "nvim-telescope/telescope.nvim"
+      { "nvim-lua/plenary.nvim" },
+      { "sindrets/diffview.nvim",        opt = true },
+      { "nvim-telescope/telescope.nvim", opt = true },
     },
     config = function()
       require("neogit").setup {}
@@ -297,6 +311,9 @@ local function startup(use)
               },
             },
           },
+          ["core.esupports.indent"] = {},
+          ["core.clipboard.code-blocks"] = {},
+          ["core.esupports.metagen"] = {},
         },
       }
     end,
@@ -310,7 +327,13 @@ local function startup(use)
     "folke/todo-comments.nvim",
     requires = { "nvim-lua/plenary.nvim" },
     config = function()
-      require("todo-comments").setup {}
+      require("todo-comments").setup {
+        highlight = {
+          keyword = "fg",
+          after = "",
+          pattern = "(KEYWORDS):",
+        },
+      }
     end,
   }
 
@@ -378,13 +401,6 @@ local function startup(use)
     "williamboman/mason.nvim",
     config = function()
       require("mason").setup {}
-    end,
-  }
-
-  use {
-    "aserowy/tmux.nvim",
-    config = function()
-      require("tmux").setup {}
     end,
   }
 
