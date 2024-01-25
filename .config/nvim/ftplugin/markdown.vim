@@ -1,3 +1,5 @@
+" vim-table-mode用のキーバインド設定
+" cf. <https://github.com/dhruvasagar/vim-table-mode?tab=readme-ov-file#creating-table-on-the-fly>
 function! s:isAtStartOfLine(mapping)
   let text_before_cursor = getline('.')[0 : col('.')-1]
   let mapping_pattern = '\V' . escape(a:mapping, '\')
