@@ -76,7 +76,11 @@ local function startup(use)
   use "lambdalisue/fern.vim"
 
   -- fzf本体(CLI)
-  use { "junegunn/fzf", run = ":call fzf#install()" }
+  use {
+    "junegunn/fzf",
+    run = ":call fzf#install()",
+    disable = true,
+  }
 
   -- vim用のfzfプラグイン
   use {
@@ -85,6 +89,7 @@ local function startup(use)
       -- fzfのコマンドのプレフィックスを設定(e.g. :Files -> :FzfFiles)
       vim.g.fzf_command_prefix = "Fzf"
     end,
+    disable = true,
   }
 
   -- ファジーファインダー
@@ -284,16 +289,17 @@ local function startup(use)
   }
 
   -- -- org-mode
-  -- use {
-  --   "nvim-orgmode/orgmode",
-  --   requires = { "nvim-treesitter/nvim-treesitter" },
-  --   config = function()
-  --     local orgmode = require("orgmode")
-  --     orgmode.setup {
-  --       org_agenda_files = { "~/sanctum/org/**/*.org" },
-  --     }
-  --   end,
-  -- }
+  use {
+    "nvim-orgmode/orgmode",
+    requires = { "nvim-treesitter/nvim-treesitter" },
+    config = function()
+      local orgmode = require("orgmode")
+      orgmode.setup {
+        org_agenda_files = { "~/sanctum/org/**/*.org" },
+      }
+    end,
+    disable = true
+  }
 
   use {
     "nvim-neorg/neorg",
@@ -401,10 +407,16 @@ local function startup(use)
     config = function()
       require("mason").setup {}
     end,
+    disable = true,
   }
 
   -- LookML
-  use { "chrismaher/vim-lookml" }
+  use "chrismaher/vim-lookml"
+
+  --
+  use {
+    "mrcjkb/haskell-tools.nvim",
+  }
 
   -- packerがインストールされた初回のみPackerSyncを行う
   if packer_bootstrap then

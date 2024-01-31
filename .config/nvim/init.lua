@@ -51,6 +51,15 @@ vim.o.sessionoptions = "blank,buffers,folds,help,tabpages,winsize,terminal"
 vim.o.signcolumn = "number"
 -- 折り畳みさせないようにする
 vim.o.foldenable = false
+-- インデントをTabではなくスペース2つで揃える
+-- タブを画面で表示する際の幅(ts)
+vim.o.tabstop = 2
+-- タブを挿入する際、半角スペースに変換(et)
+vim.o.expandtab = true
+-- インデント時に使用されるスペースの数(sw)
+vim.o.shiftwidth = 2
+-- タブ入力時その数値分だけ半角スペースを挿入する(sts)
+vim.o.softtabstop = 2
 
 -- カラースキームの設定
 vim.cmd [[
@@ -106,6 +115,7 @@ vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
 vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { noremap = true, silent = true })
 
 -- Emacsのキーバインドを使用できるようにする
+
 -- 現在のカーソル位置から行末までを削除する関数
 local function kill_line()
   local _row, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -136,6 +146,7 @@ vim.keymap.set("c", "<C-b>", "<Left>", { noremap = true })
 vim.keymap.set("c", "<C-a>", "<Home>", { noremap = true })
 vim.keymap.set("c", "<C-e>", "<End>", { noremap = true })
 vim.keymap.set("c", "<C-d>", "<Del>", { noremap = true })
+-- TODO: kill_line for command mode
 
 -- ターミナルを開く
 vim.keymap.set("n", "<Space>ot", (function() vim.cmd("TabToggleTerm!") end), { noremap = true, silent = true })
@@ -370,7 +381,7 @@ require("nvim-treesitter.configs").setup {
     "c", "lua", "vim", "vimdoc", "query",
     "json", "yaml", "toml", "bash", "fish", "dockerfile",
     "hcl", "terraform",
-    "python", "ruby", "go", "rust",
+    "python", "ruby", "go", "haskell", "rust",
     "typescript", "javascript", "tsx", "html", "css", "tsx",
     "org", "norg",
   },
@@ -446,7 +457,7 @@ autocmd("BufNewFile", {
 ----------------------------------------------------------------------
 -- which-key
 ----------------------------------------------------------------------
-local which_key = {
+local which_key_map = {
   ["<Space>ot"] = "ターミナルをトグルする",
   ["<Space>oT"] = "ターミナルを開く",
 
@@ -500,7 +511,7 @@ local which_key = {
 for i = 1, 9 do
   local key = string.format("<Space><Tab>%d", i)
   local desc = string.format("タブ[%d]に移動する", i)
-  which_key[key] = desc
+  which_key_map[key] = desc
 end
 
-require("which-key").register(which_key)
+require("which-key").register(which_key_map)
