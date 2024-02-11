@@ -140,6 +140,16 @@ local function startup(use)
 
   -- ターミナルをトグルする機能を追加
   use {
+    "akinsho/toggleterm.nvim",
+    config = function()
+      require("toggleterm").setup {
+        size = 20,
+        open_mapping = "<C-\\>",
+      }
+    end
+  }
+
+  use {
     "watanany/tabtoggleterm.nvim",
     config = function()
       require("tabtoggleterm").setup {
@@ -411,7 +421,10 @@ local function startup(use)
   }
 
   -- LookML
-  use "chrismaher/vim-lookml"
+  use {
+    "chrismaher/vim-lookml",
+    disable = true,
+  }
 
   --
   use {

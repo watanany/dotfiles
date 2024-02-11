@@ -198,6 +198,7 @@ telescope.setup {
       },
       order_by = "asc",
       hidden_files = true,
+      cd_scope = { "tab" },
     },
   },
   defaults = {
@@ -205,7 +206,11 @@ telescope.setup {
       i = {
         -- 最初のESCでTelescopeを閉じる
         -- cf. <https://www.reddit.com/r/neovim/comments/pzxw8h/telescope_quit_on_first_single_esc/>
-        ["<Esc>"] = telescope_actions.close,
+        -- ["<Esc>"] = telescope_actions.close,
+
+        ["<C-h>"] = "which_key",
+        ["<C-;>"] = telescope_actions.close,
+        ["<C-q>"] = telescope_actions.close,
       },
     },
   },
@@ -236,6 +241,7 @@ vim.keymap.set("n", "<Space>fb", telescope_builtin.buffers, { noremap = true, si
 vim.keymap.set("n", "<Space>bB", telescope_builtin.buffers, { noremap = true, silent = true })
 vim.keymap.set("n", "<Space>fh", telescope_builtin.help_tags, { noremap = true, silent = true })
 vim.keymap.set("n", "<Space>pp", telescope.extensions.project.project, { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>pP", telescope.extensions.projects.projects, { noremap = true, silent = true })
 -- vim.keymap.set("n", "<Space>fr", telescope.extensions.recent_files.pick, { noremap = true, silent = true })
 vim.keymap.set("n", "<Space>fr", ":Telescope frecency<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<Space>fR", ":Telescope frecency workspace=CWD<CR>", { noremap = true, silent = true })
