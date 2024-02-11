@@ -14,9 +14,6 @@ if status is-interactive
     set -gx RBENV_ROOT "$HOME/.rbenv"
     set -gx PATH "$RBENV_ROOT/shims" $PATH
 
-    set -gx PYENV_ROOT "$HOME/.pyenv"
-    set -gx PATH "$PYENV_ROOT/shims" $PATH
-
     set -gx NODENV_ROOT "$HOME/.nodenv"
     set -gx PATH "$NODENV_ROOT/shims" $PATH
 
