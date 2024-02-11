@@ -7,3 +7,10 @@ try:
     import pandas as pd
 except ImportError:
     pass
+
+try:
+    from see import see
+except ImportError:
+    pass
+
+
