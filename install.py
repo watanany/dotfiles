@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from __future__ import print_function
 import os
 
-HOME = os.getenv("HOME")
-CONFIG_ROOT = os.path.join(HOME, "dotfiles")
+HOME: str = os.environ["HOME"]
+CONFIG_ROOT: str = os.path.join(HOME, "dotfiles")
 
-DIRS = [
+DIRS: list[str] = [
     ".config",
     ".cache",
     ".local/bin",
@@ -15,7 +14,7 @@ DIRS = [
     ".ipython/profile_default/startup",
 ]
 
-LINK_LIST = [
+LINK_LIST: list[str] = [
     ".zsh",
     ".zshrc",
     ".tmux.conf",
@@ -35,8 +34,9 @@ LINK_LIST = [
     ".config/nvim",
 ]
 
-def remove_links():
-    home_files = [os.path.join(HOME, fn) for fn in LINK_LIST + [NEOVIM_CONFIG]]
+
+def remove_links() -> None:
+    home_files = [os.path.join(HOME, fn) for fn in LINK_LIST]
     home_files = [
         path for path in home_files if os.path.exists(path) or os.path.islink(path)
     ]
@@ -46,7 +46,7 @@ def remove_links():
         os.remove(path)
 
 
-def link_files():
+def link_files() -> None:
     home_files = [os.path.join(HOME, fn) for fn in LINK_LIST]
     dot_files = [os.path.join(CONFIG_ROOT, fn) for fn in LINK_LIST]
 
@@ -55,14 +55,14 @@ def link_files():
         os.symlink(dot_file, home_file)
 
 
-def make_dirs():
+def make_dirs() -> None:
     pathes = [os.path.join(HOME, d) for d in DIRS]
     pathes = [p for p in pathes if not os.path.exists(p)]
     for path in pathes:
         os.makedirs(path)
 
 
-def main():
+def main() -> None:
     make_dirs()
     remove_links()
     link_files()
