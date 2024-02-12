@@ -118,7 +118,7 @@ vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { noremap = true, silent = true })
 
 -- 現在のカーソル位置から行末までを削除する関数
 local function kill_line()
-  local _row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  local _, col = table.unpack(vim.api.nvim_win_get_cursor(0))
   local line = vim.api.nvim_get_current_line()
   local end_col = #line
 
