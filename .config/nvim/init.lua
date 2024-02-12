@@ -78,6 +78,7 @@ vim.cmd [[
 -- w!! でスーパーユーザーとして保存(sudoが使える環境限定)
 -- FIXME: 「:\w」でwhich-keyで候補が表示されてしまう
 -- vim.keymap.set("c", "w!!", "!sudo tee % > /dev/null")
+
 -- 入力モード中に素早くJJと入力した場合はESCとみなす
 vim.keymap.set("i", "jj", "<Esc>", { noremap = true, silent = true })
 -- ESCを二回押すことでハイライトを消す
@@ -449,12 +450,7 @@ autocmd("BufLeave", {
 })
 
 -- *.digはYAMLとして扱う
-autocmd("BufRead", {
-  pattern = "*.dig",
-  command = "setf yaml",
-})
-
-autocmd("BufNewFile", {
+autocmd({ "BufRead", "BufNewFile" }, {
   pattern = "*.dig",
   command = "setf yaml",
 })
