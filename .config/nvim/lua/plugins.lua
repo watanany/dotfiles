@@ -23,14 +23,18 @@ local packer_bootstrap = ensure_packer()
 
 local function startup(use)
   -- Packer can manage itself
-  use "wbthomason/packer.nvim"
+  use { "wbthomason/packer.nvim" }
+
   -- Configurations for Nvim LSP
-  use "neovim/nvim-lspconfig"
+  use { "neovim/nvim-lspconfig" }
 
   -- カラースキーム
-  use "w0ng/vim-hybrid"
+  use { "w0ng/vim-hybrid" }
 
-  --
+  -- Neovim用のLuaの関数集
+  use { "nvim-lua/plenary.nvim" }
+
+  -- tree-sitter
   use {
     "nvim-treesitter/nvim-treesitter",
     run = function()
@@ -43,9 +47,11 @@ local function startup(use)
   use "rainbowhxch/accelerated-jk.nvim"
 
   -- f + 一文字で検索
-  use "rhysd/clever-f.vim"
+  use { "rhysd/clever-f.vim" }
 
+  ----------------------------------------------------------------------
   -- セッション管理
+  ----------------------------------------------------------------------
   use {
     "rmagatti/auto-session",
     config = function()
@@ -62,9 +68,12 @@ local function startup(use)
     config = function()
       require("session_manager").setup {}
     end,
+    disable = true,
   }
 
+  ----------------------------------------------------------------------
   -- タブ制御
+  ----------------------------------------------------------------------
   use {
     "crispgm/nvim-tabline",
     config = function()
@@ -72,8 +81,10 @@ local function startup(use)
     end,
   }
 
+  ----------------------------------------------------------------------
   -- ファイラー
-  use "lambdalisue/fern.vim"
+  ----------------------------------------------------------------------
+  use { "lambdalisue/fern.vim" }
 
   -- fzf本体(CLI)
   use {
@@ -92,7 +103,9 @@ local function startup(use)
     disable = true,
   }
 
+  ----------------------------------------------------------------------
   -- ファジーファインダー
+  ----------------------------------------------------------------------
   use {
     "nvim-telescope/telescope.nvim",
     tag = "*",
@@ -138,6 +151,9 @@ local function startup(use)
     end,
   }
 
+  ----------------------------------------------------------------------
+  -- ターミナル
+  ----------------------------------------------------------------------
   -- ターミナルをトグルする機能を追加
   use {
     "akinsho/toggleterm.nvim",
@@ -166,57 +182,13 @@ local function startup(use)
     end,
   }
 
-  -- 対応する文字を閉じる
-  use {
-    "m4xshen/autoclose.nvim",
-    config = function()
-      require("autoclose").setup {
-        options = {
-          disable_when_touch = true,
-          touch_regex = "[%w(%[{ぁ-んァ-ヶー一-龯]"
-        },
-      }
-    end,
-  }
-
-  use {
-    "RRethy/nvim-treesitter-endwise",
-    requires = { "nvim-treesitter/nvim-treesitter" },
-  }
-
-  -- surroundを追加
-  use {
-    "kylechui/nvim-surround",
-    tag = "*", -- Use for stability; omit to use `main` branch for the latest features
-    config = function()
-      require("nvim-surround").setup {}
-    end,
-  }
-
-  -- ファイル保存時にLSPでフォーマットする
-  -- use {
-  --   "lukas-reineke/lsp-format.nvim",
-  --   config = function()
-  --     require("lsp-format").setup {}
-  --   end,
-  -- }
-
-  --
-  use {
-    "rcarriga/nvim-notify",
-    setup = function()
-      vim.o.termguicolors = true
-    end,
-    config = function()
-      vim.notify = require("notify")
-    end,
-  }
-
-  -- スニペット
-  use "hrsh7th/cmp-vsnip"
-  use "hrsh7th/vim-vsnip"
-
+  ----------------------------------------------------------------------
   -- 補完プラグライン
+  ----------------------------------------------------------------------
+  -- スニペット
+  use { "hrsh7th/cmp-vsnip" }
+  use { "hrsh7th/vim-vsnip" }
+
   use {
     "hrsh7th/nvim-cmp",
   }
@@ -274,70 +246,10 @@ local function startup(use)
     end,
   }
 
-  -- 利用可能なキーマップを表示
-  use {
-    "folke/which-key.nvim",
-    config = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 300
-
-      require("which-key").setup {}
-    end,
-  }
-
-  -- git
-  use {
-    "NeogitOrg/neogit",
-    requires = {
-      { "nvim-lua/plenary.nvim" },
-      { "sindrets/diffview.nvim",        opt = true },
-      { "nvim-telescope/telescope.nvim", opt = true },
-    },
-    config = function()
-      require("neogit").setup {}
-    end,
-  }
-
-  -- -- org-mode
-  use {
-    "nvim-orgmode/orgmode",
-    requires = { "nvim-treesitter/nvim-treesitter" },
-    config = function()
-      local orgmode = require("orgmode")
-      orgmode.setup {
-        org_agenda_files = { "~/sanctum/org/**/*.org" },
-      }
-    end,
-    disable = true
-  }
-
-  use {
-    "nvim-neorg/neorg",
-    requires = { "nvim-lua/plenary.nvim" },
-    run = ":Neorg sync-parsers",
-    config = function()
-      require("neorg").setup {
-        load = {
-          ["core.defaults"] = {},  -- Loads default behaviour
-          ["core.concealer"] = {}, -- Adrs pretty icons to your documents
-          ["core.dirman"] = {      -- Manages Neorg workspaces
-            config = {
-              workspaces = {
-                notes = "~/sanctum/org",
-              },
-            },
-          },
-          ["core.esupports.indent"] = {},
-          ["core.clipboard.code-blocks"] = {},
-        },
-      }
-    end,
-  }
-
+  ----------------------------------------------------------------------
+  -- syntax highlight
+  ----------------------------------------------------------------------
   -- TODOコメントのハイライト
-  -- インストール方法(brew):
-  --   $ brew tap homebrew/cask-fonts
-  --   $ brew install font-hack-nerd-font
   use {
     "folke/todo-comments.nvim",
     requires = { "nvim-lua/plenary.nvim" },
@@ -352,10 +264,38 @@ local function startup(use)
     end,
   }
 
-  -- CSVを見やすく色付け
-  use "mechatroner/rainbow_csv"
+  -- インデントガイドラインの追加
+  use {
+    "lukas-reineke/indent-blankline.nvim",
+    requires = { "nvim-treesitter/nvim-treesitter" },
+    config = function()
+      require("ibl").setup {
+        scope = { enabled = false },
+      }
+    end,
+  }
 
+  -- CSVを見やすく色付け
+  use { "mechatroner/rainbow_csv" }
+
+  use {
+    "mrcjkb/haskell-tools.nvim",
+  }
+
+  use {
+    "purescript-contrib/purescript-vim"
+  }
+
+  use { "hylang/vim-hy" }
+
+  use {
+    "chrismaher/vim-lookml",
+    disable = true,
+  }
+
+  ----------------------------------------------------------------------
   -- markdown
+  ----------------------------------------------------------------------
   use {
     "ellisonleao/glow.nvim",
     config = function()
@@ -385,7 +325,7 @@ local function startup(use)
     end,
   }
 
-  use "dhruvasagar/vim-table-mode"
+  use { "dhruvasagar/vim-table-mode" }
 
   -- markdown内のコードブロック内をシンタックスハイライト
   use {
@@ -397,17 +337,107 @@ local function startup(use)
     end,
   }
 
-  -- hy
-  use "hylang/vim-hy"
-
-  -- インデントガイドラインの追加
+  ----------------------------------------------------------------------
+  -- org-mode
+  ----------------------------------------------------------------------
   use {
-    "lukas-reineke/indent-blankline.nvim",
+    "nvim-orgmode/orgmode",
     requires = { "nvim-treesitter/nvim-treesitter" },
     config = function()
-      require("ibl").setup {
-        scope = { enabled = false },
+      local orgmode = require("orgmode")
+      orgmode.setup {
+        org_agenda_files = { "~/sanctum/org/**/*.org" },
       }
+    end,
+    disable = true
+  }
+
+  -- neorg
+  use {
+    "nvim-neorg/neorg",
+    requires = { "nvim-lua/plenary.nvim" },
+    run = ":Neorg sync-parsers",
+    config = function()
+      require("neorg").setup {
+        load = {
+          ["core.defaults"] = {},  -- Loads default behaviour
+          ["core.concealer"] = {}, -- Adrs pretty icons to your documents
+          ["core.dirman"] = {      -- Manages Neorg workspaces
+            config = {
+              workspaces = {
+                notes = "~/sanctum/org",
+              },
+            },
+          },
+          ["core.esupports.indent"] = {},
+          ["core.clipboard.code-blocks"] = {},
+        },
+      }
+    end,
+  }
+
+  ----------------------------------------------------------------------
+  -- その他
+  ----------------------------------------------------------------------
+  -- 対応する文字を閉じる
+  use {
+    "m4xshen/autoclose.nvim",
+    config = function()
+      require("autoclose").setup {
+        options = {
+          disable_when_touch = true,
+          touch_regex = "[%w(%[{ぁ-んァ-ヶー一-龯]"
+        },
+      }
+    end,
+  }
+
+  use {
+    "RRethy/nvim-treesitter-endwise",
+    requires = { "nvim-treesitter/nvim-treesitter" },
+  }
+
+  -- surroundを追加
+  use {
+    "kylechui/nvim-surround",
+    tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+    config = function()
+      require("nvim-surround").setup {}
+    end,
+  }
+
+  -- 通知表示機能
+  use {
+    "rcarriga/nvim-notify",
+    setup = function()
+      vim.o.termguicolors = true
+    end,
+    config = function()
+      vim.notify = require("notify")
+    end,
+  }
+
+  -- 利用可能なキーマップを表示
+  use {
+    "folke/which-key.nvim",
+    config = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+
+      require("which-key").setup {}
+    end,
+  }
+
+  -- git
+  use {
+    "NeogitOrg/neogit",
+    requires = {
+      { "nvim-lua/plenary.nvim" },
+      { "sindrets/diffview.nvim",        opt = true },
+      { "nvim-telescope/telescope.nvim", opt = true },
+    },
+    config = function()
+      require("neogit").setup {}
     end,
   }
 
@@ -418,17 +448,6 @@ local function startup(use)
       require("mason").setup {}
     end,
     disable = true,
-  }
-
-  -- LookML
-  use {
-    "chrismaher/vim-lookml",
-    disable = true,
-  }
-
-  --
-  use {
-    "mrcjkb/haskell-tools.nvim",
   }
 
   -- packerがインストールされた初回のみPackerSyncを行う

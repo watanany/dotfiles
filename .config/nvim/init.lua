@@ -207,7 +207,7 @@ telescope.setup {
       i = {
         -- 最初のESCでTelescopeを閉じる
         -- cf. <https://www.reddit.com/r/neovim/comments/pzxw8h/telescope_quit_on_first_single_esc/>
-        -- ["<Esc>"] = telescope_actions.close,
+        ["<Esc>"] = telescope_actions.close,
 
         ["<C-h>"] = "which_key",
         ["<C-;>"] = telescope_actions.close,
