@@ -17,14 +17,14 @@ if status is-interactive
     set -gx PYENV_ROOT "$HOME/.pyenv"
     set -gx PATH "$PYENV_ROOT/shims" $PATH
 
+    set -gx PATH "$HOME/.poetry/bin" $PATH
+    set -gx PATH "$HOME/.rye/shims" $PATH
+
     set -gx NODENV_ROOT "$HOME/.nodenv"
     set -gx PATH "$NODENV_ROOT/shims" $PATH
 
     set -gx JENV_ROOT "$HOME/.jenv"
     set -gx PATH "$JENV_ROOT/shims" $PATH
-
-    set -gx PATH "$HOME/.rye/shims" $PATH
-    set -gx PATH "$HOME/.poetry/bin" $PATH
 
     #;;; Haskell
     #;; ghcup
