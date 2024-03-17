@@ -68,7 +68,6 @@ local function startup(use)
     config = function()
       require("session_manager").setup {}
     end,
-    disable = true,
   }
 
   ----------------------------------------------------------------------
@@ -76,9 +75,19 @@ local function startup(use)
   ----------------------------------------------------------------------
   use {
     "crispgm/nvim-tabline",
+    requires = {
+      { "hoob3rt/lualine.nvim", opt = true },
+      { "kyazdani42/nvim-web-devicons", opt = true },
+    },
     config = function()
       require("tabline").setup {}
     end,
+  }
+
+  use {
+    "nvim-lualine/lualine.nvim",
+    requires = { "nvim-tree/nvim-web-devicons", opt = true },
+    disable = true,
   }
 
   ----------------------------------------------------------------------
@@ -146,7 +155,12 @@ local function startup(use)
   use {
     "ahmedkhalf/project.nvim",
     config = function()
-      require("project_nvim").setup {}
+      require("project_nvim").setup {
+        detection_methods = { "pattern" },
+        patterns = { ".git" },
+        show_hidden = true,
+        scope_chdir = "tab",
+      }
       require("telescope").load_extension("projects")
     end,
   }
@@ -293,6 +307,8 @@ local function startup(use)
     disable = true,
   }
 
+  use "posva/vim-vue"
+
   ----------------------------------------------------------------------
   -- markdown
   ----------------------------------------------------------------------
@@ -371,6 +387,8 @@ local function startup(use)
           },
           ["core.esupports.indent"] = {},
           ["core.clipboard.code-blocks"] = {},
+          ["core.export"] = {
+          },
         },
       }
     end,
@@ -433,12 +451,13 @@ local function startup(use)
     "NeogitOrg/neogit",
     requires = {
       { "nvim-lua/plenary.nvim" },
-      { "sindrets/diffview.nvim",        opt = true },
+      { "sindrets/diffview.nvim", opt = true },
       { "nvim-telescope/telescope.nvim", opt = true },
     },
     config = function()
       require("neogit").setup {}
     end,
+    disable = true,
   }
 
   -- 外部ツールのインストール
