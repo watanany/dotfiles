@@ -119,7 +119,11 @@ vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { noremap = true, silent = true })
 
 -- 現在のカーソル位置から行末までを削除する関数
 local function kill_line()
-  local _, col = table.unpack(vim.api.nvim_win_get_cursor(0))
+  -- unpackは非推奨で移行中
+  -- TODO: neovimの使用するLuaのバージョンが5.2になったらtable.unpackを使うように変更する
+  local unpack = table.unpack or unpack
+  local _, col = unpack(vim.api.nvim_win_get_cursor(0))
+
   local line = vim.api.nvim_get_current_line()
   local end_col = #line
 
@@ -175,7 +179,7 @@ for i = 1, 9 do
 end
 
 -- neogit
-vim.keymap.set("n", "<Space>gg", require("neogit").open, { noremap = true, silent = true })
+-- vim.keymap.set("n", "<Space>gg", require("neogit").open, { noremap = true, silent = true })
 
 
 ----------------------------------------------------------------------
@@ -193,8 +197,9 @@ telescope.setup {
   extensions = {
     project = {
       base_dirs = {
-        { path = "~/dotfiles",         max_depth = 1 },
-        { path = "~/sanctum/org",      max_depth = 1 },
+        { path = "~/dotfiles", max_depth = 1 },
+        { path = "~/sanctum/org", max_depth = 1 },
+        { path = "~/sanctum/chatgpt-logs", max_depth = 1 },
         { path = "~/sanctum/projects", max_depth = 2 },
       },
       order_by = "asc",
@@ -223,19 +228,25 @@ local function find_files(params)
   telescope_builtin.find_files(params)
 end
 
+local function git_files(params)
+  params = params or {}
+  params["hidden"] = true
+  telescope_builtin.git_files(params)
+end
+
 local function live_grep(params)
   params = params or {}
   params["hidden"] = true
   telescope_builtin.live_grep(params)
 end
 
-local function find_neovim_configs()
-  telescope_builtin.find_files({ cwd = "~/.config/nvim", hidden = true })
+local function find_configs()
+  telescope_builtin.git_files({ cwd = "~/dotfiles", hidden = true })
 end
 
 vim.keymap.set("n", "<Space>ff", find_files, { noremap = true, silent = true })
-vim.keymap.set("n", "<Space>pf", find_files, { noremap = true, silent = true })
-vim.keymap.set("n", "<Space>fp", find_neovim_configs, { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>pf", git_files, { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>fp", find_configs, { noremap = true, silent = true })
 vim.keymap.set("n", "<Space>fs", live_grep, { noremap = true, silent = true })
 vim.keymap.set("n", "<Space>sp", live_grep, { noremap = true, silent = true })
 vim.keymap.set("n", "<Space>fb", telescope_builtin.buffers, { noremap = true, silent = true })
@@ -304,6 +315,17 @@ lspconfig.gopls.setup {}
 lspconfig.terraformls.setup {}
 
 -- lspconfig["hie"].setup {}
+
+lspconfig.purescriptls.setup {
+  settings = {
+    purescript = {
+      addSpagoSources = true -- e.g. any purescript language-server config here
+    },
+  },
+  flags = {
+    debounce_text_changes = 150,
+  },
+}
 
 -- lspconfig["rust_analyzer"].setup {
 --   -- Server-specific settings...
@@ -455,6 +477,14 @@ autocmd({ "BufRead", "BufNewFile" }, {
   command = "setf yaml",
 })
 
+-- 開発用
+autocmd("DirChanged", {
+  pattern = "",
+  callback = function()
+    print(string.format("[DEBUG-DEBUG-DEBUG] CWD = %s", vim.fn.getcwd()))
+  end,
+})
+
 
 ----------------------------------------------------------------------
 -- which-key
@@ -481,7 +511,7 @@ local which_key_map = {
   ["<Space>pp"] = "プロジェクトを開く",
   ["<Space>pf"] = "ファイル名で検索する",
   ["<Space>ff"] = "ファイル名で検索する",
-  ["<Space>fp"] = "neovimの設定ファイルを検索する",
+  ["<Space>fp"] = "dotfilesを検索する",
   ["<Space>fr"] = "最近開いたファイルで検索する",
   ["<Space>fR"] = "最近開いたファイルで検索する(workspace=CWD)",
   ["<Space>fs"] = "ファイル内の文字列を検索する",
