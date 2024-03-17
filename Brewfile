@@ -54,6 +54,8 @@ brew "hyperfine"
 brew "mermaid-cli"
 brew "lua-language-server"
 brew "dagger/tap/dagger"
+brew "hashicorp/tap/terraform-ls"
+brew "nodenv/nodenv/nodenv-default-packages"
 
 
 cask "karabiner-elements"
