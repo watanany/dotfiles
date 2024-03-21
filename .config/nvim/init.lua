@@ -194,10 +194,6 @@ for i = 1, 9 do
   vim.keymap.set("n", key, cmd, { noremap = true, silent = true })
 end
 
--- neogit
--- vim.keymap.set("n", "<Leader>gg", require("neogit").open, { noremap = true, silent = true })
-
-
 ----------------------------------------------------------------------
 -- Telescope
 ----------------------------------------------------------------------
@@ -512,8 +508,6 @@ local which_key_map = {
   ["<Leader><Tab>d"] = "タブを削除する",
   ["<Leader><Tab>["] = "タブを一つ前に移動する",
   ["<Leader><Tab>]"] = "タブを一つ後に移動する",
-
-  ["<Leader>gg"] = "Neogitを開く",
 
   ["<Leader>ft"] = "ファイルツリーを開く",
   ["<Leader>pp"] = "プロジェクトを開く",
