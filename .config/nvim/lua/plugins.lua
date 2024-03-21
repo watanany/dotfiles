@@ -3,7 +3,17 @@ return {
   { "neovim/nvim-lspconfig" },
 
   -- カラースキーム
-  { "w0ng/vim-hybrid" },
+  {
+    "w0ng/vim-hybrid",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd [[
+        set background=dark
+        colorscheme hybrid
+      ]]
+    end,
+  },
 
   -- Neovim用のLuaの関数集
   { "nvim-lua/plenary.nvim" },

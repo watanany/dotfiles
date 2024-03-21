@@ -25,7 +25,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 -- プラグインをロードする
-require("lazy").setup("lazy_plugins")
+require("lazy").setup("plugins")
 
 -- Vimスクリプトで使用されるエンコード
 vim.scriptencoding = "utf-8"
@@ -79,16 +79,6 @@ vim.o.expandtab = true
 vim.o.shiftwidth = 2
 -- タブ入力時その数値分だけ半角スペースを挿入する(sts)
 vim.o.softtabstop = 2
-
--- カラースキームの設定
-vim.cmd [[
-  try
-    set background=dark
-    colorscheme hybrid
-  catch /E185/
-    echo 'カラースキーム「hybrid」がインストールされていません。'
-  endtry
-]]
 
 
 ----------------------------------------------------------------------
@@ -193,6 +183,7 @@ for i = 1, 9 do
   local cmd = string.format(":tabnext %d<CR>", i)
   vim.keymap.set("n", key, cmd, { noremap = true, silent = true })
 end
+
 
 ----------------------------------------------------------------------
 -- Telescope
