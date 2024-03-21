@@ -294,6 +294,8 @@ local function startup(use)
 
   use {
     "mrcjkb/haskell-tools.nvim",
+    version = "^3",
+    ft = { "haskell", "lhaskell", "cabal", "cabalproject" },
   }
 
   use {
