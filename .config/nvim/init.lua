@@ -1,12 +1,31 @@
-require("plugins")
+-- lazyのインストールを行い、パスを設定する
+local function setup_lazy()
+  local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
--- プラグイン管理ファイルに書き込みが行われた場合、PackerCompileを行うようにする
-vim.cmd [[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-  augroup end
-]]
+  if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
+      "git",
+      "clone",
+      "--filter=blob:none",
+      "https://github.com/folke/lazy.nvim.git",
+      "--branch=stable", -- latest stable release
+      lazypath,
+    })
+  end
+
+  vim.opt.rtp:prepend(lazypath)
+end
+
+setup_lazy()
+
+-- NOTE: lazyをロードする前に設定する必要がある
+-- <Leader>キーを設定
+vim.g.mapleader = " "
+-- <LocalLeader>キーを設定
+vim.g.maplocalleader = "\\"
+
+-- プラグインをロードする
+require("lazy").setup("lazy_plugins")
 
 -- Vimスクリプトで使用されるエンコード
 vim.scriptencoding = "utf-8"
@@ -154,11 +173,8 @@ vim.keymap.set("c", "<C-d>", "<Del>", { noremap = true })
 -- TODO: kill_line for command mode
 
 -- ターミナルを開く
-vim.keymap.set("n", "<Space>ot", (function() vim.cmd("TabToggleTerm!") end), { noremap = true, silent = true })
-vim.keymap.set("n", "<Space>oT", (function() vim.cmd("term") end), { noremap = true, silent = true })
-
--- :PackerSync
-vim.keymap.set("n", "<Space>hrr", (function() require("packer").sync() end), { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>ot", (function() vim.cmd("TabToggleTerm!") end), { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>oT", (function() vim.cmd("term") end), { noremap = true, silent = true })
 
 -- 各種設定のトグル
 vim.keymap.set("n", "Tl", (function() vim.wo.list = not vim.wo.list end), { noremap = true, silent = true })
@@ -167,26 +183,26 @@ vim.keymap.set("n", "Tw", (function() vim.wo.wrap = not vim.wo.wrap end), { nore
 vim.keymap.set("n", "Tp", (function() vim.o.paste = not vim.o.paste end), { noremap = true, silent = true })
 
 -- タブ関連
-vim.keymap.set("n", "<Space><Tab>n", ":tablast | tabnew<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<Space><Tab>d", ":tabclose<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<Space><Tab>[", ":tabprev<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<Space><Tab>]", ":tabnext<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader><Tab>n", ":tablast | tabnew<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader><Tab>d", ":tabclose<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader><Tab>[", ":tabprev<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader><Tab>]", ":tabnext<CR>", { noremap = true, silent = true })
 
 for i = 1, 9 do
-  local key = string.format("<Space><Tab>%d", i)
+  local key = string.format("<Leader><Tab>%d", i)
   local cmd = string.format(":tabnext %d<CR>", i)
   vim.keymap.set("n", key, cmd, { noremap = true, silent = true })
 end
 
 -- neogit
--- vim.keymap.set("n", "<Space>gg", require("neogit").open, { noremap = true, silent = true })
+-- vim.keymap.set("n", "<Leader>gg", require("neogit").open, { noremap = true, silent = true })
 
 
 ----------------------------------------------------------------------
 -- Telescope
 ----------------------------------------------------------------------
 -- Fernのキーバインドを設定する
-vim.keymap.set("n", "<Space>ft", ":Fern . -drawer<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>ft", ":Fern . -drawer<CR>", { noremap = true, silent = true })
 
 -- Telescopeの設定を行う
 local telescope = require("telescope")
@@ -245,25 +261,25 @@ local function find_configs()
   telescope_builtin.git_files({ cwd = "~/dotfiles", hidden = true })
 end
 
-vim.keymap.set("n", "<Space>ff", find_files, { noremap = true, silent = true })
-vim.keymap.set("n", "<Space>pf", git_files, { noremap = true, silent = true })
-vim.keymap.set("n", "<Space>fp", find_configs, { noremap = true, silent = true })
-vim.keymap.set("n", "<Space>fs", live_grep, { noremap = true, silent = true })
-vim.keymap.set("n", "<Space>sp", live_grep, { noremap = true, silent = true })
-vim.keymap.set("n", "<Space>fb", telescope_builtin.buffers, { noremap = true, silent = true })
-vim.keymap.set("n", "<Space>bB", telescope_builtin.buffers, { noremap = true, silent = true })
-vim.keymap.set("n", "<Space>fh", telescope_builtin.help_tags, { noremap = true, silent = true })
-vim.keymap.set("n", "<Space>pp", telescope.extensions.project.project, { noremap = true, silent = true })
-vim.keymap.set("n", "<Space>pP", telescope.extensions.projects.projects, { noremap = true, silent = true })
--- vim.keymap.set("n", "<Space>fr", telescope.extensions.recent_files.pick, { noremap = true, silent = true })
-vim.keymap.set("n", "<Space>fr", ":Telescope frecency<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<Space>fR", ":Telescope frecency workspace=CWD<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>ff", find_files, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>pf", git_files, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>fp", find_configs, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>fs", live_grep, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>sp", live_grep, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>fb", telescope_builtin.buffers, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>bB", telescope_builtin.buffers, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>fh", telescope_builtin.help_tags, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>pp", telescope.extensions.project.project, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>pP", telescope.extensions.projects.projects, { noremap = true, silent = true })
+-- vim.keymap.set("n", "<Leader>fr", telescope.extensions.recent_files.pick, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>fr", ":Telescope frecency<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>fR", ":Telescope frecency workspace=CWD<CR>", { noremap = true, silent = true })
 
-vim.keymap.set("n", "<Space>fd",
+vim.keymap.set("n", "<Leader>fd",
   function() find_files({ cwd = vim.fn.expand("%:h") }) end,
   { noremap = true, silent = true }
 )
-vim.keymap.set("n", "<Space>sd",
+vim.keymap.set("n", "<Leader>sd",
   function() live_grep({ cwd = vim.fn.expand("%:h") }) end,
   { noremap = true, silent = true }
 )
@@ -328,17 +344,17 @@ lspconfig.purescriptls.setup {
   },
 }
 
--- lspconfig["rust_analyzer"].setup {
+-- lspconfig.rust_analyzer.setup {
 --   -- Server-specific settings...
 --   settings = {
 --     ["rust-analyzer"] = {}
 --   }
 -- }
 
-vim.keymap.set("n", "<Space>e", vim.diagnostic.open_float, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>e", vim.diagnostic.open_float, { noremap = true, silent = true })
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { noremap = true, silent = true })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { noremap = true, silent = true })
-vim.keymap.set("n", "<Space>q", vim.diagnostic.setloclist, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>q", vim.diagnostic.setloclist, { noremap = true, silent = true })
 
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
@@ -356,16 +372,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
     vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
     vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-    vim.keymap.set("n", "<Space>wa", vim.lsp.buf.add_workspace_folder, opts)
-    vim.keymap.set("n", "<Space>wr", vim.lsp.buf.remove_workspace_folder, opts)
-    vim.keymap.set("n", "<Space>wl", function()
+    vim.keymap.set("n", "<Leader>wa", vim.lsp.buf.add_workspace_folder, opts)
+    vim.keymap.set("n", "<Leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
+    vim.keymap.set("n", "<Leader>wl", function()
       print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end, opts)
-    vim.keymap.set("n", "<Space>D", vim.lsp.buf.type_definition, opts)
-    vim.keymap.set("n", "<Space>rn", vim.lsp.buf.rename, opts)
-    vim.keymap.set({ "n", "v" }, "<Space>ca", vim.lsp.buf.code_action, opts)
+    vim.keymap.set("n", "<Leader>D", vim.lsp.buf.type_definition, opts)
+    vim.keymap.set("n", "<Leader>rn", vim.lsp.buf.rename, opts)
+    vim.keymap.set({ "n", "v" }, "<Leader>ca", vim.lsp.buf.code_action, opts)
     vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-    vim.keymap.set("n", "<Space>F", function()
+    vim.keymap.set("n", "<Leader>F", function()
       vim.lsp.buf.format { async = true }
     end, opts)
   end,
@@ -407,14 +423,7 @@ cmp.setup {
 -- nvim-treesitter
 ----------------------------------------------------------------------
 require("nvim-treesitter.configs").setup {
-  ensure_installed = {
-    "c", "lua", "vim", "vimdoc", "query",
-    "json", "yaml", "toml", "bash", "fish", "dockerfile",
-    "hcl", "terraform",
-    "python", "ruby", "go", "haskell", "rust",
-    "typescript", "javascript", "tsx", "html", "css", "tsx",
-    "org", "norg",
-  },
+  ensure_installed = { "c", "lua", "vim", "vimdoc", "query" },
   highlight = {
     enable = true,
     disable = { "markdown" },
@@ -491,58 +500,56 @@ autocmd("DirChanged", {
 -- which-key
 ----------------------------------------------------------------------
 local which_key_map = {
-  ["<Space>ot"] = "ターミナルをトグルする",
-  ["<Space>oT"] = "ターミナルを開く",
-
-  ["<Space>hrr"] = ":PackerSync",
+  ["<Leader>ot"] = "ターミナルをトグルする",
+  ["<Leader>oT"] = "ターミナルを開く",
 
   ["Tl"] = "不可視文字を表示をトグルする",
   ["Tn"] = "行番号の表示をトグルする",
   ["Tw"] = "折り返しをトグルする",
   ["Tp"] = "ペーストモードをトグルする",
 
-  ["<Space><Tab>n"] = "タブを作成する",
-  ["<Space><Tab>d"] = "タブを削除する",
-  ["<Space><Tab>["] = "タブを一つ前に移動する",
-  ["<Space><Tab>]"] = "タブを一つ後に移動する",
+  ["<Leader><Tab>n"] = "タブを作成する",
+  ["<Leader><Tab>d"] = "タブを削除する",
+  ["<Leader><Tab>["] = "タブを一つ前に移動する",
+  ["<Leader><Tab>]"] = "タブを一つ後に移動する",
 
-  ["<Space>gg"] = "Neogitを開く",
+  ["<Leader>gg"] = "Neogitを開く",
 
-  ["<Space>ft"] = "ファイルツリーを開く",
-  ["<Space>pp"] = "プロジェクトを開く",
-  ["<Space>pf"] = "ファイル名で検索する",
-  ["<Space>ff"] = "ファイル名で検索する",
-  ["<Space>fp"] = "dotfilesを検索する",
-  ["<Space>fr"] = "最近開いたファイルで検索する",
-  ["<Space>fR"] = "最近開いたファイルで検索する(workspace=CWD)",
-  ["<Space>fs"] = "ファイル内の文字列を検索する",
-  ["<Space>sp"] = "ファイル内の文字列を検索する",
-  ["<Space>fb"] = "バッファ一覧を表示する",
-  ["<Space>bB"] = "バッファ一覧を表示する",
-  ["<Space>fh"] = "ヘルプを表示する",
-  ["<Space>fd"] = "ファイル名で検索する(cwd=%:h)",
-  ["<Space>sd"] = "ファイル内の文字列を検索する(cwd=%:h)",
+  ["<Leader>ft"] = "ファイルツリーを開く",
+  ["<Leader>pp"] = "プロジェクトを開く",
+  ["<Leader>pf"] = "ファイル名で検索する",
+  ["<Leader>ff"] = "ファイル名で検索する",
+  ["<Leader>fp"] = "dotfilesを検索する",
+  ["<Leader>fr"] = "最近開いたファイルで検索する",
+  ["<Leader>fR"] = "最近開いたファイルで検索する(workspace=CWD)",
+  ["<Leader>fs"] = "ファイル内の文字列を検索する",
+  ["<Leader>sp"] = "ファイル内の文字列を検索する",
+  ["<Leader>fb"] = "バッファ一覧を表示する",
+  ["<Leader>bB"] = "バッファ一覧を表示する",
+  ["<Leader>fh"] = "ヘルプを表示する",
+  ["<Leader>fd"] = "ファイル名で検索する(cwd=%:h)",
+  ["<Leader>sd"] = "ファイル内の文字列を検索する(cwd=%:h)",
 
   ["[d"] = "一つ前の診断に戻る",
   ["]d"] = "一つ後の診断に進む",
-  ["<Space>q"] = "フローティングウィンドウにカーソルの下にあるシンボルに関する情報を表示します。2回呼び出すと、フローティング ウィンドウにジャンプします。",
+  ["<Leader>q"] = "フローティングウィンドウにカーソルの下にあるシンボルに関する情報を表示します。2回呼び出すと、フローティング ウィンドウにジャンプします。",
   ["gD"] = "宣言にジャンプする",
   ["gd"] = "定義にジャンプする",
   ["K"] = "ホバーを表示する",
   ["gi"] = "実装にジャンプする",
   ["<C-k>"] = "シグネチャヘルプを表示する",
-  ["<Space>wa"] = "ワークスペースにフォルダを追加する",
-  ["<Space>wr"] = "ワークスペースからフォルダを削除する",
-  ["<Space>wl"] = "ワークスペースのフォルダを表示する",
-  ["<Space>D"] = "型定義にジャンプする",
-  ["<Space>rn"] = "変数名を変更する",
-  ["<Space>ca"] = "現在のカーソル位置で利用可能なコードアクションを選択する",
+  ["<Leader>wa"] = "ワークスペースにフォルダを追加する",
+  ["<Leader>wr"] = "ワークスペースからフォルダを削除する",
+  ["<Leader>wl"] = "ワークスペースのフォルダを表示する",
+  ["<Leader>D"] = "型定義にジャンプする",
+  ["<Leader>rn"] = "変数名を変更する",
+  ["<Leader>ca"] = "現在のカーソル位置で利用可能なコードアクションを選択する",
   ["gr"] = "リファレンス一覧を表示する",
-  ["<Space>F"] = "バッファ内のコードをフォーマットする",
+  ["<Leader>F"] = "バッファ内のコードをフォーマットする",
 }
 
 for i = 1, 9 do
-  local key = string.format("<Space><Tab>%d", i)
+  local key = string.format("<Leader><Tab>%d", i)
   local desc = string.format("タブ[%d]に移動する", i)
   which_key_map[key] = desc
 end
