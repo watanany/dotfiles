@@ -22,10 +22,14 @@ setup_lazy()
 -- <Leader>キーを設定
 vim.g.mapleader = " "
 -- <LocalLeader>キーを設定
-vim.g.maplocalleader = "\\"
+vim.g.maplocalleader = ","
 
 -- プラグインをロードする
-require("lazy").setup("plugins")
+require("lazy").setup("plugins", {
+  dev = {
+    path = "~/sanctum/projects",
+  },
+})
 
 -- Vimスクリプトで使用されるエンコード
 vim.scriptencoding = "utf-8"

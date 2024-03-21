@@ -60,8 +60,8 @@ return {
   {
     "crispgm/nvim-tabline",
     dependencies = {
-      { "hoob3rt/lualine.nvim", lazy = true },
-      { "kyazdani42/nvim-web-devicons", lazy = true },
+      { "nvim-lualine/lualine.nvim", lazy = true },
+      { "nvim-tree/nvim-web-devicons", lazy = true },
     },
     config = function()
       require("tabline").setup {}
@@ -71,7 +71,7 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons", lazy = true },
-    enable = false,
+    enabled = false,
   },
 
   ----------------------------------------------------------------------
@@ -83,7 +83,7 @@ return {
   {
     "junegunn/fzf",
     build = ":call fzf#install()",
-    enable = false,
+    enabled = false,
   },
 
   -- vim用のfzfプラグイン
@@ -93,7 +93,7 @@ return {
       -- fzfのコマンドのプレフィックスを設定(e.g. :Files -> :FzfFiles)
       vim.g.fzf_command_prefix = "Fzf"
     end,
-    enable = false,
+    enabled = false,
   },
 
   ----------------------------------------------------------------------
@@ -288,7 +288,7 @@ return {
 
   {
     "chrismaher/vim-lookml",
-    enable = false,
+    enabled = false,
   },
 
   { "posva/vim-vue" },
@@ -315,11 +315,11 @@ return {
     init = function()
       vim.g.mkdx = {
         settings = {
-          highlight = { enable = true },
+          highlight = { enabled = true },
           enter = { shift = true },
-          links = { external = { enable = true } },
+          links = { external = { enabled = true } },
           toc = { text = "Table of Contents", update_on_write = true },
-          fold = { enable = false },
+          fold = { enabled = false },
         },
       }
     end,
@@ -349,7 +349,7 @@ return {
   --       org_agenda_files = { "~/sanctum/org/**/*.org" },
   --     }
   --   end,
-  --   enable = false,
+  --   enabled = false,
   -- },
 
   -- neorg
@@ -441,7 +441,7 @@ return {
     config = function()
       require("neogit").setup {}
     end,
-    enable = false,
+    enabled = false,
   },
 
   -- 外部ツールのインストール
@@ -450,6 +450,6 @@ return {
     config = function()
       require("mason").setup {}
     end,
-    enable = false,
+    enabled = false,
   },
 }
