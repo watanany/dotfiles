@@ -188,6 +188,11 @@ for i = 1, 9 do
   vim.keymap.set("n", key, cmd, { noremap = true, silent = true })
 end
 
+-- messagesをバッファに表示する
+vim.keymap.set("n", "<Leader>bM", function()
+  require("bmessages").toggle({ split_type = "split" })
+end, { noremap = true, silent = true })
+
 
 ----------------------------------------------------------------------
 -- Telescope
@@ -259,6 +264,7 @@ vim.keymap.set("n", "<Leader>fs", live_grep, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>sp", live_grep, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>fb", telescope_builtin.buffers, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>bB", telescope_builtin.buffers, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>bl", telescope_builtin.buffers, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>fh", telescope_builtin.help_tags, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>pp", telescope.extensions.project.project, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>pP", telescope.extensions.projects.projects, { noremap = true, silent = true })
@@ -504,6 +510,7 @@ local which_key_map = {
   ["<Leader><Tab>["] = "タブを一つ前に移動する",
   ["<Leader><Tab>]"] = "タブを一つ後に移動する",
 
+  ["<Leader>bM"] = "messagesをバッファに表示する",
   ["<Leader>ft"] = "ファイルツリーを開く",
   ["<Leader>pp"] = "プロジェクトを開く",
   ["<Leader>pf"] = "ファイル名で検索する",
@@ -515,6 +522,7 @@ local which_key_map = {
   ["<Leader>sp"] = "ファイル内の文字列を検索する",
   ["<Leader>fb"] = "バッファ一覧を表示する",
   ["<Leader>bB"] = "バッファ一覧を表示する",
+  ["<Leader>bl"] = "バッファ一覧を表示する",
   ["<Leader>fh"] = "ヘルプを表示する",
   ["<Leader>fd"] = "ファイル名で検索する(cwd=%:h)",
   ["<Leader>sd"] = "ファイル内の文字列を検索する(cwd=%:h)",
