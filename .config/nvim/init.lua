@@ -235,6 +235,8 @@ telescope.setup {
   },
 }
 
+telescope.load_extension("project")
+
 local function find_files(params)
   params = params or {}
   params["hidden"] = true
