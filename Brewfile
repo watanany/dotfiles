@@ -56,6 +56,7 @@ brew "lua-language-server"
 brew "dagger/tap/dagger"
 brew "hashicorp/tap/terraform-ls"
 brew "nodenv/nodenv/nodenv-default-packages"
+brew "font-hack-nerd-font"
 
 
 cask "karabiner-elements"
