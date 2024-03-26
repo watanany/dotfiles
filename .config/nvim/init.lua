@@ -422,7 +422,13 @@ cmp.setup {
 -- nvim-treesitter
 ----------------------------------------------------------------------
 require("nvim-treesitter.configs").setup {
-  ensure_installed = { "c", "lua", "vim", "vimdoc", "query" },
+  ensure_installed = {
+    "c", "lua", "vim", "vimdoc", "query",
+    "json", "yaml", "toml", "bash", "fish", "dockerfile",
+    "hcl", "terraform",
+    "python", "ruby", "go", "haskell", "rust",
+    "typescript",
+  },
   highlight = {
     enable = true,
     disable = { "markdown" },
