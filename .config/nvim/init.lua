@@ -204,6 +204,8 @@ vim.keymap.set("n", "<Leader>ft", ":Fern . -drawer<CR>", { noremap = true, silen
 local telescope = require("telescope")
 local telescope_builtin = require("telescope.builtin")
 local telescope_actions = require("telescope.actions")
+-- local telescope_project_actions = require("telescope._extensions.project.actions")
+local rooter = require("nvim-rooter")
 
 telescope.setup {
   extensions = {
@@ -249,21 +251,35 @@ local function git_files(params)
   telescope_builtin.git_files(params)
 end
 
-local function live_grep(params)
+local function live_grep_files(params)
   params = params or {}
   params["hidden"] = true
   telescope_builtin.live_grep(params)
 end
 
-local function find_configs()
-  telescope_builtin.git_files({ cwd = "~/dotfiles", hidden = true })
+local function find_dotfiles()
+  telescope_builtin.find_files({ cwd = "~/dotfiles", hidden = true })
+end
+
+local function find_project_files(params)
+  params = params or {}
+  params["hidden"] = true
+  params["cwd"] = rooter.get_root()
+  telescope_builtin.find_files(params)
+end
+
+local function live_grep_project_files(params)
+  params = params or {}
+  params["hidden"] = true
+  params["cwd"] = rooter.get_root()
+  telescope_builtin.live_grep(params)
 end
 
 vim.keymap.set("n", "<Leader>ff", find_files, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>pf", git_files, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>fp", find_configs, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>fs", live_grep, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>sp", live_grep, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>pf", find_project_files, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>fp", find_dotfiles, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>fs", live_grep_files, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>sp", live_grep_project_files, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>fb", telescope_builtin.buffers, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>bB", telescope_builtin.buffers, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>bl", telescope_builtin.buffers, { noremap = true, silent = true })
@@ -279,7 +295,7 @@ vim.keymap.set("n", "<Leader>fd",
   { noremap = true, silent = true }
 )
 vim.keymap.set("n", "<Leader>sd",
-  function() live_grep({ cwd = vim.fn.expand("%:h") }) end,
+  function() live_grep_files({ cwd = vim.fn.expand("%:h") }) end,
   { noremap = true, silent = true }
 )
 
@@ -415,6 +431,14 @@ cmp.setup {
     { name = "calc" },
     { name = "nvim_lua" },
   },
+  formatting = {
+    format = require("lspkind").cmp_format {
+      mode = "symbol",
+      maxwidth = 50,
+      ellipsis_char = "...",
+      show_labelDetails = true,
+    },
+  },
 }
 
 
@@ -424,15 +448,17 @@ cmp.setup {
 require("nvim-treesitter.configs").setup {
   ensure_installed = {
     "c", "lua", "vim", "vimdoc", "query",
-    "json", "yaml", "toml", "bash", "fish", "dockerfile",
-    "hcl", "terraform",
+    "json", "yaml", "toml", "bash", "fish",
     "python", "ruby", "go", "haskell", "rust",
     "typescript",
+    "dockerfile", "hcl", "terraform",
   },
+
   highlight = {
     enable = true,
     disable = { "markdown" },
   },
+
   indent = {
     enable = true,
   },

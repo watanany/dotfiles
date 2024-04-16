@@ -146,6 +146,14 @@ return {
     end,
   },
 
+  {
+    "notjedi/nvim-rooter.lua",
+    lazy = false,
+    config = function()
+      require("nvim-rooter").setup {}
+    end,
+  },
+
   ----------------------------------------------------------------------
   -- ターミナル
   ----------------------------------------------------------------------
@@ -237,6 +245,10 @@ return {
     config = function()
       require("copilot_cmp").setup()
     end,
+  },
+
+  {
+    "onsails/lspkind.nvim",
   },
 
   ----------------------------------------------------------------------
@@ -351,14 +363,14 @@ return {
   { "dhruvasagar/vim-table-mode" },
 
   -- markdown内のコードブロック内をシンタックスハイライト
-  {
-    "yaocccc/nvim-hl-mdcodeblock.lua",
-    -- after = "nvim-treesitter",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    config = function()
-      require("hl-mdcodeblock").setup {}
-    end,
-  },
+  -- {
+  --   "yaocccc/nvim-hl-mdcodeblock.lua",
+  --   -- after = "nvim-treesitter",
+  --   dependencies = { "nvim-treesitter/nvim-treesitter" },
+  --   config = function()
+  --     require("hl-mdcodeblock").setup {}
+  --   end,
+  -- },
 
   ----------------------------------------------------------------------
   -- org-mode
@@ -375,10 +387,18 @@ return {
   --   enabled = false,
   -- },
 
+  {
+    "vhyrro/luarocks.nvim",
+    priority = 1000,
+    config = true,
+  },
+
   -- neorg
   {
     "nvim-neorg/neorg",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    dependencies = { "nvim-lua/plenary.nvim", "vhyrro/luarocks.nvim" },
+    lazy = false,
+    version = "*",
     build = ":Neorg sync-parsers",
     config = function()
       require("neorg").setup {
