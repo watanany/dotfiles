@@ -204,8 +204,9 @@ vim.keymap.set("n", "<Leader>ft", ":Fern . -drawer<CR>", { noremap = true, silen
 local telescope = require("telescope")
 local telescope_builtin = require("telescope.builtin")
 local telescope_actions = require("telescope.actions")
--- local telescope_project_actions = require("telescope._extensions.project.actions")
+local telescope_project_actions = require("telescope._extensions.project.actions")
 local rooter = require("nvim-rooter")
+local hidden_files = true
 
 telescope.setup {
   extensions = {
@@ -218,8 +219,15 @@ telescope.setup {
         { path = "~/sanctum/projects", max_depth = 2 },
       },
       order_by = "asc",
-      hidden_files = true,
+      hidden_files = hidden_files,
       cd_scope = { "tab" },
+    },
+    fzf = {
+      fuzzy = true,                    -- false will only do exact matching
+      override_generic_sorter = true,  -- override the generic sorter
+      override_file_sorter = true,     -- override the file sorter
+      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+                                       -- the default case_mode is "smart_case"
     },
   },
   defaults = {
@@ -238,6 +246,7 @@ telescope.setup {
 }
 
 telescope.load_extension("project")
+telescope.load_extension("fzf")
 
 local function find_files(params)
   params = params or {}
@@ -491,7 +500,22 @@ autocmd("TextYankPost", {
 -- 保存時に行末の空白を削除する
 autocmd("BufWritePre", {
   pattern = "",
-  command = ":%s/\\s\\+$//e",
+  callback = function()
+    -- textやmarkdownファイルは削除しない
+    local ignored_fts = { "text", "markdown" }
+    local ignore_flag = false
+
+    for _, v in ipairs(ignored_fts) do
+      if vim.bo.filetype == v then
+        ignore_flag = true
+        break
+      end
+    end
+
+    if not ignore_flag then
+      vim.cmd [[ :%s/\s\+$//e ]]
+    end
+  end,
 })
 
 -- ターミナルを開いた時にinsertモードを開始する
@@ -519,12 +543,12 @@ autocmd({ "BufRead", "BufNewFile" }, {
 })
 
 -- 開発用
-autocmd("DirChanged", {
-  pattern = "",
-  callback = function()
-    print(string.format("[DEBUG-DEBUG-DEBUG] CWD = %s", vim.fn.getcwd()))
-  end,
-})
+-- autocmd("DirChanged", {
+--   pattern = "",
+--   callback = function()
+--     print(string.format("[DEBUG-DEBUG-DEBUG] CWD = %s", vim.fn.getcwd()))
+--   end,
+-- })
 
 
 ----------------------------------------------------------------------
