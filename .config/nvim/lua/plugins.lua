@@ -154,6 +154,11 @@ return {
     end,
   },
 
+  {
+    "nvim-telescope/telescope-fzf-native.nvim",
+    build = "cmake -s. -bbuild -dcmake_build_type=release && cmake --build build --config release && cmake --install build --prefix build",
+  },
+
   ----------------------------------------------------------------------
   -- ターミナル
   ----------------------------------------------------------------------
@@ -186,7 +191,7 @@ return {
   },
 
   ----------------------------------------------------------------------
-  -- 補完プラグライン
+  -- 補完プラグイン
   ----------------------------------------------------------------------
   -- スニペット
   { "hrsh7th/cmp-vsnip" },
@@ -327,6 +332,16 @@ return {
   },
 
   { "posva/vim-vue" },
+
+  -- 色コードを彩色
+  {
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require("colorizer").setup {
+        "*",
+      }
+    end,
+  },
 
   ----------------------------------------------------------------------
   -- markdown
