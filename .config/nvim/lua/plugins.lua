@@ -31,7 +31,8 @@ return {
   { "rainbowhxch/accelerated-jk.nvim" },
 
   -- f + 一文字で検索
-  { "rhysd/clever-f.vim" },
+  { "rhysd/clever-f.vim", enabled = true },
+  { "ggandor/lightspeed.nvim", enabled = false },
 
   ----------------------------------------------------------------------
   -- セッション管理
@@ -41,9 +42,10 @@ return {
     config = function()
       require("auto-session").setup {
         log_level = "error",
-        auto_session_suppress_dirs = { "~/" },
+        auto_session_enable_last_session = true,
       }
     end,
+    enabled = true,
   },
 
   {
@@ -52,6 +54,7 @@ return {
     config = function()
       require("session_manager").setup {}
     end,
+    enabled = false,
   },
 
   ----------------------------------------------------------------------
@@ -72,7 +75,7 @@ return {
   {
     "akinsho/bufferline.nvim",
     version = "*",
-    dependencies = "nvim-tree/nvim-web-devicons",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require("bufferline").setup {
         options = {
@@ -80,10 +83,11 @@ return {
           numbers = "ordinal",
           name_formatter = "name",
           show_buffer_icons = true,
-          sort_by = "tabs"
+          sort_by = "tabs",
         },
       }
-    end
+    end,
+    enabled = true,
   },
 
   {
@@ -411,7 +415,7 @@ return {
         size = 20,
         open_mapping = "<C-\\>",
       }
-    end
+    end,
   },
 
   {
@@ -698,6 +702,11 @@ return {
     dependencies = { "nvim-treesitter/nvim-treesitter" },
   },
 
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+  },
+
   -- surroundを追加
   {
     "kylechui/nvim-surround",
@@ -718,6 +727,7 @@ return {
     end,
   },
 
+  -- :messagesをバッファとして表示
   {
     "ariel-frischer/bmessages.nvim",
     event = "CmdlineEnter",
