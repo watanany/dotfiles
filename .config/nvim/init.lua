@@ -59,17 +59,16 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 -- ステータスラインを常に表示する
 vim.o.laststatus = 2
--- ステータスラインを2行にする
-vim.o.cmdheight = 2
+-- コマンドラインの行数を設定する
+vim.o.cmdheight = 1
 -- カーソル移動の動作を変更
 vim.o.whichwrap = "b,s,h,l,<,>,[,]"
 -- ファイルを閉じてもundoできるようにする
 vim.opt.undofile = true
 -- クリップボードを設定する
 vim.opt.clipboard:append("unnamedplus")
--- :mksession時に絶対パスで保存するように強制する(curdir,sesdirを削除)
--- cf. <https://www.reddit.com/r/vim/comments/adtnfv/comment/edk34ky/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button>
-vim.o.sessionoptions = "blank,buffers,folds,help,tabpages,winsize,terminal"
+-- cf. <https://github.com/rmagatti/auto-session?tab=readme-ov-file#lua-only-options>
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 -- 行番号表示部分にサインを表示するようにする
 vim.o.signcolumn = "number"
 -- 折り畳みさせないようにする
@@ -169,6 +168,21 @@ vim.keymap.set("c", "<C-d>", "<Del>", { noremap = true })
 -- ターミナルを開く
 vim.keymap.set("n", "<Leader>ot", (function() vim.cmd("TabToggleTerm!") end), { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>oT", (function() vim.cmd("term") end), { noremap = true, silent = true })
+
+-- lazygit
+local Terminal  = require('toggleterm.terminal').Terminal
+local lazygit = Terminal:new {
+  cmd = "lazygit",
+  hidden = true,
+  direction = "float",
+}
+
+local function lazygit_toggle()
+  lazygit:toggle()
+end
+
+vim.keymap.set("n", "<Leader>oG", lazygit_toggle, { noremap = true, silent = true })
+
 
 -- 各種設定のトグル
 vim.keymap.set("n", "Tl", (function() vim.wo.list = not vim.wo.list end), { noremap = true, silent = true })
@@ -461,6 +475,7 @@ require("nvim-treesitter.configs").setup {
     "python", "ruby", "go", "haskell", "rust",
     "typescript",
     "dockerfile", "hcl", "terraform",
+    "dhall",
   },
 
   highlight = {
@@ -475,6 +490,39 @@ require("nvim-treesitter.configs").setup {
   -- RRethy/nvim-treesitter-endwise
   endwise = {
     enable = true,
+  },
+
+  -- nvim-treesitter/nvim-treesitter-textobjects
+  -- <https://github.com/nvim-treesitter/nvim-treesitter-textobjects?tab=readme-ov-file#text-objects-select>
+  textobjects = {
+    select = {
+      enable = true,
+      keymaps = {
+        -- textobjects.scmで定義されているキャプチャグループを使える
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@class.outer",
+
+        -- You can optionally set descriptions to the mappings (used in the desc parameter of
+        -- nvim_buf_set_keymap) which plugins like which-key display
+        ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
+        -- You can also use captures from other query groups like `locals.scm`
+        ["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
+      },
+
+      -- You can choose the select mode (default is charwise 'v')
+      --
+      -- Can also be a function which gets passed a table with the keys
+      -- * query_string: eg '@function.inner'
+      -- * method: eg 'v' or 'o'
+      -- and should return the mode ('v', 'V', or '<c-v>') or a table
+      -- mapping query_strings to modes.
+      selection_modes = {
+        ['@parameter.outer'] = 'v',  -- charwise
+        ['@function.outer'] = 'V',   -- linewise
+        ['@class.outer'] = '<c-v>',  -- blockwise
+      },
+    },
   },
 }
 
