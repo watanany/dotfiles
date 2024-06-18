@@ -18,11 +18,13 @@ return {
   -- Neovim用のLuaの関数集
   { "nvim-lua/plenary.nvim" },
 
-  -- tree-sitter
+  -- treesitter
   {
     "nvim-treesitter/nvim-treesitter",
     build = function()
-      local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
+      local ts_update = require("nvim-treesitter.install").update {
+        with_sync = true,
+      }
       ts_update()
     end,
   },
@@ -578,7 +580,7 @@ return {
 
   { "posva/vim-vue" },
 
-  -- 色コードを彩色
+  -- 色コードを彩色する
   {
     "norcalli/nvim-colorizer.lua",
     config = function()
@@ -588,9 +590,13 @@ return {
     end,
   },
 
+  -- F#
+  { "adelarsq/neofsharp.vim" },
+
   ----------------------------------------------------------------------
   -- markdown
   ----------------------------------------------------------------------
+  -- nvim内でmarkdownをプレビューする(:Glow)
   {
     "ellisonleao/glow.nvim",
     config = function()
@@ -598,6 +604,7 @@ return {
     end,
   },
 
+  -- ブラウザでmarkdownをプレビューする(:MarkdownPreview & :MarkdownPreviewStop)
   {
     "iamcco/markdown-preview.nvim",
     build = function()
@@ -605,6 +612,7 @@ return {
     end,
   },
 
+  -- markdown用のマッピングを追加する
   {
     "SidOfc/mkdx",
     init = function()
@@ -620,17 +628,18 @@ return {
     end,
   },
 
+  -- markdownのテーブル作成とフォーマット(:TableModeToggleで有効化する)
   { "dhruvasagar/vim-table-mode" },
 
   -- markdown内のコードブロック内をシンタックスハイライト
-  -- {
-  --   "yaocccc/nvim-hl-mdcodeblock.lua",
-  --   -- after = "nvim-treesitter",
-  --   dependencies = { "nvim-treesitter/nvim-treesitter" },
-  --   config = function()
-  --     require("hl-mdcodeblock").setup {}
-  --   end,
-  -- },
+  {
+    "yaocccc/nvim-hl-mdcodeblock.lua",
+    -- after = "nvim-treesitter",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    config = function()
+      require("hl-mdcodeblock").setup {}
+    end,
+  },
 
   ----------------------------------------------------------------------
   -- org-mode
@@ -659,7 +668,7 @@ return {
     dependencies = { "nvim-lua/plenary.nvim", "vhyrro/luarocks.nvim" },
     lazy = false,
     version = "*",
-    build = ":Neorg sync-parsers",
+    -- build = ":Neorg sync-parsers",
     config = function()
       require("neorg").setup {
         load = {
@@ -697,11 +706,13 @@ return {
     end,
   },
 
+  -- endを自動で補完する
   {
     "RRethy/nvim-treesitter-endwise",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
   },
 
+  -- treesitterでtextobjectを設定できるようにする
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
@@ -745,20 +756,6 @@ return {
     end,
   },
 
-  -- git
-  {
-    "NeogitOrg/neogit",
-    dependencies = {
-      { "nvim-lua/plenary.nvim" },
-      { "sindrets/diffview.nvim", lazy = true },
-      { "nvim-telescope/telescope.nvim", lazy = true },
-    },
-    config = function()
-      require("neogit").setup {}
-    end,
-    enabled = false,
-  },
-
   -- 外部ツールのインストール
   {
     "williamboman/mason.nvim",
@@ -767,4 +764,7 @@ return {
     end,
     enabled = false,
   },
+
+  -- windowを消さないbdコマンド(:Bdeleteと:Bwipeoutを追加)
+  { "famiu/bufdelete.nvim" },
 }
