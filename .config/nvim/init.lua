@@ -389,6 +389,8 @@ lspconfig.purescriptls.setup {
 --   }
 -- }
 
+lspconfig.fsautocomplete.setup {}
+
 vim.keymap.set("n", "<Leader>e", vim.diagnostic.open_float, { noremap = true, silent = true })
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { noremap = true, silent = true })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { noremap = true, silent = true })
@@ -472,6 +474,7 @@ require("nvim-treesitter.configs").setup {
   ensure_installed = {
     "c", "lua", "vim", "vimdoc", "query",
     "json", "yaml", "toml", "bash", "fish",
+    "markdown", "markdown_inline",
     "python", "ruby", "go", "haskell", "rust",
     "typescript",
     "dockerfile", "hcl", "terraform",
@@ -480,7 +483,8 @@ require("nvim-treesitter.configs").setup {
 
   highlight = {
     enable = true,
-    disable = { "markdown" },
+    -- disable = { "markdown" },
+    additional_vim_regex_highlighting = false,
   },
 
   indent = {
