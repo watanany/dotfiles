@@ -12,21 +12,21 @@ if status is-interactive
     set -gx PATH "$HOME/.git-subcommands" $PATH
 
     set -gx RBENV_ROOT "$HOME/.rbenv"
-    set -gx PATH "$RBENV_ROOT/shims" $PATH
+    set -gx PATH "$RBENV_ROOT/shims" "$RBENV_ROOT/bin" $PATH
 
     set -gx PATH "$HOME/.rye/shims" $PATH
 
     set -gx PYENV_ROOT "$HOME/.pyenv"
-    set -gx PATH "$PYENV_ROOT/shims" $PATH
-    source $(pyenv virtualenv-init -| psub)
+    set -gx PATH "$PYENV_ROOT/shims" "$PYENV_ROOT/bin" $PATH
+    source $(pyenv virtualenv-init - | psub)
 
     set -gx PATH "$HOME/.poetry/bin" $PATH
 
     set -gx NODENV_ROOT "$HOME/.nodenv"
-    set -gx PATH "$NODENV_ROOT/shims" $PATH
+    set -gx PATH "$NODENV_ROOT/shims" "$NODENV_ROOT/bin" $PATH
 
     set -gx JENV_ROOT "$HOME/.jenv"
-    set -gx PATH "$JENV_ROOT/shims" $PATH
+    set -gx PATH "$JENV_ROOT/shims" "$JENV_ROOT/bin" $PATH
 
     #;;; Haskell
     #;; ghcup
@@ -38,6 +38,9 @@ if status is-interactive
 
     #;;; Rust
     set -gx PATH "$HOME/.cargo/bin" $PATH
+
+    #;;; F#
+    set -gx PATH "$HOME/.dotnet/tools" $PATH
 
     #;;; Dart/Flutter
     #;; Flutter
