@@ -2,11 +2,15 @@ import sys
 import os
 import csv
 import json
-import yaml
 from os.path import expanduser
 from datetime import datetime, timedelta
 from glob import glob
 from pathlib import Path
+
+try:
+    import yaml
+except ImportError:
+    pass
 
 try:
     import pandas as pd
