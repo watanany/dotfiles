@@ -12,6 +12,7 @@ DIRS: list[str] = [
     ".local/share",
     ".tmux/plugins",
     ".ipython/profile_default/startup",
+    ".pyenv",
 ]
 
 LINK_LIST: list[str] = [
@@ -32,6 +33,7 @@ LINK_LIST: list[str] = [
     ".lein",
     ".ipython/profile_default/startup/00-first.py",
     ".config/nvim",
+    ".pyenv/default-packages",
 ]
 
 
