@@ -13,16 +13,14 @@ import Prelude
 :set -fno-warn-type-defaults
 :set -DGHCI
 
-:seti -XOverloadedStrings
-:seti -XScopedTypeVariables
+:set -XOverloadedStrings
+:set -XScopedTypeVariables
 
--- :set prompt "λ> "
--- :set prompt-cont "λ|     "
 :set prompt "\ESC[1;36m\STXλ> \ESC[m\STX"
 :set prompt-cont "\ESC[1;36m\STXλ |     \ESC[m\STX"
 
 -- 複数行にわたるコマンドのパースを可能にする
--- :set +m
+:set +m
 
 -- 式を 1 つ評価するごとに，経過時間や確保されたバイト数の統計情報を表示
 :set +s
@@ -31,5 +29,7 @@ import Prelude
 :set +t
 
 -- hoogle での検索用コマンドを定義
+-- hoogleコマンドが必要: cabal install hoogle
 :def hoogle \x -> return $ ":!hoogle \"" ++ x ++ "\" | less "
+
 
