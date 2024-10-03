@@ -41,22 +41,29 @@ return {
   ----------------------------------------------------------------------
   {
     "rmagatti/auto-session",
+    lazy = false,
+
     config = function()
+      -- cf. <https://github.com/rmagatti/auto-session?tab=readme-ov-file#recommended-sessionoptions-config>
+      -- NOTE: このプラグインのsetup前に設定しないと警告が出る
+      vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
       require("auto-session").setup {
-        log_level = "error",
-        auto_session_enable_last_session = true,
+        auto_restore_last_session = true,
       }
     end,
-    enabled = true,
+
+    enabled = false,
   },
 
   {
     "Shatur/neovim-session-manager",
     dependencies = { "nvim-lua/plenary.nvim" },
+    lazy = false,
     config = function()
       require("session_manager").setup {}
     end,
-    enabled = false,
+    enabled = true,
   },
 
   ----------------------------------------------------------------------
@@ -403,7 +410,8 @@ return {
 
   {
     "nvim-telescope/telescope-fzf-native.nvim",
-    build = "cmake -s. -bbuild -dcmake_build_type=release && cmake --build build --config release && cmake --install build --prefix build",
+    build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release"
+    -- build = "make",
   },
 
   ----------------------------------------------------------------------
@@ -607,9 +615,12 @@ return {
   -- ブラウザでmarkdownをプレビューする(:MarkdownPreview & :MarkdownPreviewStop)
   {
     "iamcco/markdown-preview.nvim",
-    build = function()
-      vim.fn["mkdp#util#install"]()
-    end,
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    build = function() vim.fn["mkdp#util#install"]() end,
+
+    -- FIXME: <https://github.com/iamcco/markdown-preview.nvim/issues/690>
+    enabled = false,
   },
 
   -- markdown用のマッピングを追加する
@@ -697,13 +708,29 @@ return {
   {
     "m4xshen/autoclose.nvim",
     config = function()
+      local autoclose = require("autoclose")
       require("autoclose").setup {
+        keys = {
+          -- ['"'] = { escape = true, close = false, pair = '""' },
+          -- ["'"] = { escape = true, close = false, pair = "''" },
+          -- ["`"] = { escape = true, close = false, pair = "``" },
+        },
         options = {
           disable_when_touch = true,
           touch_regex = "[%w(%[{ぁ-んァ-ヶー一-龯]"
         },
       }
     end,
+    enabled = false,
+  },
+
+  {
+    "altermo/ultimate-autopair.nvim",
+    event={ "InsertEnter","CmdlineEnter" },
+    branch="v0.6",
+    opts={
+    },
+    enabled = false,
   },
 
   -- endを自動で補完する
@@ -748,12 +775,8 @@ return {
   -- 利用可能なキーマップを表示
   {
     "folke/which-key.nvim",
-    config = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 300
-
-      require("which-key").setup {}
-    end,
+    event = "VeryLazy",
+    opts = {},
   },
 
   -- 外部ツールのインストール
