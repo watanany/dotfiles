@@ -67,8 +67,6 @@ vim.o.whichwrap = "b,s,h,l,<,>,[,]"
 vim.opt.undofile = true
 -- クリップボードを設定する
 vim.opt.clipboard:append("unnamedplus")
--- cf. <https://github.com/rmagatti/auto-session?tab=readme-ov-file#lua-only-options>
-vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 -- 行番号表示部分にサインを表示するようにする
 vim.o.signcolumn = "number"
 -- 折り畳みさせないようにする
@@ -167,7 +165,7 @@ vim.keymap.set("c", "<C-d>", "<Del>", { noremap = true })
 
 -- ターミナルを開く
 vim.keymap.set("n", "<Leader>ot", (function() vim.cmd("TabToggleTerm!") end), { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>oT", (function() vim.cmd("term") end), { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>oT", (function() print('debug'); vim.cmd("term") end), { noremap = true, silent = true })
 
 -- lazygit
 local Terminal  = require('toggleterm.terminal').Terminal
@@ -351,10 +349,9 @@ lspconfig.pyright.setup {
   },
 }
 
-lspconfig.ruby_ls.setup {}
+lspconfig.ruby_lsp.setup {}
 
-lspconfig.tsserver.setup {
-  -- cf. <https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#tsserver>
+lspconfig.ts_ls.setup {
   filetypes = {
     -- "javascript",
     -- "javascriptreact",
@@ -475,6 +472,7 @@ require("nvim-treesitter.configs").setup {
     "c", "lua", "vim", "vimdoc", "query",
     "json", "yaml", "toml", "bash", "fish",
     "markdown", "markdown_inline",
+    "sql",
     "python", "ruby", "go", "haskell", "rust",
     "typescript",
     "dockerfile", "hcl", "terraform",
@@ -606,59 +604,60 @@ autocmd({ "BufRead", "BufNewFile" }, {
 ----------------------------------------------------------------------
 -- which-key
 ----------------------------------------------------------------------
-local which_key_map = {
-  ["<Leader>ot"] = "ターミナルをトグルする",
-  ["<Leader>oT"] = "ターミナルを開く",
+-- local which_key_table = {
+--   { "<Leader>ot", desc = "ターミナルをトグルする" },
+--   { "<Leader>oT", "ターミナルを開く" },
+--
+--   { "Tl", desc = "不可視文字を表示をトグルする" },
+--   { "Tn", desc = "行番号の表示をトグルする" },
+--   { "Tw", desc = "折り返しをトグルする" },
+--   { "Tp", desc = "ペーストモードをトグルする" },
+--
+--   { "<Leader><Tab>n", desc = "タブを作成する" },
+--   { "<Leader><Tab>d", desc = "タブを削除する" },
+--   { "<Leader><Tab>[", desc = "タブを一つ前に移動する" },
+--   { "<Leader><Tab>]", desc = "タブを一つ後に移動する" },
+--
+--   { "<Leader>bM", desc = "messagesをバッファに表示する" },
+--   { "<Leader>ft", desc = "ファイルツリーを開く" },
+--   { "<Leader>pp", desc = "プロジェクトを開く" },
+--   { "<Leader>pf", desc = "ファイル名で検索する" },
+--   { "<Leader>ff", desc = "ファイル名で検索する" },
+--   { "<Leader>fp", desc = "dotfilesを検索する" },
+--   { "<Leader>fr", desc = "最近開いたファイルで検索する" },
+--   { "<Leader>fR", desc = "最近開いたファイルで検索する(workspace=CWD)" },
+--   { "<Leader>fs", desc = "ファイル内の文字列を検索する" },
+--   { "<Leader>sp", desc = "ファイル内の文字列を検索する" },
+--   { "<Leader>fb", desc = "バッファ一覧を表示する" },
+--   { "<Leader>bB", desc = "バッファ一覧を表示する" },
+--   { "<Leader>bl", desc = "バッファ一覧を表示する" },
+--   { "<Leader>fh", desc = "ヘルプを表示する" },
+--   { "<Leader>fd", desc = "ファイル名で検索する(cwd=%:h)" },
+--   { "<Leader>sd", desc = "ファイル内の文字列を検索する(cwd=%:h)" },
+--
+--   { "[d", desc = "一つ前の診断に戻る" },
+--   { "]d", desc = "一つ後の診断に進む" },
+--   { "<Leader>q", desc = "フローティングウィンドウにカーソルの下にあるシンボルに関する情報を表示します。2回呼び出すと、フローティング ウィンドウにジャンプします。" },
+--   { "gD", desc = "宣言にジャンプする" },
+--   { "gd", desc = "定義にジャンプする" },
+--   { "K", desc = "ホバーを表示する" },
+--   { "gi", desc = "実装にジャンプする" },
+--   { "<C-k>", desc = "シグネチャヘルプを表示する" },
+--   { "<Leader>wa", desc = "ワークスペースにフォルダを追加する" },
+--   { "<Leader>wr", desc = "ワークスペースからフォルダを削除する" },
+--   { "<Leader>wl", desc = "ワークスペースのフォルダを表示する" },
+--   { "<Leader>D", "型定義にジャンプする" },
+--   { "<Leader>rn", desc = "変数名を変更する" },
+--   { "<Leader>ca", desc = "現在のカーソル位置で利用可能なコードアクションを選択する" },
+--   { "gr", desc = "リファレンス一覧を表示する" },
+--   { "<Leader>F", desc = "バッファ内のコードをフォーマットする" },
+-- }
+--
+-- for i = 1, 9 do
+--   local key = string.format("<Leader><Tab>%d", i)
+--   local desc = string.format("タブ[%d]に移動する", i)
+--   table.insert(which_key_table, { key, desc = desc })
+-- end
+--
+-- require("which-key").add(which_key_table)
 
-  ["Tl"] = "不可視文字を表示をトグルする",
-  ["Tn"] = "行番号の表示をトグルする",
-  ["Tw"] = "折り返しをトグルする",
-  ["Tp"] = "ペーストモードをトグルする",
-
-  ["<Leader><Tab>n"] = "タブを作成する",
-  ["<Leader><Tab>d"] = "タブを削除する",
-  ["<Leader><Tab>["] = "タブを一つ前に移動する",
-  ["<Leader><Tab>]"] = "タブを一つ後に移動する",
-
-  ["<Leader>bM"] = "messagesをバッファに表示する",
-  ["<Leader>ft"] = "ファイルツリーを開く",
-  ["<Leader>pp"] = "プロジェクトを開く",
-  ["<Leader>pf"] = "ファイル名で検索する",
-  ["<Leader>ff"] = "ファイル名で検索する",
-  ["<Leader>fp"] = "dotfilesを検索する",
-  ["<Leader>fr"] = "最近開いたファイルで検索する",
-  ["<Leader>fR"] = "最近開いたファイルで検索する(workspace=CWD)",
-  ["<Leader>fs"] = "ファイル内の文字列を検索する",
-  ["<Leader>sp"] = "ファイル内の文字列を検索する",
-  ["<Leader>fb"] = "バッファ一覧を表示する",
-  ["<Leader>bB"] = "バッファ一覧を表示する",
-  ["<Leader>bl"] = "バッファ一覧を表示する",
-  ["<Leader>fh"] = "ヘルプを表示する",
-  ["<Leader>fd"] = "ファイル名で検索する(cwd=%:h)",
-  ["<Leader>sd"] = "ファイル内の文字列を検索する(cwd=%:h)",
-
-  ["[d"] = "一つ前の診断に戻る",
-  ["]d"] = "一つ後の診断に進む",
-  ["<Leader>q"] = "フローティングウィンドウにカーソルの下にあるシンボルに関する情報を表示します。2回呼び出すと、フローティング ウィンドウにジャンプします。",
-  ["gD"] = "宣言にジャンプする",
-  ["gd"] = "定義にジャンプする",
-  ["K"] = "ホバーを表示する",
-  ["gi"] = "実装にジャンプする",
-  ["<C-k>"] = "シグネチャヘルプを表示する",
-  ["<Leader>wa"] = "ワークスペースにフォルダを追加する",
-  ["<Leader>wr"] = "ワークスペースからフォルダを削除する",
-  ["<Leader>wl"] = "ワークスペースのフォルダを表示する",
-  ["<Leader>D"] = "型定義にジャンプする",
-  ["<Leader>rn"] = "変数名を変更する",
-  ["<Leader>ca"] = "現在のカーソル位置で利用可能なコードアクションを選択する",
-  ["gr"] = "リファレンス一覧を表示する",
-  ["<Leader>F"] = "バッファ内のコードをフォーマットする",
-}
-
-for i = 1, 9 do
-  local key = string.format("<Leader><Tab>%d", i)
-  local desc = string.format("タブ[%d]に移動する", i)
-  which_key_map[key] = desc
-end
-
-require("which-key").register(which_key_map)
