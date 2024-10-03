@@ -1,11 +1,14 @@
 import sys
 import os
+import re
 import csv
 import json
+import pickle
 from os.path import expanduser
 from datetime import datetime, timedelta
 from glob import glob
 from pathlib import Path
+from importlib import reload
 
 try:
     import yaml
@@ -19,6 +22,7 @@ except ImportError:
 
 try:
     import polars as pl
+    from polars import col, lit
 except ImportError:
     pass
 
