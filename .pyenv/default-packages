@@ -2,6 +2,6 @@ IPython
 nest_asyncio
 see
 PyYAML
-polar
+polars
 toolz
 pydantic
