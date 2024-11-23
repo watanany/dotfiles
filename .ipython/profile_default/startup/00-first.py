@@ -23,6 +23,9 @@ except ImportError:
 try:
     import polars as pl
     from polars import col, lit
+
+    pl.Config.set_tbl_cols(15)
+    pl.Config.set_tbl_rows(500)
 except ImportError:
     pass
 
