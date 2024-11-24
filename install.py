@@ -24,6 +24,7 @@ LINK_LIST: list[str] = [
     ".config/fish",
     ".config/karabiner",
     ".config/git",
+    ".config/kitty",
     ".local/bin/marked2",
     ".cache/dein",
     ".tmux/plugins/tpm",
