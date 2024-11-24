@@ -226,8 +226,6 @@ telescope.setup {
       base_dirs = {
         { path = "~/dotfiles", max_depth = 1 },
         { path = "~/sanctum/org", max_depth = 1 },
-        { path = "~/sanctum/zenn", max_depth = 1 },
-        { path = "~/sanctum/chatgpt-logs", max_depth = 1 },
         { path = "~/sanctum/projects", max_depth = 2 },
       },
       order_by = "asc",
