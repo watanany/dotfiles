@@ -324,7 +324,7 @@ vim.keymap.set("n", "<Leader>sd",
 ----------------------------------------------------------------------
 local lspconfig = require("lspconfig")
 
-lspconfig.lua_ls.setup {
+lspconfig["lua_ls"].setup {
   -- "folke/neodev.nvim"
   settings = {
     Lua = {
@@ -335,7 +335,7 @@ lspconfig.lua_ls.setup {
   },
 }
 
-lspconfig.pyright.setup {
+lspconfig["pyright"].setup {
   settings = {
     python = {
       venvPath = ".",
@@ -347,9 +347,9 @@ lspconfig.pyright.setup {
   },
 }
 
-lspconfig.ruby_lsp.setup {}
+lspconfig["ruby_lsp"].setup {}
 
-lspconfig.ts_ls.setup {
+lspconfig["ts_ls"].setup {
   filetypes = {
     -- "javascript",
     -- "javascriptreact",
@@ -360,13 +360,13 @@ lspconfig.ts_ls.setup {
   },
 }
 
-lspconfig.gopls.setup {}
+lspconfig["gopls"].setup {}
 
-lspconfig.terraformls.setup {}
+lspconfig["terraformls"].setup {}
 
--- lspconfig["hie"].setup {}
+lspconfig["hie"].setup {}
 
-lspconfig.purescriptls.setup {
+lspconfig["purescriptls"].setup {
   settings = {
     purescript = {
       addSpagoSources = true -- e.g. any purescript language-server config here
@@ -377,14 +377,13 @@ lspconfig.purescriptls.setup {
   },
 }
 
--- lspconfig.rust_analyzer.setup {
---   -- Server-specific settings...
---   settings = {
---     ["rust-analyzer"] = {}
---   }
--- }
+lspconfig["rust_analyzer"].setup {
+  settings = {
+    ["rust-analyzer"] = {}
+  }
+}
 
-lspconfig.fsautocomplete.setup {}
+lspconfig["fsautocomplete"].setup {}
 
 vim.keymap.set("n", "<Leader>e", vim.diagnostic.open_float, { noremap = true, silent = true })
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { noremap = true, silent = true })
@@ -461,6 +460,27 @@ cmp.setup {
   },
 }
 
+cmp.setup.cmdline('/', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    {
+      name = 'cmdline',
+      option = {
+        ignore_cmds = { 'Man', '!' }
+      }
+    }
+  })
+})
+
 
 ----------------------------------------------------------------------
 -- nvim-treesitter
@@ -476,6 +496,11 @@ require("nvim-treesitter.configs").setup {
     "dockerfile", "hcl", "terraform",
     "dhall",
   },
+
+  modules = {},
+  sync_install = false,
+  auto_install = false,
+  ignore_install = {},
 
   highlight = {
     enable = true,
