@@ -560,9 +560,9 @@ return {
         -- Make sure to set this up properly if you have lazy=true
         "MeanderingProgrammer/render-markdown.nvim",
         opts = {
-          file_types = { "markdown", "Avante" },
+          file_types = { "Avante" },
         },
-        ft = { "markdown", "Avante" },
+        ft = { "Avante" },
       },
     },
   },
@@ -727,6 +727,7 @@ return {
     "vhyrro/luarocks.nvim",
     priority = 1000,
     config = true,
+    enabled = false,
   },
 
   -- neorg
@@ -755,6 +756,7 @@ return {
         },
       }
     end,
+    enabled = false,
   },
 
   ----------------------------------------------------------------------
