@@ -112,13 +112,7 @@ if status is-interactive
     alias mv="mv -i"
     alias cp="cp -i"
     alias curl='curl -sSL'
-
-    switch $(uname)
-        case Darwin
-            alias ls="ls -F"
-        case '*'
-            alias ls="ls -F --color=auto"
-    end
+    alias ls="ls -F --color=auto"
 
     function cd
         builtin cd $argv && ls
