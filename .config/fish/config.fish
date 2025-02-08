@@ -16,6 +16,8 @@ if status is-interactive
 
     set -gx PATH "$HOME/.rye/shims" $PATH
 
+    uv generate-shell-completion fish | source
+
     set -gx PYENV_ROOT "$HOME/.pyenv"
     set -gx PATH "$PYENV_ROOT/shims" "$PYENV_ROOT/bin" $PATH
     source $(pyenv virtualenv-init - | psub)
