@@ -15,6 +15,9 @@ import Prelude
 
 :set -XOverloadedStrings
 :set -XScopedTypeVariables
+:set -XOverloadedRecordDot
+:set -XDuplicateRecordFields
+:set -XExplicitForAll
 
 :set prompt "\ESC[1;36m\STXλ> \ESC[m\STX"
 :set prompt-cont "\ESC[1;36m\STXλ |     \ESC[m\STX"
