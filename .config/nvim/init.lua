@@ -2,7 +2,7 @@
 local function setup_lazy()
   local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
-  if not vim.loop.fs_stat(lazypath) then
+  if not vim.uv.fs_stat(lazypath) then
     vim.fn.system({
       "git",
       "clone",
@@ -366,6 +366,8 @@ lspconfig["terraformls"].setup {}
 
 lspconfig["hie"].setup {}
 
+lspconfig["nil_ls"].setup {}
+
 lspconfig["purescriptls"].setup {
   settings = {
     purescript = {
@@ -449,6 +451,8 @@ cmp.setup {
     { name = "command" },
     { name = "calc" },
     { name = "nvim_lua" },
+    { name = "render-markdown" },
+    { name = "lazydev", group_index = 0 },
   },
   formatting = {
     format = require("lspkind").cmp_format {
@@ -460,26 +464,26 @@ cmp.setup {
   },
 }
 
-cmp.setup.cmdline('/', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = 'buffer' }
-  }
-})
+-- cmp.setup.cmdline('/', {
+--   mapping = cmp.mapping.preset.cmdline(),
+--   sources = {
+--     { name = 'buffer' }
+--   }
+-- })
 
-cmp.setup.cmdline(':', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = 'path' }
-  }, {
-    {
-      name = 'cmdline',
-      option = {
-        ignore_cmds = { 'Man', '!' }
-      }
-    }
-  })
-})
+-- cmp.setup.cmdline(':', {
+--   mapping = cmp.mapping.preset.cmdline(),
+--   sources = cmp.config.sources({
+--     { name = 'path' }
+--   }, {
+--     {
+--       name = 'cmdline',
+--       option = {
+--         ignore_cmds = { 'Man', '!' }
+--       }
+--     }
+--   })
+-- })
 
 
 ----------------------------------------------------------------------
