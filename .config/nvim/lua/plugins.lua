@@ -482,13 +482,6 @@ return {
   },
 
   {
-    "folke/neodev.nvim",
-    config = function()
-      require("neodev").setup {}
-    end,
-  },
-
-  {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     event = "InsertEnter",
@@ -560,7 +553,10 @@ return {
         -- Make sure to set this up properly if you have lazy=true
         "MeanderingProgrammer/render-markdown.nvim",
         opts = {
-          file_types = { "Avante" },
+          file_types = {
+            "markdown",
+            "Avante",
+          },
         },
         ft = { "Avante" },
       },
@@ -823,7 +819,7 @@ return {
     end,
   },
 
-  -- :messagesをバッファとして表示
+  -- :messagesをバッファとして表示(Bmessages)
   {
     "ariel-frischer/bmessages.nvim",
     event = "CmdlineEnter",
@@ -848,4 +844,51 @@ return {
 
   -- windowを消さないbdコマンド(:Bdeleteと:Bwipeoutを追加)
   { "famiu/bufdelete.nvim" },
+
+  --
+  {
+    "nvimtools/none-ls.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      local null_ls = require("null-ls")
+      null_ls.setup {
+        sources = {
+          null_ls.builtins.formatting.stylua,
+          null_ls.builtins.completion.spell,
+        },
+      }
+    end,
+  },
+
+  -- Lua
+  {
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+    },
+  },
+
+  -- nvim-cmpと競合しそう
+  -- { -- optional blink completion source for require statements and module annotations
+  --   "saghen/blink.cmp",
+  --   opts = {
+  --     sources = {
+  --       -- add lazydev to your completion providers
+  --       default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+  --       providers = {
+  --         lazydev = {
+  --           name = "LazyDev",
+  --           module = "lazydev.integrations.blink",
+  --           -- make lazydev completions top priority (see `:h blink.cmp`)
+  --           score_offset = 100,
+  --         },
+  --       },
+  --     },
+  --   },
+  -- },
 }
