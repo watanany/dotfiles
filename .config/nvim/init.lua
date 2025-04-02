@@ -226,6 +226,7 @@ telescope.setup {
       base_dirs = {
         { path = "~/dotfiles", max_depth = 1 },
         { path = "~/sanctum/org", max_depth = 1 },
+        { path = "~/sanctum/zenn", max_depth = 1 },
         { path = "~/sanctum/projects", max_depth = 2 },
       },
       order_by = "asc",
@@ -364,7 +365,10 @@ lspconfig["gopls"].setup {}
 
 lspconfig["terraformls"].setup {}
 
-lspconfig["hie"].setup {}
+-- haskell-tools.nvimで代用するのでコメントアウト
+-- lspconfig["hie"].setup {}
+
+lspconfig["dhall_lsp_server"].setup {}
 
 lspconfig["nil_ls"].setup {}
 
