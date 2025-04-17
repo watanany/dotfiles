@@ -131,7 +131,7 @@ if status is-interactive
     #   - auto-completion for the opam binary
     # This section can be safely removed at any time if needed.
     if test -r "$HOME/.opam/opam-init/init.fish"
-        source '/Users/watanabe.s/.opam/opam-init/init.fish' > /dev/null 2> /dev/null
+        source $HOME/.opam/opam-init/init.fish > /dev/null 2> /dev/null
     end
     # END opam configuration
 end
