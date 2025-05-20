@@ -1,22 +1,6 @@
--- lazyのインストールを行い、パスを設定する
-local function setup_lazy()
-  local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+local utils = require("utils")
 
-  if not vim.uv.fs_stat(lazypath) then
-    vim.fn.system({
-      "git",
-      "clone",
-      "--filter=blob:none",
-      "https://github.com/folke/lazy.nvim.git",
-      "--branch=stable", -- latest stable release
-      lazypath,
-    })
-  end
-
-  vim.opt.rtp:prepend(lazypath)
-end
-
-setup_lazy()
+utils.setup_lazy()
 
 -- NOTE: lazyをロードする前に設定する必要がある
 -- <Leader>キーを設定
@@ -217,7 +201,6 @@ local telescope = require("telescope")
 local telescope_builtin = require("telescope.builtin")
 local telescope_actions = require("telescope.actions")
 local telescope_project_actions = require("telescope._extensions.project.actions")
-local rooter = require("nvim-rooter")
 local hidden_files = true
 
 telescope.setup {
@@ -284,14 +267,14 @@ end
 local function find_project_files(params)
   params = params or {}
   params["hidden"] = true
-  params["cwd"] = rooter.get_root()
+  params["cwd"] = utils.get_root(vim.api.nvim_buf_get_name(0))
   telescope_builtin.find_files(params)
 end
 
 local function live_grep_project_files(params)
   params = params or {}
   params["hidden"] = true
-  params["cwd"] = rooter.get_root()
+  params["cwd"] = utils.get_root(vim.api.nvim_buf_get_name(0))
   telescope_builtin.live_grep(params)
 end
 
@@ -392,8 +375,12 @@ lspconfig["rust_analyzer"].setup {
 lspconfig["fsautocomplete"].setup {}
 
 vim.keymap.set("n", "<Leader>e", vim.diagnostic.open_float, { noremap = true, silent = true })
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { noremap = true, silent = true })
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { noremap = true, silent = true })
+vim.keymap.set("n", "[d", function()
+  vim.diagnostic.jump({ count = -1, float = true })
+end, { noremap = true, silent = true })
+vim.keymap.set("n", "]d", function()
+  vim.diagnostic.jump({ count = 1, float = true })
+end, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>q", vim.diagnostic.setloclist, { noremap = true, silent = true })
 
 -- Use LspAttach autocommand to only map the following keys

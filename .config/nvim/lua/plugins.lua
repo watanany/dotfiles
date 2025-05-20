@@ -1,3 +1,5 @@
+local utils = require("utils")
+
 return {
   -- Configurations for Nvim LSP
   { "neovim/nvim-lspconfig" },
@@ -102,15 +104,16 @@ return {
       options = {
         mode = "tabs",
         numbers = "ordinal",
-        name_formatter = "name",
 
-        -- name_formatter = function(buf)
-        --   local rooter = require("nvim-rooter")
-        --   -- TODO: get_rootでbufを指定できない(vim.api.nvim_buf_get_name(0)のrootになる)
-        --   local root = rooter.get_root()
-        --   local parts = vim.split(root, "/")
-        --   return parts[#parts]
-        -- end,
+        name_formatter = function(buf)
+          if vim.uv.fs_stat(buf.path) then
+            local path = vim.api.nvim_buf_get_name(buf.bufnr)
+            local root = utils.get_root(path)
+            return root and vim.fs.basename(root) or vim.fs.basename(path)
+          else
+            return buf.name
+          end
+        end,
 
         show_buffer_icons = true,
         sort_by = "tabs",
@@ -449,6 +452,7 @@ return {
     config = function()
       require("nvim-rooter").setup {}
     end,
+    enabled = false,
   },
 
   {
