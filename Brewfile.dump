@@ -4,6 +4,7 @@ tap "borkdude/brew"
 tap "clojure/tools"
 tap "d12frosted/emacs-plus"
 tap "dagger/tap"
+tap "derailed/k9s"
 tap "fujiwara/tap"
 tap "hashicorp/tap"
 tap "homebrew/bundle"
@@ -19,9 +20,9 @@ tap "snowflake-labs/snowcli"
 brew "act"
 brew "anyenv"
 brew "zstd"
-brew "openssl@3"
 brew "icu4c@76"
 brew "apache-spark"
+brew "openssl@3"
 brew "azure-cli"
 brew "coreutils"
 brew "bats-core"
@@ -38,6 +39,7 @@ brew "dasel"
 brew "deno"
 brew "dhall"
 brew "dhall-json"
+brew "dhall-lsp-server"
 brew "difftastic"
 brew "diffutils"
 brew "openjdk@11"
@@ -77,6 +79,7 @@ brew "jq"
 brew "openjdk"
 brew "leiningen"
 brew "libgccjit"
+brew "libpq"
 brew "libvo-aacenc"
 brew "libxml2"
 brew "libxslt"
@@ -89,6 +92,7 @@ brew "mas"
 brew "moreutils"
 brew "mysql-client"
 brew "mysql-client@8.0"
+brew "utf8proc", args: ["HEAD"]
 brew "neovim"
 brew "nkf"
 brew "pkgconf"
@@ -109,13 +113,13 @@ brew "ripgrep"
 brew "rust-analyzer"
 brew "rustup"
 brew "scala"
+brew "snowcli"
 brew "sox"
 brew "sqlfluff"
 brew "terraformer"
 brew "tfenv"
 brew "tflint"
 brew "tig"
-brew "utf8proc", args: ["HEAD"]
 brew "tmux"
 brew "tree"
 brew "watch"
@@ -129,14 +133,13 @@ brew "azure/functions/azure-functions-core-tools@4"
 brew "borkdude/brew/babashka"
 brew "clojure/tools/clojure"
 brew "d12frosted/emacs-plus/emacs-plus@28", args: ["with-imagemagick"]
-brew "dagger/tap/dagger"
+brew "derailed/k9s/k9s"
 brew "fujiwara/tap/ecsta"
 brew "hashicorp/tap/terraform-ls"
 brew "jesseduffield/lazygit/lazygit"
 brew "modularml/packages/modular"
 brew "nodenv/nodenv/nodenv-default-packages"
 brew "quarylabs/quary/sqruff"
-brew "snowflake-labs/snowcli/snowcli"
 cask "1password-cli"
 cask "alfred"
 cask "appcleaner"
@@ -151,6 +154,7 @@ cask "google-cloud-sdk"
 cask "karabiner-elements"
 cask "keyboardcleantool"
 cask "notion"
+cask "racket"
 cask "slack-cli"
 cask "snowflake-snowsql"
 cask "tableplus"
@@ -159,6 +163,7 @@ cask "temurin@8"
 cask "visual-studio-code"
 cask "wave"
 cask "zed"
+mas "Amphetamine", id: 937984704
 mas "Bear", id: 1091189122
 mas "Bitwarden", id: 1352778147
 mas "Craft", id: 1487937127
@@ -168,6 +173,7 @@ mas "Gapplin", id: 768053424
 mas "GarageBand", id: 682658836
 mas "Goodnotes", id: 1444383602
 mas "iMovie", id: 408981434
+mas "Keynote", id: 409183694
 mas "Kindle", id: 302584613
 mas "Kindle Classic", id: 405399194
 mas "LINE", id: 539883307
@@ -175,8 +181,9 @@ mas "Magnet", id: 441258766
 mas "Marked 2", id: 890031187
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
-mas "Playgrounds", id: 1496833156
 mas "Pocket", id: 568494494
+mas "Swift Playground", id: 1496833156
+mas "The Unarchiver", id: 425424353
 mas "Things", id: 904280696
 mas "Xcode", id: 497799835
 vscode "alefragnani.project-manager"
