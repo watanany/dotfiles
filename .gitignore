@@ -9,3 +9,4 @@ tmp/
 local_config.fish
 /.lein/repl-history
 /.history
+.cpcache/
