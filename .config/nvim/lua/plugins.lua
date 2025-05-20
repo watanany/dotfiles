@@ -13,6 +13,17 @@ return {
         colorscheme hybrid
       ]]
     end,
+    enabled = false,
+  },
+
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
+    config = function()
+      vim.cmd.colorscheme "catppuccin-mocha"
+    end,
+    enabled = true,
   },
 
   -- Neovim用のLuaの関数集
@@ -84,20 +95,51 @@ return {
   {
     "akinsho/bufferline.nvim",
     version = "*",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-      require("bufferline").setup {
-        options = {
-          mode = "tabs",
-          numbers = "ordinal",
-          name_formatter = "name",
-          show_buffer_icons = true,
-          sort_by = "tabs",
-        },
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
+    opts = {
+      options = {
+        mode = "tabs",
+        numbers = "ordinal",
+        name_formatter = "name",
+
+        -- name_formatter = function(buf)
+        --   local rooter = require("nvim-rooter")
+        --   -- TODO: get_rootでbufを指定できない(vim.api.nvim_buf_get_name(0)のrootになる)
+        --   local root = rooter.get_root()
+        --   local parts = vim.split(root, "/")
+        --   return parts[#parts]
+        -- end,
+
+        show_buffer_icons = true,
+        sort_by = "tabs",
       }
-    end,
+    },
     enabled = true,
   },
+
+  {
+    "romgrk/barbar.nvim",
+    dependencies = {
+      "lewis6991/gitsigns.nvim",     -- OPTIONAL: for git status
+      "nvim-tree/nvim-web-devicons", -- OPTIONAL: for file icons
+    },
+    init = function()
+      vim.g.barbar_auto_setup = false
+    end,
+    opts = {
+      -- lazy.nvim will automatically call setup for you. put your options here, anything missing will use the default:
+      -- animation = true,
+      -- insert_at_start = true,
+      -- …etc.
+      icons = {
+        buffer_index = true,
+      },
+    },
+    enabled = false,
+  },
+
 
   {
     "nvim-lualine/lualine.nvim",
@@ -728,7 +770,7 @@ return {
     "m4xshen/autoclose.nvim",
     config = function()
       local autoclose = require("autoclose")
-      require("autoclose").setup {
+      autoclose.setup {
         keys = {
           -- ['"'] = { escape = true, close = false, pair = '""' },
           -- ["'"] = { escape = true, close = false, pair = "''" },
