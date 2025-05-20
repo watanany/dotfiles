@@ -62,7 +62,7 @@
                  [clj-glob "1.0.0"]
                  [clj-http "3.12.3"]
                  [clj-time "0.15.2"]
-                 [clj-python/libpython-clj "2.025"]
+                 [clj-python/libpython-clj "2.026"]
                  [clojupyter "0.3.6"]
                  [com.github.seancorfield/honeysql "2.4.1078"]
                  [com.github.seancorfield/next.jdbc "1.3.894"]
@@ -70,15 +70,18 @@
                  [expresso "0.2.4"]
                  [hiccup "1.0.5"]
                  [hickory "0.7.1"]
+                 [metosin/malli "0.17.0"]
                  [net.mikera/core.matrix "0.63.0"]
                  [nrepl "1.0.0"]
                  [org.clojure.typed/runtime.jvm "1.0.1"]
                  [org.clojure.typed/checker.jvm "1.0.1"]
                  [org.postgresql/postgresql "42.6.0"]
                  [org.tensorflow/tensorflow-core-platform "0.5.0"]
-                 [rm-hull/infix "0.4.1"]
+                 ;; [rm-hull/infix "0.4.1"]
+                 [org.slf4j/slf4j-simple "1.7.30"]
                  [com.fasterxml.jackson.dataformat/jackson-dataformat-yaml "2.15.2"]]
-  :injections [(require '[clojure.walk :refer [keywordize-keys]])
+  :injections [(require '[clojure.edn :as edn])
+               (require '[clojure.walk :refer [keywordize-keys]])
                (require '[clojure.stacktrace :refer [print-stack-trace]])
                (require '[clojure.repl :refer :all])
                (require '[clojure.pprint :refer :all])
@@ -96,12 +99,15 @@
                (require '[clj-time.format :as time-format])
                (require '[clj-time.local :as time-local])
                (require '[clojure.core.matrix :as mat])
-               (require '[infix.macros :refer [infix $=]])
+               ;; (require '[infix.macros :refer [infix $=]])
                (require '[hickory.core :as hickory])
                (require '[hickory.convert :refer [hickory-to-hiccup hiccup-to-hickory]])
                (require '[honey.sql :as sql])
                (require '[honey.sql.helpers :as sql-helpers])
+               (require '[malli.core :as m])
+               (require '[malli.generator :as mg])
                (require '[numeric.expresso.core :as ex])
                (require '[org.satta.glob :refer [glob]])
                (require '[libpython-clj2.python :refer [py. py.. py.-] :as py])
-               (require '[libpython-clj2.require :refer [require-python]])]}}
+               ;; (require '[libpython-clj2.require :refer [require-python]])
+               ]}}
