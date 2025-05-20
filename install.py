@@ -13,6 +13,7 @@ DIRS: list[str] = [
     ".tmux/plugins",
     ".ipython/profile_default/startup",
     ".pyenv",
+    ".clojure",
 ]
 
 LINK_LIST: list[str] = [
@@ -35,6 +36,7 @@ LINK_LIST: list[str] = [
     ".ipython/profile_default/startup/00-first.py",
     ".config/nvim",
     ".pyenv/default-packages",
+    ".clojure/deps.edn",
 ]
 
 
