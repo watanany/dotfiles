@@ -290,7 +290,6 @@ vim.keymap.set("n", "<Leader>bB", telescope_builtin.buffers, { noremap = true, s
 vim.keymap.set("n", "<Leader>bl", telescope_builtin.buffers, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>fh", telescope_builtin.help_tags, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>pp", telescope.extensions.project.project, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>pP", telescope.extensions.projects.projects, { noremap = true, silent = true })
 -- vim.keymap.set("n", "<Leader>fr", telescope.extensions.recent_files.pick, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>fr", ":Telescope frecency<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>fR", ":Telescope frecency workspace=CWD<CR>", { noremap = true, silent = true })
@@ -308,7 +307,7 @@ vim.keymap.set("n", "<Leader>sd",
 ----------------------------------------------------------------------
 -- LSP
 ----------------------------------------------------------------------
-vim.lsp.enable("lua_ls", {
+vim.lsp.config("lua_ls", {
   -- "folke/neodev.nvim"
   settings = {
     Lua = {
@@ -319,7 +318,7 @@ vim.lsp.enable("lua_ls", {
   },
 })
 
-vim.lsp.enable("pyright", {
+vim.lsp.config("pyright", {
   settings = {
     python = {
       venvPath = ".",
@@ -331,9 +330,9 @@ vim.lsp.enable("pyright", {
   },
 })
 
-vim.lsp.enable("ruby_lsp", {})
+vim.lsp.config("ruby_lsp", {})
 
-vim.lsp.enable("ts_ls", {
+vim.lsp.config("ts_ls", {
   filetypes = {
     -- "javascript",
     -- "javascriptreact",
@@ -344,18 +343,18 @@ vim.lsp.enable("ts_ls", {
   },
 })
 
-vim.lsp.enable("gopls", {})
+vim.lsp.config("gopls", {})
 
-vim.lsp.enable("terraformls", {})
+vim.lsp.config("terraformls", {})
 
 -- haskell-tools.nvimで代用するのでコメントアウト
--- vim.lsp.enable("hie", {}
+-- vim.lsp.config("hie", {}
 
-vim.lsp.enable("dhall_lsp_server", {})
+vim.lsp.config("dhall_lsp_server", {})
 
-vim.lsp.enable("nil_ls", {})
+vim.lsp.config("nil_ls", {})
 
-vim.lsp.enable("purescriptls", {
+vim.lsp.config("purescriptls", {
   settings = {
     purescript = {
       addSpagoSources = true -- e.g. any purescript language-server config here
@@ -366,13 +365,28 @@ vim.lsp.enable("purescriptls", {
   },
 })
 
-vim.lsp.enable("rust_analyzer", {
+vim.lsp.config("rust_analyzer", {
   settings = {
     ["rust-analyzer"] = {}
   }
 })
 
-vim.lsp.enable("fsautocomplete", {})
+vim.lsp.config("fsautocomplete", {})
+
+vim.lsp.enable({
+  "lua_ls",
+  "pyright",
+  "ruby_lsp",
+  "ts_ls",
+  "gopls",
+  "terraformls",
+  "dhall_lsp_server",
+  "nil_ls",
+  "purescriptls",
+  "rust_analyzer",
+  "fsautocomplete",
+})
+
 
 vim.keymap.set("n", "<Leader>e", vim.diagnostic.open_float, { noremap = true, silent = true })
 vim.keymap.set("n", "[d", function()
