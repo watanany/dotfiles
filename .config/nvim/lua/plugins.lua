@@ -444,6 +444,7 @@ return {
       }
       require("telescope").load_extension("projects")
     end,
+    enabled = false,
   },
 
   {
@@ -610,6 +611,18 @@ return {
     },
   },
 
+  -- Claude Code
+  {
+    "greggh/claude-code.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim", -- Required for git operations
+    },
+    opts = {
+      command = "npx -y --package=@anthropic-ai/claude-code claude"
+    },
+    enabled = true,
+  },
+
   ----------------------------------------------------------------------
   -- syntax highlight
   ----------------------------------------------------------------------
@@ -617,26 +630,25 @@ return {
   {
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      require("todo-comments").setup {
-        highlight = {
-          keyword = "fg",
-          after = "",
-          pattern = "(KEYWORDS):",
-        },
-      }
-    end,
+    opts = {
+      highlight = {
+        keyword = "fg",
+        after = "",
+        pattern = "(KEYWORDS):",
+      },
+    },
   },
 
   -- インデントガイドラインの追加
   {
     "lukas-reineke/indent-blankline.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    config = function()
-      require("ibl").setup {
-        scope = { enabled = false },
-      }
-    end,
+    main = "ibl",
+
+    ---@module "ibl"
+    ---@type ibl.config
+    opts = {
+      scope = { enabled = false },
+    },
   },
 
   -- CSVを見やすく色付け
@@ -902,6 +914,7 @@ return {
   --   },
   -- },
 
+  -- git-blame
   {
     "f-person/git-blame.nvim",
 
@@ -927,6 +940,24 @@ return {
       require("blame").setup {}
     end,
     opts = {},
+    enabled = false,
+  },
+
+  -- Lua Lisp
+  {
+    "Olical/nfnl",
+    ft = "fennel",
+  },
+
+  {
+    "renerocksai/telekasten.nvim",
+    dependencies = {"nvim-telescope/telescope.nvim"},
+    config = function()
+      local telekasten = require("telekasten")
+      telekasten.setup {
+        home = vim.fn.expand("~/zettelkasten")
+      }
+    end,
     enabled = false,
   },
 }
