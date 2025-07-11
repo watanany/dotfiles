@@ -151,8 +151,10 @@ vim.keymap.set("c", "<C-d>", "<Del>", { noremap = true })
 vim.keymap.set("n", "<Leader>ot", (function() vim.cmd("TabToggleTerm!") end), { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>oT", (function() print('debug'); vim.cmd("term") end), { noremap = true, silent = true })
 
--- lazygit
+
 local Terminal  = require('toggleterm.terminal').Terminal
+
+-- lazygit
 local lazygit = Terminal:new {
   cmd = "lazygit",
   hidden = true,
@@ -164,7 +166,6 @@ local function lazygit_toggle()
 end
 
 vim.keymap.set("n", "<Leader>oG", lazygit_toggle, { noremap = true, silent = true })
-
 
 -- 各種設定のトグル
 vim.keymap.set("n", "Tl", (function() vim.wo.list = not vim.wo.list end), { noremap = true, silent = true })
