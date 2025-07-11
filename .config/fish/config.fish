@@ -131,6 +131,10 @@ if status is-interactive
         source $HOME/.opam/opam-init/init.fish > /dev/null 2> /dev/null
     end
     # END opam configuration
+
+    alias fennel="rlwrap fennel"
+
+    set -gx PATH "$HOME/.claude/local" $PATH
 end
 
 if test -f $(status dirname)/local_config.fish
