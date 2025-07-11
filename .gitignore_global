@@ -86,3 +86,6 @@ flycheck_*.el
 
 .local/
 .vscode/
+
+.claude/settings.local.json
+.tmp_dagster_home_*
