@@ -27,9 +27,6 @@ if status is-interactive
     set -gx NODENV_ROOT "$HOME/.nodenv"
     set -gx PATH "$NODENV_ROOT/shims" "$NODENV_ROOT/bin" $PATH
 
-    set -gx JENV_ROOT "$HOME/.jenv"
-    set -gx PATH "$JENV_ROOT/shims" "$JENV_ROOT/bin" $PATH
-
     #;;; Haskell
     #;; ghcup
     set -gx PATH "$HOME/.ghcup/bin" $PATH
