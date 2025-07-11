@@ -197,9 +197,8 @@ export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
 # source $HOME/.cargo/env
 
 #;;; Java
-#;; jenv
-export PATH="$HOME/.jenv/bin:$PATH"
-eval "$(jenv init -)"
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 #;;; Golang
 export PATH="$HOME/go/bin:$PATH"
@@ -242,9 +241,9 @@ esac
 export PATH="$HOME/.local/google-cloud-sdk/bin:$PATH"
 export GOOGLE_APPLICATION_CREDENTIALS="$HOME/.local/library-164912-e95e373384ca.json"
 
-
 #;;; .zshrc.local(実験用設定ファイル)を実行
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
 #;;; Hello World
 echo "\n\e[31m*\e[m \e[33m*\e[m \e[35m*\e[m \e[36m*\e[m Hello World \e[31m*\e[m \e[33m*\e[m \e[35m*\e[m \e[36m*\e[m\n"
+
