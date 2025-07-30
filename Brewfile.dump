@@ -102,6 +102,7 @@ brew "pkgconf"
 brew "nodenv"
 brew "nushell"
 brew "pandoc"
+brew "parquet-cli"
 brew "pkl"
 brew "postgresql@14"
 brew "pre-commit"
@@ -156,7 +157,7 @@ cask "discord"
 cask "docker-desktop"
 cask "font-fira-code"
 cask "font-hack-nerd-font"
-cask "google-cloud-sdk"
+cask "gcloud-cli"
 cask "karabiner-elements"
 cask "keyboardcleantool"
 cask "notion"
@@ -170,29 +171,6 @@ cask "visual-studio-code"
 cask "warp"
 cask "wave"
 cask "zed"
-mas "Amphetamine", id: 937984704
-mas "Bear", id: 1091189122
-mas "Bitwarden", id: 1352778147
-mas "Craft", id: 1487937127
-mas "Dash for AWS", id: 1425682801
-mas "Day One", id: 1055511498
-mas "Gapplin", id: 768053424
-mas "GarageBand", id: 682658836
-mas "Goodnotes", id: 1444383602
-mas "iMovie", id: 408981434
-mas "Keynote", id: 409183694
-mas "Kindle", id: 302584613
-mas "Kindle Classic", id: 405399194
-mas "LINE", id: 539883307
-mas "Magnet", id: 441258766
-mas "Marked 2", id: 890031187
-mas "Numbers", id: 409203825
-mas "Pages", id: 409201541
-mas "Pocket", id: 568494494
-mas "Swift Playground", id: 1496833156
-mas "The Unarchiver", id: 425424353
-mas "Things", id: 904280696
-mas "Xcode", id: 497799835
 vscode "alefragnani.project-manager"
 vscode "almenon.arepl"
 vscode "avli.clojure"
