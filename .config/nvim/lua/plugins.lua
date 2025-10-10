@@ -253,7 +253,7 @@ return {
             no = colors.red,
             s = colors.orange,
             S = colors.orange,
-            [""] = colors.orange,
+            [''] = colors.orange,
             ic = colors.yellow,
             R = colors.violet,
             Rv = colors.violet,
@@ -484,7 +484,8 @@ return {
         size = 20,
       }
     end,
-    enabled = true
+    enabled = true,
+    dev = true,
   },
 
   -- ターミナル内でneovimを開けるようにする
@@ -606,7 +607,7 @@ return {
             "Avante",
           },
         },
-        ft = { "Avante" },
+        ft = { "markdown", "Avante" },
       },
     },
     enabled = false,
@@ -753,54 +754,33 @@ return {
   -- markdownのテーブル作成とフォーマット(:TableModeToggleで有効化する)
   { "dhruvasagar/vim-table-mode" },
 
-  ----------------------------------------------------------------------
-  -- org-mode
-  ----------------------------------------------------------------------
-  -- {
-  --   "nvim-orgmode/orgmode",
-  --   dependencies = { "nvim-treesitter/nvim-treesitter" },
-  --   config = function()
-  --     local orgmode = require("orgmode")
-  --     orgmode.setup {
-  --       org_agenda_files = { "~/sanctum/org/**/*.org" },
-  --     }
-  --   end,
-  --   enabled = false,
-  -- },
+  -- org
+  {
+    "nvim-orgmode/orgmode",
+    event = "VeryLazy",
+    ft = { "org" },
+    config = function()
+      -- Setup orgmode
+      require("orgmode").setup({
+        org_agenda_files = "~/sanctum/org/**/*",
+        org_default_notes_file = "~/sanctum/org/refile.org",
+      })
 
+      -- NOTE: If you are using nvim-treesitter with ~ensure_installed = "all"~ option
+      -- add ~org~ to ignore_install
+      -- require("nvim-treesitter.configs").setup({
+      --   ensure_installed = "all",
+      --   ignore_install = { "org" },
+      -- })
+    end,
+    enabled = false,
+  },
+
+  -- luarocks
   {
     "vhyrro/luarocks.nvim",
     priority = 1000,
     config = true,
-    enabled = false,
-  },
-
-  -- neorg
-  {
-    "nvim-neorg/neorg",
-    dependencies = { "nvim-lua/plenary.nvim", "vhyrro/luarocks.nvim" },
-    lazy = false,
-    version = "*",
-    -- build = ":Neorg sync-parsers",
-    config = function()
-      require("neorg").setup {
-        load = {
-          ["core.defaults"] = {},  -- Loads default behaviour
-          ["core.concealer"] = {}, -- Adrs pretty icons to your documents
-          ["core.dirman"] = {      -- Manages Neorg workspaces
-            config = {
-              workspaces = {
-                notes = "~/sanctum/org",
-              },
-            },
-          },
-          ["core.esupports.indent"] = {},
-          ["core.clipboard.code-blocks"] = {},
-          ["core.export"] = {
-          },
-        },
-      }
-    end,
     enabled = false,
   },
 
@@ -952,7 +932,7 @@ return {
     event = "VeryLazy",
 
     opts = {
-      enabled = false,  -- 最初はOFFにしておく
+      enabled = false,
       message_template = " <summary> • <date> • <author> • <<sha>>",
       date_format = "%Y-%m-%d %H:%M:%S",
       virtual_text_column = 1,
@@ -984,6 +964,15 @@ return {
         home = vim.fn.expand("~/sanctum/org/zk")
       }
     end,
+    enabled = true,
+  },
+
+  {
+    "3rd/image.nvim",
+    build = false, -- so that it doesn't build the rock https://github.com/3rd/image.nvim/issues/91#issuecomment-2453430239
+    opts = {
+        processor = "magick_cli",
+    },
     enabled = true,
   },
 }
