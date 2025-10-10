@@ -106,8 +106,10 @@ vim.keymap.set("c", "?", function()
 end, { noremap = true, expr = true })
 
 -- ターミナルで<Esc>か<C-[>を押した時にノーマルモードに戻る
-vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
+-- vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
 vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { noremap = true, silent = true })
+-- ターミナル上でvimを開いたときに不便なのでコメントアウト。代わりにjjをマッピングする。
+-- vim.keymap.set("t", "jj", "<C-\\><C-n>", { noremap = true, silent = true })
 
 -- Emacsのキーバインドを使用できるようにする
 
@@ -374,6 +376,10 @@ vim.lsp.config("rust_analyzer", {
 
 vim.lsp.config("fsautocomplete", {})
 
+vim.lsp.config("yamlls", {
+  -- TODO:
+})
+
 vim.lsp.enable({
   "lua_ls",
   "pyright",
@@ -386,6 +392,7 @@ vim.lsp.enable({
   "purescriptls",
   "rust_analyzer",
   "fsautocomplete",
+  "yamlls",
 })
 
 
@@ -693,4 +700,5 @@ autocmd({ "BufRead", "BufNewFile" }, {
 -- end
 --
 -- require("which-key").add(which_key_table)
+
 
