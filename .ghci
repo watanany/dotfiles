@@ -1,5 +1,3 @@
-import Prelude
-
 -- Unocode リテラルではなく日本語をそのまま表示できるようにする
 -- <https://haskell.jp/blog/posts/2019/unicode-show.html>
 --
@@ -14,10 +12,12 @@ import Prelude
 :set -DGHCI
 
 :set -XOverloadedStrings
-:set -XScopedTypeVariables
-:set -XOverloadedRecordDot
+:set -XGHC2024
 :set -XDuplicateRecordFields
-:set -XExplicitForAll
+:set -XNoFieldSelectors
+:set -XOverloadedRecordDot
+:set -XOverloadedRecordUpdate
+:set -XImportQualifiedPost
 
 :set prompt "\ESC[1;36m\STXλ> \ESC[m\STX"
 :set prompt-cont "\ESC[1;36m\STXλ |     \ESC[m\STX"
@@ -35,4 +35,12 @@ import Prelude
 -- hoogleコマンドが必要: cabal install hoogle
 :def hoogle \x -> return $ ":!hoogle \"" ++ x ++ "\" | less "
 
+
+import Prelude
+import Data.Text qualified as T
+import System.Process qualified as P
+import System.Directory (setCurrentDirectory, getCurrentDirectory, getHomeDirectory)
+import System.FilePath qualified as FP
+import System.FilePath ((</>))
+import System.FilePath.Glob (globDir1)
 
