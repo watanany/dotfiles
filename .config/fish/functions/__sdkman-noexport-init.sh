@@ -18,11 +18,15 @@
 
 # set env vars if not set
 if [ -z "$SDKMAN_CANDIDATES_API" ]; then
-:
+	:
+fi
+
+if [ -z "$SDKMAN_BROKER_API" ]; then
+	:
 fi
 
 if [ -z "$SDKMAN_DIR" ]; then
-:
+	:
 fi
 
 # Load the sdkman config if it exists.
@@ -112,8 +116,8 @@ fi
 for candidate_name in "${SDKMAN_CANDIDATES[@]}"; do
 	candidate_dir="${SDKMAN_CANDIDATES_DIR}/${candidate_name}/current"
 	if [[ -h "$candidate_dir" || -d "${candidate_dir}" ]]; then
-:
-:
+		:
+		:
 	fi
 done
 unset candidate_name candidate_dir
@@ -164,7 +168,7 @@ if [[ "$sdkman_auto_env" == "true" ]]; then
 				sdk env
 			fi
 
-:
+			:
 		}
 		
 		trimmed_prompt_command="${PROMPT_COMMAND%"${PROMPT_COMMAND##*[![:space:]]}"}"
