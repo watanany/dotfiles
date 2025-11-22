@@ -239,6 +239,18 @@ telescope.setup {
         ["<C-h>"] = "which_key",
         ["<C-;>"] = telescope_actions.close,
         ["<C-q>"] = telescope_actions.close,
+
+        ["<C-f>"] = function()
+          local keys = vim.api.nvim_replace_termcodes("<Right>", true, false, true)
+          vim.fn.feedkeys(keys, "n")
+        end,
+
+        ["<C-b>"] = function()
+          local keys = vim.api.nvim_replace_termcodes("<Left>", true, false, true)
+          vim.fn.feedkeys(keys, "n")
+        end,
+
+        ["<C-k>"] = kill_line,
       },
     },
   },
