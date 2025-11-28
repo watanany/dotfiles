@@ -24,7 +24,6 @@ LINK_LIST: list[str] = [
     ".iex.exs",
     ".config/fish",
     ".config/karabiner",
-    ".config/git",
     ".config/kitty",
     ".local/bin/marked2",
     ".cache/dein",
@@ -37,6 +36,7 @@ LINK_LIST: list[str] = [
     ".config/nvim",
     ".pyenv/default-packages",
     ".clojure/deps.edn",
+    ".config/evcxr",
 ]
 
 
