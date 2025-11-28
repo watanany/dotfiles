@@ -1,0 +1,12 @@
+// 設定ファイルを置くべき場所
+// $ evcxr
+// >> :dep dirs
+// >> dirs::config_dir().unwrap().join("evcxr").join("init.evcxr")
+
+:timing
+:cache 500
+
+:dep dirs
+:dep regex
+:dep anyhow
+:dep clap
