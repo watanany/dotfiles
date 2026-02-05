@@ -97,7 +97,9 @@ if status is-interactive
     set -gx PATH "$HOME/.konryu/bin" $PATH
 
     #;;; direnv
-    eval (direnv hook fish)
+    if type -q direnv
+        direnv hook fish | source
+    end
 
     #;;; Bun
     set -gx BUN_INSTALL "$HOME/.bun"
@@ -106,6 +108,9 @@ if status is-interactive
     #;;; Modular
     set -gx MODULAR_HOME "$HOME/.modular"
     set -gx PATH $MODULAR_HOME/pkg/packages.modular.com_mojo/bin $PATH
+
+    #;;; Lean 4
+    set -gx PATH $HOME/.elan/bin $PATH
 
     #;;; エイリアス
     alias mv="mv -i"
