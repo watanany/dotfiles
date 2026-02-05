@@ -151,7 +151,7 @@ vim.keymap.set("c", "<C-d>", "<Del>", { noremap = true })
 
 -- ターミナルを開く
 vim.keymap.set("n", "<Leader>ot", (function() vim.cmd("TabToggleTerm!") end), { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>oT", (function() print('debug'); vim.cmd("term") end), { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>oT", (function() vim.cmd("term") end), { noremap = true, silent = true })
 
 
 local Terminal  = require('toggleterm.terminal').Terminal
@@ -170,12 +170,13 @@ end
 vim.keymap.set("n", "<Leader>oG", lazygit_toggle, { noremap = true, silent = true })
 
 -- 各種設定のトグル
-vim.keymap.set("n", "Tl", (function() vim.wo.list = not vim.wo.list end), { noremap = true, silent = true })
-vim.keymap.set("n", "Tn", (function() vim.wo.number = not vim.wo.number end), { noremap = true, silent = true })
-vim.keymap.set("n", "Tw", (function() vim.wo.wrap = not vim.wo.wrap end), { noremap = true, silent = true })
-vim.keymap.set("n", "Tp", (function() vim.o.paste = not vim.o.paste end), { noremap = true, silent = true })
-vim.keymap.set("n", "Tb", (function() vim.cmd "GitBlameToggle" end), { noremap = true, silent = true })
-vim.keymap.set("n", "TB", (function() vim.cmd "BlameToggle" end), { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>tl", (function() vim.wo.list = not vim.wo.list end), { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>tn", (function() vim.wo.number = not vim.wo.number end), { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>tw", (function() vim.wo.wrap = not vim.wo.wrap end), { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>tp", (function() vim.o.paste = not vim.o.paste end), { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>tb", (function() vim.cmd "GitBlameToggle" end), { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>tB", (function() vim.cmd "BlameToggle" end), { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>tmt", (function() vim.cmd "TableModeToggle" end), { noremap = true, silent = true })
 
 -- タブ関連
 vim.keymap.set("n", "<Leader><Tab>n", ":tablast | tabnew<CR>", { noremap = true, silent = true })
@@ -194,6 +195,16 @@ vim.keymap.set("n", "<Leader>bM", function()
   require("bmessages").toggle({ split_type = "split" })
 end, { noremap = true, silent = true })
 
+-- gfでカーソル下のURLを開けるようにする
+-- <https://blog.atusy.net/2023/12/09/gf-open-url/>
+vim.keymap.set("n", "gf", function()
+  local cfile = vim.fn.expand("<cfile>")
+  if cfile:match("^https?://") then
+    vim.ui.open(cfile)
+  else
+    vim.cmd("normal! gF")
+  end
+end)
 
 ----------------------------------------------------------------------
 -- Telescope
@@ -215,6 +226,7 @@ telescope.setup {
         { path = "~/dotfiles", max_depth = 1 },
         { path = "~/sanctum/org", max_depth = 1 },
         { path = "~/sanctum/zenn", max_depth = 1 },
+        { path = "~/sanctum/craft" },
         { path = "~/sanctum/projects", max_depth = 2 },
       },
       order_by = "asc",
@@ -231,6 +243,10 @@ telescope.setup {
   },
   defaults = {
     mappings = {
+      n = {
+        ["<C-;>"] = telescope_actions.close,
+        ["<C-q>"] = telescope_actions.close,
+      },
       i = {
         -- 最初のESCでTelescopeを閉じる
         -- cf. <https://www.reddit.com/r/neovim/comments/pzxw8h/telescope_quit_on_first_single_esc/>
@@ -277,7 +293,9 @@ local function live_grep_files(params)
   telescope_builtin.live_grep(params)
 end
 
-local function find_dotfiles()
+local function find_dotfiles(params)
+  params = params or {}
+  params["cwd"] = "~/dotfiles"
   telescope_builtin.find_files({ cwd = "~/dotfiles", hidden = true })
 end
 
@@ -494,7 +512,7 @@ cmp.setup {
     ["<Tab>"] = cmp.mapping.confirm({ select = true }),
     ["<CR>"] = cmp.mapping.confirm({ select = true }),
   },
-  sources = cmp.config.sources {
+  sources = vim.tbl_deep_extend("force", cmp.config.sources {
     { name = "nvim_lsp" },
     { name = "buffer" },
     { name = "path" },
@@ -504,7 +522,11 @@ cmp.setup {
     { name = "nvim_lua" },
     { name = "render-markdown" },
     { name = "lazydev", group_index = 0 },
-  },
+  }, {
+      per_filetype = {
+        codecompanion = { "codecompanion" },
+      },
+  }),
   formatting = {
     format = require("lspkind").cmp_format {
       mode = "symbol",
@@ -724,10 +746,13 @@ autocmd({ "BufRead", "BufNewFile" }, {
 --   { "<Leader>ot", desc = "ターミナルをトグルする" },
 --   { "<Leader>oT", "ターミナルを開く" },
 --
---   { "Tl", desc = "不可視文字を表示をトグルする" },
---   { "Tn", desc = "行番号の表示をトグルする" },
---   { "Tw", desc = "折り返しをトグルする" },
---   { "Tp", desc = "ペーストモードをトグルする" },
+--   { "<Leader>tl", desc = "不可視文字を表示をトグルする" },
+--   { "<Leader>tn", desc = "行番号の表示をトグルする" },
+--   { "<Leader>tw", desc = "折り返しをトグルする" },
+--   { "<Leader>tp", desc = "ペーストモードをトグルする" },
+--   { "<Leader>tb", desc = "GitBlameToggle" },
+--   { "<Leader>tB", desc = "BlameToggle" },
+--   { "<Leader>tmt", desc = "markdownのテーブルモードをトグルする" },
 --
 --   { "<Leader><Tab>n", desc = "タブを作成する" },
 --   { "<Leader><Tab>d", desc = "タブを削除する" },
