@@ -375,61 +375,7 @@ return {
         },
       },
     },
-    enabled = false,
-  },
-
-  {
-    "olimorris/codecompanion.nvim",
-
-    -- メジャーバージョンアップデ破壊的変更の予定[BREAKING: Version 18.0.0](https://github.com/olimorris/codecompanion.nvim/pull/2439)
-    version = "18.0.0",
-
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    keys = {
-      { "<Leader>c", nil, desc = "CodeCompanion" },
-      { "<Leader>cc", "<cmd>CodeCompanionChat<CR>", desc = "Open CodeCompanion Chat" },
-    },
-    opts = {
-      opts = {
-        log_level = "DEBUG", -- or "TRACE"
-        language = "日本語",
-      },
-      adapters = {
-        http = {
-          openai = function()
-            return require("codecompanion.adapters").extend("openai", {
-              schema = {
-                model = {
-                  default = "gpt-5",
-                },
-              },
-            })
-          end,
-        },
-        acp = {
-          codex = function()
-            return require("codecompanion.adapters").extend("codex", {
-              defaults = { auth_method = "chatgpt" },
-              commands = {
-                default = { "npx", "@zed-industries/codex-acp" },
-              },
-            })
-          end,
-        },
-      },
-      interactions = {
-        chat = {
-          adapter = "codex",
-        },
-        inline = { adapter = "codex" },
-      },
-      display = {
-      },
-    },
-    enabled = false,
+    enabled = true,
   },
 
   -- jsonls/yamllsで使用するスキーマ用のプラグイン
