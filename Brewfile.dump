@@ -13,6 +13,7 @@ tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 tap "homebrew/services"
 tap "jawshooah/pyenv"
+tap "jesseduffield/lazydocker"
 tap "jesseduffield/lazygit"
 tap "modularml/packages"
 tap "nodenv/nodenv"
@@ -149,6 +150,7 @@ brew "d12frosted/emacs-plus/emacs-plus@28", args: ["with-imagemagick"]
 brew "derailed/k9s/k9s"
 brew "fujiwara/tap/ecsta"
 brew "hashicorp/tap/terraform-ls"
+brew "jesseduffield/lazydocker/lazydocker"
 brew "modularml/packages/modular"
 brew "nodenv/nodenv/nodenv-default-packages"
 brew "quarylabs/quary/sqruff"
@@ -158,6 +160,7 @@ cask "appcleaner"
 cask "chatgpt-atlas"
 cask "claude"
 cask "cljstyle"
+cask "codex"
 cask "dash"
 cask "deepl"
 cask "discord"
@@ -178,27 +181,6 @@ cask "visual-studio-code"
 cask "warp"
 cask "wave"
 cask "zed"
-mas "Amphetamine", id: 937984704
-mas "Bear", id: 1091189122
-mas "Bitwarden", id: 1352778147
-mas "Craft", id: 1487937127
-mas "Dash for AWS", id: 1425682801
-mas "Day One", id: 1055511498
-mas "Gapplin", id: 768053424
-mas "Goodnotes", id: 1444383602
-mas "Keynote", id: 409183694
-mas "Kindle", id: 302584613
-mas "Kindle Classic", id: 405399194
-mas "LINE", id: 539883307
-mas "Magnet", id: 441258766
-mas "Marked 2", id: 890031187
-mas "Numbers", id: 409203825
-mas "Pages", id: 409201541
-mas "Pocket", id: 568494494
-mas "Swift Playground", id: 1496833156
-mas "The Unarchiver", id: 425424353
-mas "Things", id: 904280696
-mas "Xcode", id: 497799835
 vscode "alefragnani.project-manager"
 vscode "almenon.arepl"
 vscode "avli.clojure"
@@ -342,3 +324,7 @@ go "honnef.co/go/tools/cmd/staticcheck"
 go "github.com/reproio/terraform-j2md/cmd/terraform-j2md"
 go "github.com/mercari/tfnotify"
 go "github.com/google/yamlfmt/cmd/yamlfmt"
+cargo "evcxr_repl"
+cargo "git-cliff"
+cargo "rust-script"
+cargo "rye-uv"
