@@ -90,6 +90,11 @@ export TERM=xterm-256color
 # export TERM=xterm-direct
 export PATH=~/.emacs.d/bin:~/.git-subcommands:~/.local/bin:$PATH
 
+# direnv
+if command -v direnv >/dev/null 2>&1; then
+    eval "$(direnv hook zsh)"
+fi
+
 # aliasの設定
 alias mv="mv -i"
 alias cp="cp -i"
@@ -172,18 +177,24 @@ case "$(uname -s)" in
         ;;
 esac
 export RBENV_ROOT="$HOME/.rbenv"
-eval "$(rbenv init -)"
+if command -v rbenv >/dev/null 2>&1; then
+    eval "$(rbenv init - zsh)"
+fi
 
 #;;; Python
 #;; pyenv
 export PYENV_ROOT="$HOME/.pyenv"
-eval "$(pyenv init -)"
+if command -v pyenv >/dev/null 2>&1; then
+    eval "$(pyenv init - zsh)"
+fi
 
 #;; poetry
 export PATH="$HOME/.poetry/bin:$PATH"
 
 #;;; Node.js
-eval "$(nodenv init -)"
+if command -v nodenv >/dev/null 2>&1; then
+    eval "$(nodenv init - zsh)"
+fi
 export NODE_PATH=$(npm root -g)
 
 #;;; Haskell
@@ -246,4 +257,3 @@ export GOOGLE_APPLICATION_CREDENTIALS="$HOME/.local/library-164912-e95e373384ca.
 
 #;;; Hello World
 echo "\n\e[31m*\e[m \e[33m*\e[m \e[35m*\e[m \e[36m*\e[m Hello World \e[31m*\e[m \e[33m*\e[m \e[35m*\e[m \e[36m*\e[m\n"
-
