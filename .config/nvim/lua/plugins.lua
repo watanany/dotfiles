@@ -265,7 +265,7 @@ return {
       }
     end,
     enabled = true,
-    dev = true,
+    dev = false,
   },
 
   -- ターミナル内でneovimを開けるようにする
