@@ -11,21 +11,13 @@ if status is-interactive
     set -gx PATH "$HOME/.local/bin" $PATH
     set -gx PATH "$HOME/.git-subcommands" $PATH
 
-    set -gx RBENV_ROOT "$HOME/.rbenv"
-    set -gx PATH "$RBENV_ROOT/shims" "$RBENV_ROOT/bin" $PATH
+    if type -q uv
+        uv generate-shell-completion fish | source
+    end
 
-    set -gx PATH "$HOME/.rye/shims" $PATH
-
-    uv generate-shell-completion fish | source
-
-    set -gx PYENV_ROOT "$HOME/.pyenv"
-    set -gx PATH "$PYENV_ROOT/shims" "$PYENV_ROOT/bin" $PATH
-    source $(pyenv virtualenv-init - | psub)
-
-    set -gx PATH "$HOME/.poetry/bin" $PATH
-
-    set -gx NODENV_ROOT "$HOME/.nodenv"
-    set -gx PATH "$NODENV_ROOT/shims" "$NODENV_ROOT/bin" $PATH
+    if type -q mise
+        source $(mise activate fish | psub)
+    end
 
     #;;; Haskell
     #;; ghcup
@@ -125,7 +117,9 @@ if status is-interactive
     source $(status dirname)/bind.fish
 
     #;;; fzf
-    fzf --fish | source
+    if type -q fzf
+        fzf --fish | source
+    end
 
     # BEGIN opam configuration
     # This is useful if you're using opam as it adds:
