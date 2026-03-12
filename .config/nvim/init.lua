@@ -434,6 +434,47 @@ vim.lsp.config("yamlls", {
   },
 })
 
+vim.lsp.config("dbt-lsp", {
+  filetypes = { "sql", "yaml", "jinja" },
+
+  root_dir = function(bufnr, on_dir)
+    local fname = vim.api.nvim_buf_get_name(bufnr)
+    local root = vim.fs.root(fname, { "dbt_project.yml", })
+    print(fname)
+    print(root)
+    if root then
+      on_dir(root)
+    end
+  end,
+
+  cmd = function(dispatchers, config)
+    -- VSCodeのdbtプラグインを入れると暗黙的にインストールされるdbt-lspへのシンボリックリンク
+    -- <https://zenn.dev/myshmeh/articles/37480d3a85e87e#dbt-fusion%E3%81%A8%E8%A8%80%E8%AA%9E%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC>
+    local lsp_path = vim.fn.expand("~/.local/bin/dbt-lsp")
+
+    return vim.lsp.rpc.start({
+      lsp_path,
+      "--project-dir", config.root_dir,
+      "--profiles-dir", config.root_dir,
+    }, dispatchers)
+  end,
+
+  -- cmd = function(dispatchers, config)
+  --   local lsp_path = "/Users/shingo.watanabe/Library/Application Support/Code/User/globalStorage/dbtlabsinc.dbt/bin/dbt-lsp"
+  --   local port = 8030
+  --
+  --   vim.fn.jobstart({
+  --     lsp_path,
+  --     "--project-dir", config.root_dir,
+  --     "--profiles-dir", config.root_dir,
+  --     "--socket", port,
+  --   })
+  --
+  --   local conn = vim.lsp.rpc.connect("127.0.0.1", port)
+  --   return conn(dispatchers)
+  -- end,
+})
+
 vim.lsp.enable({
   "lua_ls",
   "pyright",
@@ -447,6 +488,7 @@ vim.lsp.enable({
   "rust_analyzer",
   "fsautocomplete",
   "yamlls",
+  "dbt-lsp",
 })
 
 
