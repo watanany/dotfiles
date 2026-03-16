@@ -134,10 +134,14 @@ if status is-interactive
     alias fennel="rlwrap fennel"
 
     set -gx PATH "$HOME/.claude/local" $PATH
+
+    switch $(uname)
+        case Darwin
+            alias snowsql="/Applications/SnowSQL.app/Contents/MacOS/snowsql"
+    end
 end
 
 if test -f $(status dirname)/local_config.fish
     source $(status dirname)/local_config.fish
 end
-
 
