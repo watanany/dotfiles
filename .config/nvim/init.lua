@@ -113,26 +113,6 @@ vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { noremap = true, silent = true })
 
 -- Emacsのキーバインドを使用できるようにする
 
--- 現在のカーソル位置から行末までを削除する関数
-local function kill_line()
-  -- unpackは非推奨で移行中
-  -- TODO: neovimの使用するLuaのバージョンが5.2になったらtable.unpackを使うように変更する
-  local unpack = table.unpack or unpack
-  local _, col = unpack(vim.api.nvim_win_get_cursor(0))
-
-  local line = vim.api.nvim_get_current_line()
-  local end_col = #line
-
-  if col >= end_col then
-    -- カーソルが行末にある場合は、次の行と結合
-    vim.api.nvim_command("normal! J")
-  else
-    -- カーソル位置から行末までを削除
-    local new_line = line:sub(1, col)
-    vim.api.nvim_set_current_line(new_line)
-  end
-end
-
 vim.keymap.set("i", "<C-p>", "<Up>", { noremap = true, silent = true })
 vim.keymap.set("i", "<C-n>", "<Down>", { noremap = true, silent = true })
 vim.keymap.set("i", "<C-f>", "<Right>", { noremap = true, silent = true })
@@ -140,14 +120,32 @@ vim.keymap.set("i", "<C-b>", "<Left>", { noremap = true, silent = true })
 vim.keymap.set("i", "<C-a>", "<Home>", { noremap = true, silent = true })
 vim.keymap.set("i", "<C-e>", "<End>", { noremap = true, silent = true })
 vim.keymap.set("i", "<C-d>", "<Del>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-k>", kill_line, { noremap = true, silent = true })
+vim.keymap.set("i", "<C-k>", function()
+  -- unpackは非推奨で移行中
+  -- TODO: neovimの使用するLuaのバージョンが5.2になったらtable.unpackを使うように変更する
+  local unpack = table.unpack or unpack
+
+  local _, col = unpack(vim.api.nvim_win_get_cursor(0))
+  local line = vim.api.nvim_get_current_line()
+
+  if col >= #line then
+    vim.api.nvim_command("normal! J")
+  else
+
+  end
+end, { noremap = true, silent = true })
 
 vim.keymap.set("c", "<C-f>", "<Right>", { noremap = true })
 vim.keymap.set("c", "<C-b>", "<Left>", { noremap = true })
 vim.keymap.set("c", "<C-a>", "<Home>", { noremap = true })
 vim.keymap.set("c", "<C-e>", "<End>", { noremap = true })
 vim.keymap.set("c", "<C-d>", "<Del>", { noremap = true })
--- TODO: kill_line for command mode
+
+vim.keymap.set("c", "<C-k>", function()
+  local line = vim.fn.getcmdline()
+  local pos = vim.fn.getcmdpos()
+  vim.fn.setcmdline(line:sub(1, pos - 1), pos)
+end, { noremap = true })
 
 -- ターミナルを開く
 vim.keymap.set("n", "<Leader>ot", function() require("kocmd").toggle("shell") end, { noremap = true, silent = true })
@@ -157,15 +155,16 @@ vim.keymap.set("n", "<Leader>oT", (function() vim.cmd("term") end), { noremap = 
 vim.keymap.set("n", "<Leader>og", function() require("kocmd").toggle("lazygit") end, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>od", function() require("kocmd").toggle("lazydocker") end, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>oc", function() require("kocmd").toggle("claude") end, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>oC", function() vim.cmd("term claude") end, { noremap = true, silent = true })
 
 -- 各種設定のトグル
 vim.keymap.set("n", "<Leader>tl", (function() vim.wo.list = not vim.wo.list end), { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>tn", (function() vim.wo.number = not vim.wo.number end), { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>tw", (function() vim.wo.wrap = not vim.wo.wrap end), { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>tp", (function() vim.o.paste = not vim.o.paste end), { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>tb", (function() vim.cmd "GitBlameToggle" end), { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>tB", (function() vim.cmd "BlameToggle" end), { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>tmt", (function() vim.cmd "TableModeToggle" end), { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>tb", (function() vim.cmd("GitBlameToggle") end), { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>tB", (function() vim.cmd("BlameToggle") end), { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>tmt", (function() vim.cmd("TableModeToggle") end), { noremap = true, silent = true })
 
 -- 通知履歴
 vim.keymap.set("n", "<Leader>n", ":Telescope notify<CR>", { noremap = true, silent = true })
