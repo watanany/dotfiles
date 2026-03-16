@@ -104,7 +104,7 @@ return {
         name_formatter = function(buf)
           if vim.uv.fs_stat(buf.path) then
             local path = vim.api.nvim_buf_get_name(buf.bufnr)
-            local root = utils.get_root(path)
+            local root = vim.fs.root(path, { ".git" })
             return root and vim.fs.basename(root) or vim.fs.basename(path)
           else
             return buf.name
@@ -143,6 +143,10 @@ return {
         theme = "base16",
         component_separators = { left = "|", right = "|" },
         section_separators = { left = "", right = "" },
+      },
+      sections = {
+        lualine_b = { "diff", "diagnostics" },
+        lualine_c = { { "filename", path = 3 } },
       },
     },
     enabled = true,
@@ -248,19 +252,12 @@ return {
         open_mapping = "<C-\\>",
       }
     end,
-    enabled = true,
+    enabled = false,
   },
 
   {
     "watanany/tabtoggleterm.nvim",
-    config = function()
-      require("tabtoggleterm").setup {
-        size = 20,
-        persist_size = true,
-      }
-    end,
-    enabled = true,
-    dev = false,
+    enabled = false,
   },
 
   -- ターミナル内でneovimを開けるようにする
@@ -330,6 +327,32 @@ return {
     "onsails/lspkind.nvim",
   },
 
+  -- kocmd
+  {
+    "watanany/kocmd.nvim",
+    config = function()
+      require("kocmd").setup({
+        commands = {
+          shell = {
+            cmd = "term",
+            position = "bottom",
+            size = 20,
+          },
+          claude = {
+            cmd = "term claude",
+            position = "left",
+            size = 60,
+          },
+          lazygit = {
+            cmd = "term lazygit",
+            position = "float",
+            size = { width = 0.95, height = 0.95 },
+          },
+        },
+      })
+    end,
+  },
+
   -- Claude Code
   {
     "coder/claudecode.nvim",
@@ -370,7 +393,7 @@ return {
         },
       },
     },
-    enabled = true,
+    enabled = false,
   },
 
   -- jsonls/yamllsで使用するスキーマ用のプラグイン
