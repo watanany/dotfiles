@@ -150,24 +150,13 @@ vim.keymap.set("c", "<C-d>", "<Del>", { noremap = true })
 -- TODO: kill_line for command mode
 
 -- ターミナルを開く
-vim.keymap.set("n", "<Leader>ot", (function() vim.cmd("TabToggleTerm!") end), { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>ot", function() require("kocmd").toggle("shell") end, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>oT", (function() vim.cmd("term") end), { noremap = true, silent = true })
 
-
-local Terminal  = require('toggleterm.terminal').Terminal
-
--- lazygit
-local lazygit = Terminal:new {
-  cmd = "lazygit",
-  hidden = true,
-  direction = "float",
-}
-
-local function lazygit_toggle()
-  lazygit:toggle()
-end
-
-vim.keymap.set("n", "<Leader>oG", lazygit_toggle, { noremap = true, silent = true })
+-- kocmd
+vim.keymap.set("n", "<Leader>og", function() require("kocmd").toggle("lazygit") end, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>od", function() require("kocmd").toggle("lazydocker") end, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>oc", function() require("kocmd").toggle("claude") end, { noremap = true, silent = true })
 
 -- 各種設定のトグル
 vim.keymap.set("n", "<Leader>tl", (function() vim.wo.list = not vim.wo.list end), { noremap = true, silent = true })
@@ -177,6 +166,9 @@ vim.keymap.set("n", "<Leader>tp", (function() vim.o.paste = not vim.o.paste end)
 vim.keymap.set("n", "<Leader>tb", (function() vim.cmd "GitBlameToggle" end), { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>tB", (function() vim.cmd "BlameToggle" end), { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>tmt", (function() vim.cmd "TableModeToggle" end), { noremap = true, silent = true })
+
+-- 通知履歴
+vim.keymap.set("n", "<Leader>n", ":Telescope notify<CR>", { noremap = true, silent = true })
 
 -- タブ関連
 vim.keymap.set("n", "<Leader><Tab>n", ":tablast | tabnew<CR>", { noremap = true, silent = true })
@@ -205,6 +197,32 @@ vim.keymap.set("n", "gf", function()
     vim.cmd("normal! gF")
   end
 end)
+
+-- ファイルパスをクリップボードにコピー（絶対パス）
+vim.keymap.set("n", "<Leader>cp", function()
+  local path = vim.fn.expand("%:p")
+  vim.fn.setreg("+", path)
+  vim.notify(path, vim.log.levels.INFO, { title = "Copied path" })
+end, { noremap = true, silent = true })
+
+-- 相対パス:行番号をクリップボードにコピー
+vim.keymap.set("n", "<Leader>cl", function()
+  local ref = vim.fn.expand("%:.") .. ":" .. vim.fn.line(".")
+  vim.fn.setreg("+", ref)
+  vim.notify(ref, vim.log.levels.INFO, { title = "Copied ref" })
+end, { noremap = true, silent = true })
+
+vim.keymap.set("v", "<Leader>cl", function()
+  local l1 = vim.fn.line("v")
+  local l2 = vim.fn.line(".")
+  local s, e = math.min(l1, l2), math.max(l1, l2)
+  local ref = vim.fn.expand("%:.") .. ":" .. s .. "-" .. e
+  vim.fn.setreg("+", ref)
+  vim.notify(ref, vim.log.levels.INFO, { title = "Copied ref" })
+end, { noremap = true, silent = true })
+
+-- Terminal modeで<C-;>で<Esc>が伝わるようにする
+vim.keymap.set('t', '<C-;>', '<Esc>', { noremap = true })
 
 ----------------------------------------------------------------------
 -- Telescope
@@ -300,14 +318,14 @@ end
 local function find_project_files(params)
   params = params or {}
   params["hidden"] = true
-  params["cwd"] = utils.get_root(vim.api.nvim_buf_get_name(0))
+  params["cwd"] =  vim.fs.root(vim.api.nvim_buf_get_name(0), { ".git" })
   telescope_builtin.find_files(params)
 end
 
 local function live_grep_project_files(params)
   params = params or {}
   params["hidden"] = true
-  params["cwd"] = utils.get_root(vim.api.nvim_buf_get_name(0))
+  params["cwd"] = vim.fs.root(vim.api.nvim_buf_get_name(0), { ".git" })
   telescope_builtin.live_grep(params)
 end
 
@@ -440,8 +458,6 @@ vim.lsp.config("dbt-lsp", {
   root_dir = function(bufnr, on_dir)
     local fname = vim.api.nvim_buf_get_name(bufnr)
     local root = vim.fs.root(fname, { "dbt_project.yml", })
-    print(fname)
-    print(root)
     if root then
       on_dir(root)
     end
