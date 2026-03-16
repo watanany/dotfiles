@@ -330,27 +330,25 @@ return {
   -- kocmd
   {
     "watanany/kocmd.nvim",
-    config = function()
-      require("kocmd").setup({
-        commands = {
-          shell = {
-            cmd = "term",
-            position = "bottom",
-            size = 20,
-          },
-          claude = {
-            cmd = "term claude",
-            position = "left",
-            size = 60,
-          },
-          lazygit = {
-            cmd = "term lazygit",
-            position = "float",
-            size = { width = 0.95, height = 0.95 },
-          },
+    opts = {
+      commands = {
+        shell = {
+          cmd = "term",
+          position = "bottom",
+          size = 20,
         },
-      })
-    end,
+        claude = {
+          cmd = "term claude",
+          position = "left",
+          size = 60,
+        },
+        lazygit = {
+          cmd = "term lazygit",
+          position = "float",
+          size = { width = 0.95, height = 0.95 },
+        },
+      },
+    },
   },
 
   -- Claude Code
