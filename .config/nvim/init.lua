@@ -148,23 +148,17 @@ vim.keymap.set("c", "<C-k>", function()
 end, { noremap = true })
 
 -- ターミナルを開く
-vim.keymap.set("n", "<Leader>ot", function() require("kocmd").toggle("shell") end, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>oT", (function() vim.cmd("term") end), { noremap = true, silent = true })
-
--- kocmd
-vim.keymap.set("n", "<Leader>og", function() require("kocmd").toggle("lazygit") end, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>od", function() require("kocmd").toggle("lazydocker") end, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>oc", function() require("kocmd").toggle("claude") end, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>oT", function() vim.cmd("term") end, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>oC", function() vim.cmd("term claude") end, { noremap = true, silent = true })
 
 -- 各種設定のトグル
-vim.keymap.set("n", "<Leader>tl", (function() vim.wo.list = not vim.wo.list end), { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>tn", (function() vim.wo.number = not vim.wo.number end), { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>tw", (function() vim.wo.wrap = not vim.wo.wrap end), { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>tp", (function() vim.o.paste = not vim.o.paste end), { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>tb", (function() vim.cmd("GitBlameToggle") end), { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>tB", (function() vim.cmd("BlameToggle") end), { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>tmt", (function() vim.cmd("TableModeToggle") end), { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>tl", function() vim.wo.list = not vim.wo.list end, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>tn", function() vim.wo.number = not vim.wo.number end, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>tw", function() vim.wo.wrap = not vim.wo.wrap end, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>tp", function() vim.o.paste = not vim.o.paste end, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>tb", function() vim.cmd("GitBlameToggle") end, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>tB", function() vim.cmd("BlameToggle") end, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>tmt", function() vim.cmd("TableModeToggle") end, { noremap = true, silent = true })
 
 -- 通知履歴
 vim.keymap.set("n", "<Leader>n", ":Telescope notify<CR>", { noremap = true, silent = true })
@@ -467,6 +461,7 @@ vim.lsp.config("dbt-lsp", {
     -- <https://zenn.dev/myshmeh/articles/37480d3a85e87e#dbt-fusion%E3%81%A8%E8%A8%80%E8%AA%9E%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC>
     local lsp_path = vim.fn.expand("~/.local/bin/dbt-lsp")
 
+    -- --project-dir == --profiles-dir になるように設定
     return vim.lsp.rpc.start({
       lsp_path,
       "--project-dir", config.root_dir,
@@ -748,5 +743,4 @@ autocmd({ "BufRead", "BufNewFile" }, {
 -- end
 --
 -- require("which-key").add(which_key_table)
-
 
