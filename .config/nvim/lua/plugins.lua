@@ -28,6 +28,11 @@ return {
     enabled = true,
   },
 
+  {
+    "RRethy/nvim-base16",
+    priority = 1000,
+  },
+
   -- Neovim用のLuaの関数集
   { "nvim-lua/plenary.nvim" },
 
@@ -330,20 +335,63 @@ return {
   -- kocmd
   {
     "watanany/kocmd.nvim",
+    keys = {
+      {
+        "<Leader>ot",
+        function()
+          require("kocmd").toggle("shell")
+        end,
+        desc = "Toggle shell",
+      },
+      {
+        "<Leader>og",
+        function()
+          require("kocmd").toggle("lazygit")
+        end,
+        desc = "Toggle lazygit",
+      },
+      {
+        "<Leader>od",
+        function()
+          require("kocmd").toggle("lazydocker")
+        end,
+        desc = "Toggle lazydocker",
+      },
+      {
+        "<Leader>oc",
+        function()
+          require("kocmd").toggle("claude")
+        end,
+        desc = "Toggle claude",
+      },
+    },
     opts = {
       commands = {
         shell = {
-          cmd = "term",
+          cmd = function()
+            vim.cmd("term")
+          end,
           position = "bottom",
           size = 20,
         },
         claude = {
-          cmd = "term claude",
+          cmd = function()
+            vim.cmd("term claude")
+          end,
           position = "left",
           size = 60,
         },
         lazygit = {
-          cmd = "term lazygit",
+          cmd = function()
+            vim.cmd("term lazygit")
+          end,
+          position = "float",
+          size = { width = 0.95, height = 0.95 },
+        },
+        lazydocker = {
+          cmd = function()
+            vim.cmd("term lazydocker")
+          end,
           position = "float",
           size = { width = 0.95, height = 0.95 },
         },
