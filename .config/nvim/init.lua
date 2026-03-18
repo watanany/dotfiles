@@ -200,18 +200,37 @@ end, { noremap = true, silent = true })
 
 -- 相対パス:行番号をクリップボードにコピー
 vim.keymap.set("n", "<Leader>cl", function()
-  local ref = vim.fn.expand("%:.") .. ":" .. vim.fn.line(".")
+  local ref = "@" .. vim.fn.expand("%:.") .. ":" .. vim.fn.line(".")
   vim.fn.setreg("+", ref)
-  vim.notify(ref, vim.log.levels.INFO, { title = "Copied ref" })
+  vim.notify(
+    ref,
+    vim.log.levels.INFO,
+    { title = "Copied ref" }
+  )
+  vim.api.nvim_feedkeys(
+    vim.api.nvim_replace_termcodes("<Esc>", true, false, true),
+    "nx",
+    false
+  )
+
 end, { noremap = true, silent = true })
 
 vim.keymap.set("v", "<Leader>cl", function()
   local l1 = vim.fn.line("v")
   local l2 = vim.fn.line(".")
   local s, e = math.min(l1, l2), math.max(l1, l2)
-  local ref = vim.fn.expand("%:.") .. ":" .. s .. "-" .. e
+  local ref = "@" .. vim.fn.expand("%:.") .. ":" .. s .. "-" .. e
   vim.fn.setreg("+", ref)
-  vim.notify(ref, vim.log.levels.INFO, { title = "Copied ref" })
+  vim.notify(
+    ref,
+    vim.log.levels.INFO,
+    { title = "Copied ref" }
+  )
+  vim.api.nvim_feedkeys(
+    vim.api.nvim_replace_termcodes("<Esc>", true, false, true),
+    "nx",
+    false
+  )
 end, { noremap = true, silent = true })
 
 -- Terminal modeで<C-;>で<Esc>が伝わるようにする
