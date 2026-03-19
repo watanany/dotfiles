@@ -28,11 +28,6 @@ return {
     enabled = true,
   },
 
-  {
-    "RRethy/nvim-base16",
-    priority = 1000,
-  },
-
   -- Neovim用のLuaの関数集
   { "nvim-lua/plenary.nvim" },
 
@@ -41,6 +36,21 @@ return {
     "nvim-treesitter/nvim-treesitter",
     lazy = false,
     build = ":TSUpdate",
+    config = function()
+      -- FIXME:
+      -- すでにパスは入っているがcheckhealthでエラーになっている
+      -- treesitter側のバグの可能性あり
+      vim.opt.runtimepath:append(
+        vim.fn.stdpath("data") .. "/site/"
+      )
+
+      local treesitter = require("nvim-treesitter")
+      treesitter.setup()
+      treesitter.install {
+        "bash", "regex", "python", "sql",
+        "javascript", "rust",
+      }
+    end,
   },
 
   -- カーソル移動加速プラグイン
@@ -143,8 +153,7 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     dependencies = {
-      { "nvim-tree/nvim-web-devicons", lazy = true },
-      "RRethy/nvim-base16",
+      "nvim-tree/nvim-web-devicons",
     },
     opts = {
       options = {

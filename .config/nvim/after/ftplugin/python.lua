@@ -7,4 +7,3 @@ vim.opt_local.expandtab = true
 vim.opt_local.shiftwidth = 4
 -- タブ入力時その数値分だけ半角スペースを挿入する(sts)
 vim.opt_local.softtabstop = 4
-
