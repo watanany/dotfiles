@@ -142,7 +142,10 @@ return {
 
   {
     "nvim-lualine/lualine.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons", lazy = true },
+    dependencies = {
+      { "nvim-tree/nvim-web-devicons", lazy = true },
+      "RRethy/nvim-base16",
+    },
     opts = {
       options = {
         theme = "base16",
@@ -369,34 +372,35 @@ return {
       commands = {
         shell = {
           cmd = function()
-            vim.cmd("term")
+            vim.fn.termopen(vim.o.shell)
           end,
           position = "bottom",
           size = 20,
         },
         claude = {
           cmd = function()
-            vim.cmd("term claude")
+            vim.fn.termopen("claude")
           end,
           position = "left",
           size = 60,
         },
         lazygit = {
           cmd = function()
-            vim.cmd("term lazygit")
+            vim.fn.termopen("lazygit")
           end,
           position = "float",
           size = { width = 0.95, height = 0.95 },
         },
         lazydocker = {
           cmd = function()
-            vim.cmd("term lazydocker")
+            vim.fn.termopen("lazydocker")
           end,
           position = "float",
           size = { width = 0.95, height = 0.95 },
         },
       },
     },
+    dev = true,
   },
 
   -- Claude Code
