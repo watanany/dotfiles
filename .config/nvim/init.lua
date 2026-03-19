@@ -699,6 +699,11 @@ autocmd({ "BufRead", "BufNewFile" }, {
   command = "setf yaml",
 })
 
+autocmd("FileType", {
+  pattern = { "markdown" },
+  callback = function() vim.treesitter.start() end,
+})
+
 -- 開発用
 -- autocmd("DirChanged", {
 --   pattern = "",
