@@ -365,42 +365,45 @@ return {
         function()
           require("kocmd").toggle("claude")
         end,
-        desc = "Toggle claude",
+        desc = "Toggle Claude Code",
+      },
+      {
+        "<Leader>ox",
+        function()
+          require("kocmd").toggle("codex")
+        end,
+        desc = "Toggle OpenAI Codex CLI",
       },
     },
     opts = {
       commands = {
         shell = {
-          cmd = function()
-            vim.fn.termopen(vim.o.shell)
-          end,
+          cmd = vim.o.shell,
           position = "bottom",
           size = 20,
         },
-        claude = {
-          cmd = function()
-            vim.fn.termopen("claude")
-          end,
-          position = "left",
-          size = 60,
-        },
         lazygit = {
-          cmd = function()
-            vim.fn.termopen("lazygit")
-          end,
+          cmd = "lazygit",
           position = "float",
           size = { width = 0.95, height = 0.95 },
         },
         lazydocker = {
-          cmd = function()
-            vim.fn.termopen("lazydocker")
-          end,
+          cmd = "lazydocker",
           position = "float",
           size = { width = 0.95, height = 0.95 },
         },
+        claude = {
+          cmd = "claude",
+          position = "left",
+          size = 60,
+        },
+        codex = {
+          cmd = "codex",
+          position = "left",
+          size = 60,
+        },
       },
     },
-    dev = true,
   },
 
   -- Claude Code
