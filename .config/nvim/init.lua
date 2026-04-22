@@ -1,344 +1,49 @@
-local utils = require("utils")
-
-utils.setup_lazy()
-
--- NOTE: lazyをロードする前に設定する必要がある
--- <Leader>キーを設定
-vim.g.mapleader = " "
--- <LocalLeader>キーを設定
-vim.g.maplocalleader = ","
-
--- プラグインをロードする
-require("lazy").setup("plugins", {
-  dev = {
-    path = "~/sanctum/projects",
-  },
-})
-
--- Vimスクリプトで使用されるエンコード
-vim.scriptencoding = "utf-8"
--- エディタ内部で使用されるエンコード
-vim.o.encoding = "utf-8"
--- 現在のバッファのファイル内容のエンコード
-vim.o.fileencoding = "utf-8"
--- 行番号を表示する
-vim.o.number = true
--- スクロールする時に下が見えるようにする
-vim.o.scrolloff = 5
--- .swapファイルを作らない
-vim.o.swapfile = false
--- 不可視文字を表示
-vim.o.list = true
-vim.opt.listchars = {
-  tab = "»-",
-  trail = "-",
-  extends = "»",
-  precedes = "«",
-  nbsp = "%",
-  eol = "$",
-}
--- 小文字の検索でも大文字も見つかるようにする
-vim.o.ignorecase = true
--- ただし大文字も含めた検索の場合はその通りに検索する
-vim.o.smartcase = true
--- ステータスラインを常に表示する
-vim.o.laststatus = 2
--- コマンドラインの行数を設定する
-vim.o.cmdheight = 1
--- カーソル移動の動作を変更
-vim.o.whichwrap = "b,s,h,l,<,>,[,]"
--- ファイルを閉じてもundoできるようにする
-vim.opt.undofile = true
--- クリップボードを設定する
-vim.opt.clipboard:append("unnamedplus")
--- 行番号表示部分にサインを表示するようにする
-vim.o.signcolumn = "number"
--- 折り畳みさせないようにする
-vim.o.foldenable = false
--- インデントをTabではなくスペース2つで揃える
--- タブを画面で表示する際の幅(ts)
-vim.o.tabstop = 2
--- タブを挿入する際、半角スペースに変換(et)
-vim.o.expandtab = true
--- インデント時に使用されるスペースの数(sw)
-vim.o.shiftwidth = 2
--- タブ入力時その数値分だけ半角スペースを挿入する(sts)
-vim.o.softtabstop = 2
-
-
-----------------------------------------------------------------------
--- キーバインド
-----------------------------------------------------------------------
--- w!! でスーパーユーザーとして保存(sudoが使える環境限定)
--- FIXME: 「:\w」でwhich-keyで候補が表示されてしまう
--- vim.keymap.set("c", "w!!", "!sudo tee % > /dev/null")
-
--- 入力モード中に素早くJJと入力した場合はESCとみなす
-vim.keymap.set("i", "jj", "<Esc>", { noremap = true, silent = true })
--- ESCを二回押すことでハイライトを消す
-vim.keymap.set("n", "<Esc><Esc>", ":nohlsearch<CR>", { noremap = true, silent = true })
--- Shift + 矢印でウィンドウサイズを変更
-vim.keymap.set("n", "<S-Left>", "<C-w><", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-Right>", "<C-w>>", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-Up>", "<C-w>-", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-Down>", "<C-w>+", { noremap = true, silent = true })
--- 検索後にジャンプした際に検索単語を画面中央に持ってくる
-vim.keymap.set("n", "n", "nzz", { noremap = true, silent = true })
-vim.keymap.set("n", "N", "Nzz", { noremap = true, silent = true })
-vim.keymap.set("n", "*", "*zz", { noremap = true, silent = true })
-vim.keymap.set("n", "#", "#zz", { noremap = true, silent = true })
-vim.keymap.set("n", "g*", "g*zz", { noremap = true, silent = true })
-vim.keymap.set("n", "g#", "g#zz", { noremap = true, silent = true })
--- j, k, ↑, ↓での移動を加速する
-vim.keymap.set("n", "j", "<Plug>(accelerated_jk_gj)", { silent = true })
-vim.keymap.set("n", "k", "<Plug>(accelerated_jk_gk)", { silent = true })
-vim.keymap.set("n", "<DOWN>", "<Plug>(accelerated_jk_gj)", { silent = true })
-vim.keymap.set("n", "<UP>", "<Plug>(accelerated_jk_gk)", { silent = true })
-
--- /{pattern}の入力中は「/」をタイプすると自動で「\/」が入力されるようになる
-vim.keymap.set("c", "/", function()
-  return (vim.fn.getcmdtype() == "/") and "\\/" or "/"
-end, { noremap = true, expr = true })
-
--- ?{pattern}の入力中は「?」をタイプすると自動で「\?」が入力されるようになる
-vim.keymap.set("c", "?", function()
-  return (vim.fn.getcmdtype() == "?") and "\\?" or "?"
-end, { noremap = true, expr = true })
-
--- ターミナルで<Esc>か<C-[>を押した時にノーマルモードに戻る
--- vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
-vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { noremap = true, silent = true })
--- ターミナル上でvimを開いたときに不便なのでコメントアウト。代わりにjjをマッピングする。
--- vim.keymap.set("t", "jj", "<C-\\><C-n>", { noremap = true, silent = true })
-
--- Emacsのキーバインドを使用できるようにする
-
-vim.keymap.set("i", "<C-p>", "<Up>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-n>", "<Down>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-f>", "<Right>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-b>", "<Left>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-a>", "<Home>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-e>", "<End>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-d>", "<Del>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-k>", function()
-  -- unpackは非推奨で移行中
-  -- TODO: neovimの使用するLuaのバージョンが5.2になったらtable.unpackを使うように変更する
-  local unpack = table.unpack or unpack
-
-  local _, col = unpack(vim.api.nvim_win_get_cursor(0))
-  local line = vim.api.nvim_get_current_line()
-
-  if col >= #line then
-    vim.api.nvim_command("normal! J")
-  else
-
-  end
-end, { noremap = true, silent = true })
-
-vim.keymap.set("c", "<C-f>", "<Right>", { noremap = true })
-vim.keymap.set("c", "<C-b>", "<Left>", { noremap = true })
-vim.keymap.set("c", "<C-a>", "<Home>", { noremap = true })
-vim.keymap.set("c", "<C-e>", "<End>", { noremap = true })
-vim.keymap.set("c", "<C-d>", "<Del>", { noremap = true })
-
-vim.keymap.set("c", "<C-k>", function()
-  local line = vim.fn.getcmdline()
-  local pos = vim.fn.getcmdpos()
-  vim.fn.setcmdline(line:sub(1, pos - 1), pos)
-end, { noremap = true })
-
--- ターミナルを開く
-vim.keymap.set("n", "<Leader>oT", function() vim.cmd("term") end, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>oC", function() vim.cmd("term claude") end, { noremap = true, silent = true })
-
--- 各種設定のトグル
-vim.keymap.set("n", "<Leader>tl", function() vim.wo.list = not vim.wo.list end, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>tn", function() vim.wo.number = not vim.wo.number end, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>tw", function() vim.wo.wrap = not vim.wo.wrap end, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>tp", function() vim.o.paste = not vim.o.paste end, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>tb", function() vim.cmd("GitBlameToggle") end, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>tB", function() vim.cmd("BlameToggle") end, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>tmt", function() vim.cmd("TableModeToggle") end, { noremap = true, silent = true })
-
--- 通知履歴
-vim.keymap.set("n", "<Leader>n", ":Telescope notify<CR>", { noremap = true, silent = true })
-
--- タブ関連
-vim.keymap.set("n", "<Leader><Tab>n", ":tablast | tabnew<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader><Tab>d", ":tabclose<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader><Tab>[", ":tabprev<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader><Tab>]", ":tabnext<CR>", { noremap = true, silent = true })
-
-for i = 1, 9 do
-  local key = string.format("<Leader><Tab>%d", i)
-  local cmd = string.format(":tabnext %d<CR>", i)
-  vim.keymap.set("n", key, cmd, { noremap = true, silent = true })
-end
-
--- messagesをバッファに表示する
-vim.keymap.set("n", "<Leader>bM", function()
-  require("bmessages").toggle({ split_type = "split" })
-end, { noremap = true, silent = true })
-
--- gfでカーソル下のURLを開けるようにする
--- <https://blog.atusy.net/2023/12/09/gf-open-url/>
-vim.keymap.set("n", "gf", function()
-  local cfile = vim.fn.expand("<cfile>")
-  if cfile:match("^https?://") then
-    vim.ui.open(cfile)
-  else
-    vim.cmd("normal! gF")
-  end
-end)
-
--- ファイルパスをクリップボードにコピー（絶対パス）
-vim.keymap.set("n", "<Leader>cp", function()
-  local path = vim.fn.expand("%:p")
-  vim.fn.setreg("+", path)
-  vim.notify(path, vim.log.levels.INFO, { title = "Copied path" })
-end, { noremap = true, silent = true })
-
--- 相対パス:行番号をクリップボードにコピー
-vim.keymap.set("n", "<Leader>cl", function()
-  local ref = "@" .. vim.fn.expand("%:.") .. ":" .. vim.fn.line(".")
-  vim.fn.setreg("+", ref)
-  vim.notify(
-    ref,
-    vim.log.levels.INFO,
-    { title = "Copied ref" }
-  )
-  vim.api.nvim_feedkeys(
-    vim.api.nvim_replace_termcodes("<Esc>", true, false, true),
-    "nx",
-    false
-  )
-
-end, { noremap = true, silent = true })
-
-vim.keymap.set("v", "<Leader>cl", function()
-  local l1 = vim.fn.line("v")
-  local l2 = vim.fn.line(".")
-  local s, e = math.min(l1, l2), math.max(l1, l2)
-  local ref = "@" .. vim.fn.expand("%:.") .. ":" .. s .. "-" .. e
-  vim.fn.setreg("+", ref)
-  vim.notify(
-    ref,
-    vim.log.levels.INFO,
-    { title = "Copied ref" }
-  )
-  vim.api.nvim_feedkeys(
-    vim.api.nvim_replace_termcodes("<Esc>", true, false, true),
-    "nx",
-    false
-  )
-end, { noremap = true, silent = true })
-
--- Terminal modeで<C-;>で<Esc>が伝わるようにする
-vim.keymap.set('t', '<C-;>', '<Esc>', { noremap = true })
+require("config/keymaps0")
+require("config/lazy")
+require("config/options")
+require("config/autocmds")
+require("config/keymaps")
+require("config/lsps")
 
 ----------------------------------------------------------------------
 -- Telescope
 ----------------------------------------------------------------------
--- Fernのキーバインドを設定する
-vim.keymap.set("n", "<Leader>ft", ":Fern . -drawer -width=50<CR>", { noremap = true, silent = true })
-
--- Telescopeの設定を行う
-local telescope = require("telescope")
-local telescope_builtin = require("telescope.builtin")
-local telescope_actions = require("telescope.actions")
-local telescope_project_actions = require("telescope._extensions.project.actions")
-local hidden_files = true
-
-telescope.setup {
-  extensions = {
-    project = {
-      base_dirs = {
-        { path = "~/dotfiles", max_depth = 1 },
-        { path = "~/sanctum/org", max_depth = 1 },
-        { path = "~/sanctum/projects", max_depth = 2 },
-      },
-      order_by = "asc",
-      hidden_files = hidden_files,
-      cd_scope = { "tab" },
-    },
-    fzf = {
-      fuzzy = true,                    -- false will only do exact matching
-      override_generic_sorter = true,  -- override the generic sorter
-      override_file_sorter = true,     -- override the file sorter
-      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-                                       -- the default case_mode is "smart_case"
-    },
-  },
-  defaults = {
-    mappings = {
-      n = {
-        ["<C-;>"] = telescope_actions.close,
-        ["<C-q>"] = telescope_actions.close,
-      },
-      i = {
-        -- 最初のESCでTelescopeを閉じる
-        -- cf. <https://www.reddit.com/r/neovim/comments/pzxw8h/telescope_quit_on_first_single_esc/>
-        ["<Esc>"] = telescope_actions.close,
-
-        ["<C-h>"] = "which_key",
-        ["<C-;>"] = telescope_actions.close,
-        ["<C-q>"] = telescope_actions.close,
-
-        ["<C-f>"] = function()
-          local keys = vim.api.nvim_replace_termcodes("<Right>", true, false, true)
-          vim.fn.feedkeys(keys, "n")
-        end,
-
-        ["<C-b>"] = function()
-          local keys = vim.api.nvim_replace_termcodes("<Left>", true, false, true)
-          vim.fn.feedkeys(keys, "n")
-        end,
-
-        ["<C-k>"] = kill_line,
-      },
-    },
-  },
-}
-
-telescope.load_extension("project")
-telescope.load_extension("fzf")
-
 local function find_files(params)
   params = params or {}
   params["hidden"] = true
-  telescope_builtin.find_files(params)
+  require("telescope.builtin").find_files(params)
 end
 
 local function git_files(params)
   params = params or {}
   params["hidden"] = true
-  telescope_builtin.git_files(params)
+  require("telescope.builtin").git_files(params)
 end
 
 local function live_grep_files(params)
   params = params or {}
   params["hidden"] = true
-  telescope_builtin.live_grep(params)
+  require("telescope.builtin").live_grep(params)
 end
 
 local function find_dotfiles(params)
   params = params or {}
   params["cwd"] = "~/dotfiles"
-  telescope_builtin.find_files({ cwd = "~/dotfiles", hidden = true })
+  require("telescope.builtin").find_files({ cwd = "~/dotfiles", hidden = true })
 end
 
 local function find_project_files(params)
   params = params or {}
   params["hidden"] = true
   params["cwd"] =  vim.fs.root(vim.api.nvim_buf_get_name(0), { ".git" })
-  telescope_builtin.find_files(params)
+  require("telescope.builtin").find_files(params)
 end
 
 local function live_grep_project_files(params)
   params = params or {}
   params["hidden"] = true
   params["cwd"] = vim.fs.root(vim.api.nvim_buf_get_name(0), { ".git" })
-  telescope_builtin.live_grep(params)
+  require("telescope.builtin").live_grep(params)
 end
 
 vim.keymap.set("n", "<Leader>ff", find_files, { noremap = true, silent = true })
@@ -346,14 +51,29 @@ vim.keymap.set("n", "<Leader>pf", find_project_files, { noremap = true, silent =
 vim.keymap.set("n", "<Leader>fp", find_dotfiles, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>fs", live_grep_files, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>sp", live_grep_project_files, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>fb", telescope_builtin.buffers, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>bB", telescope_builtin.buffers, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>bl", telescope_builtin.buffers, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>fh", telescope_builtin.help_tags, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>pp", telescope.extensions.project.project, { noremap = true, silent = true })
--- vim.keymap.set("n", "<Leader>fr", telescope.extensions.recent_files.pick, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>fr", ":Telescope frecency<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>fR", ":Telescope frecency workspace=CWD<CR>", { noremap = true, silent = true })
+vim.keymap.set(
+  "n",
+  "<Leader>fb",
+  function() require("telescope.builtin").buffers() end,
+  { noremap = true, silent = true }
+)
+vim.keymap.set(
+  "n",
+  "<Leader>bB", function() require("telescope.builtin").buffers() end,
+  { noremap = true, silent = true }
+)
+vim.keymap.set(
+  "n",
+  "<Leader>bl",
+  function() require("telescope.builtin").buffers() end,
+  { noremap = true, silent = true }
+)
+vim.keymap.set(
+  "n",
+  "<Leader>fh",
+  function() require("telescope.builtin").help_tags() end,
+  { noremap = true, silent = true }
+)
 
 vim.keymap.set("n", "<Leader>fd",
   function() find_files({ cwd = vim.fn.expand("%:h") }) end,
@@ -363,354 +83,6 @@ vim.keymap.set("n", "<Leader>sd",
   function() live_grep_files({ cwd = vim.fn.expand("%:h") }) end,
   { noremap = true, silent = true }
 )
-
-
-----------------------------------------------------------------------
--- LSP
-----------------------------------------------------------------------
-vim.lsp.config("lua_ls", {
-  -- "folke/neodev.nvim"
-  settings = {
-    Lua = {
-      completion = {
-        callSnippet = "Replace",
-      },
-    },
-  },
-})
-
-vim.lsp.config("pyright", {
-  settings = {
-    python = {
-      venvPath = ".",
-      pythonPath = ".venv/bin/python",
-      analysis = {
-        extraPaths = { "." },
-      },
-    },
-  },
-})
-
-vim.lsp.config('ty', {
-  settings = {
-    ty = {
-    }
-  }
-})
-
-vim.lsp.config("ruby_lsp", {})
-
-vim.lsp.config("ts_ls", {
-  filetypes = {
-    -- "javascript",
-    -- "javascriptreact",
-    -- "javascript.jsx",
-    "typescript",
-    "typescriptreact",
-    "typescript.tsx",
-  },
-})
-
-vim.lsp.config("gopls", {})
-
-vim.lsp.config("terraformls", {})
-
--- haskell-tools.nvimで代用するのでコメントアウト
--- vim.lsp.config("hie", {}
-
-vim.lsp.config("dhall_lsp_server", {})
-
-vim.lsp.config("nil_ls", {})
-
-vim.lsp.config("purescriptls", {
-  settings = {
-    purescript = {
-      addSpagoSources = true -- e.g. any purescript language-server config here
-    },
-  },
-  flags = {
-    debounce_text_changes = 150,
-  },
-})
-
-vim.lsp.config("rust_analyzer", {
-  settings = {
-    ["rust-analyzer"] = {}
-  }
-})
-
-vim.lsp.config("fsautocomplete", {})
-
-
-local schemastore = require("schemastore")
-
-vim.lsp.config("jsonls", {
-  settings = {
-    json = {
-      schemas = schemastore.json.schemas(),
-      validate = { enable = true },
-    },
-  },
-})
-
-vim.lsp.config("yamlls", {
-  settings = {
-    yaml = {
-      schemaStore = {
-        -- b0o/schemastore.nvimを使うため
-        enable = false,
-        -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
-        url = "",
-      },
-      schemas = schemastore.yaml.schemas(),
-      -- format = { enable = true },
-      completion = true,
-      hover = true,
-      validate = true,
-    },
-  },
-})
-
-vim.lsp.config("dbt-lsp", {
-  filetypes = { "sql", "yaml", "jinja" },
-
-  root_dir = function(bufnr, on_dir)
-    local fname = vim.api.nvim_buf_get_name(bufnr)
-    local root = vim.fs.root(fname, { "dbt_project.yml", })
-    if root then
-      on_dir(root)
-    end
-  end,
-
-  cmd = function(dispatchers, config)
-    -- VSCodeのdbtプラグインを入れると暗黙的にインストールされるdbt-lspへのシンボリックリンク
-    -- <https://zenn.dev/myshmeh/articles/37480d3a85e87e#dbt-fusion%E3%81%A8%E8%A8%80%E8%AA%9E%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC>
-    local lsp_path = vim.fn.expand("~/.local/bin/dbt-lsp")
-
-    -- --project-dir == --profiles-dir になるように設定
-    return vim.lsp.rpc.start({
-      lsp_path,
-      "--project-dir", config.root_dir,
-      "--profiles-dir", config.root_dir,
-    }, dispatchers)
-  end,
-
-  -- cmd = function(dispatchers, config)
-  --   local lsp_path = "/Users/shingo.watanabe/Library/Application Support/Code/User/globalStorage/dbtlabsinc.dbt/bin/dbt-lsp"
-  --   local port = 8030
-  --
-  --   vim.fn.jobstart({
-  --     lsp_path,
-  --     "--project-dir", config.root_dir,
-  --     "--profiles-dir", config.root_dir,
-  --     "--socket", port,
-  --   })
-  --
-  --   local conn = vim.lsp.rpc.connect("127.0.0.1", port)
-  --   return conn(dispatchers)
-  -- end,
-})
-
-vim.lsp.enable({
-  "lua_ls",
-  -- "pyright",
-  "ty",
-  "ruby_lsp",
-  "ts_ls",
-  "gopls",
-  "terraformls",
-  "dhall_lsp_server",
-  "nil_ls",
-  "purescriptls",
-  "rust_analyzer",
-  "fsautocomplete",
-  "yamlls",
-  "dbt-lsp",
-})
-
-
-vim.keymap.set("n", "<Leader>e", vim.diagnostic.open_float, { noremap = true, silent = true })
-vim.keymap.set("n", "[d", function()
-  vim.diagnostic.jump({ count = -1, float = true })
-end, { noremap = true, silent = true })
-vim.keymap.set("n", "]d", function()
-  vim.diagnostic.jump({ count = 1, float = true })
-end, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>q", vim.diagnostic.setloclist, { noremap = true, silent = true })
-
--- Use LspAttach autocommand to only map the following keys
--- after the language server attaches to the current buffer
-vim.api.nvim_create_autocmd("LspAttach", {
-  group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-  callback = function(ev)
-    -- Enable completion triggered by <c-x><c-o>
-    vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
-
-    -- Buffer local mappings.
-    -- See `:help vim.lsp.*` for documentation on any of the below functions
-    local opts = { buffer = ev.buf }
-    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-    vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-    vim.keymap.set("n", "<Leader>wa", vim.lsp.buf.add_workspace_folder, opts)
-    vim.keymap.set("n", "<Leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
-    vim.keymap.set("n", "<Leader>wl", function()
-      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-    end, opts)
-    vim.keymap.set("n", "<Leader>D", vim.lsp.buf.type_definition, opts)
-    vim.keymap.set("n", "<Leader>rn", vim.lsp.buf.rename, opts)
-    vim.keymap.set({ "n", "v" }, "<Leader>ca", vim.lsp.buf.code_action, opts)
-    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-    vim.keymap.set("n", "<Leader>F", function()
-      vim.lsp.buf.format { async = true }
-    end, opts)
-  end,
-})
-
-
-----------------------------------------------------------------------
--- nvim-cmp
-----------------------------------------------------------------------
-local cmp = require("cmp")
-
-cmp.setup {
-  snippet = {
-    expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body)
-    end,
-  },
-  mapping = cmp.mapping.preset.insert {
-    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    ["<C-Space>"] = cmp.mapping.complete(),
-    ["<C-q>"] = cmp.mapping.abort(),
-    ["<Tab>"] = cmp.mapping.confirm({ select = true }),
-    ["<CR>"] = cmp.mapping.confirm({ select = true }),
-  },
-  sources = vim.tbl_deep_extend("force", cmp.config.sources {
-    { name = "nvim_lsp" },
-    { name = "buffer" },
-    { name = "path" },
-    { name = "copilot" },
-    { name = "command" },
-    { name = "calc" },
-    { name = "nvim_lua" },
-    { name = "render-markdown" },
-    { name = "lazydev", group_index = 0 },
-  }, {
-      per_filetype = {
-        codecompanion = { "codecompanion" },
-      },
-  }),
-  formatting = {
-    format = require("lspkind").cmp_format {
-      mode = "symbol",
-      maxwidth = 50,
-      ellipsis_char = "...",
-      show_labelDetails = true,
-    },
-  },
-}
-
--- cmp.setup.cmdline('/', {
---   mapping = cmp.mapping.preset.cmdline(),
---   sources = {
---     { name = 'buffer' }
---   }
--- })
-
--- cmp.setup.cmdline(':', {
---   mapping = cmp.mapping.preset.cmdline(),
---   sources = cmp.config.sources({
---     { name = 'path' }
---   }, {
---     {
---       name = 'cmdline',
---       option = {
---         ignore_cmds = { 'Man', '!' }
---       }
---     }
---   })
--- })
-
-
-----------------------------------------------------------------------
--- augroup / autocmd
-----------------------------------------------------------------------
-local augroup = vim.api.nvim_create_augroup
-local autocmd = vim.api.nvim_create_autocmd
-
--- Yank時にハイライトを行う
-augroup("YankHighlight", { clear = true })
-autocmd("TextYankPost", {
-  group = "YankHighlight",
-  callback = function()
-    vim.highlight.on_yank {
-      higroup = "IncSearch",
-      timeout = "50",
-    }
-  end,
-})
-
--- 保存時に行末の空白を削除する
-autocmd("BufWritePre", {
-  pattern = "",
-  callback = function()
-    -- textやmarkdownファイルは削除しない
-    local ignored_fts = { "text", "markdown" }
-    local ignore_flag = false
-
-    for _, v in ipairs(ignored_fts) do
-      if vim.bo.filetype == v then
-        ignore_flag = true
-        break
-      end
-    end
-
-    if not ignore_flag then
-      vim.cmd [[ :%s/\s\+$//e ]]
-    end
-  end,
-})
-
--- ターミナルを開いた時にinsertモードを開始する
-autocmd("TermOpen", {
-  pattern = "",
-  command = "startinsert",
-})
-
--- ターミナルを開いた時に行番号を非表示にする
-autocmd("TermOpen", {
-  pattern = "",
-  command = "setlocal nonumber norelativenumber",
-})
-
--- ターミナルのバッファを離れた時にinsertモードを終了する
-autocmd("BufLeave", {
-  pattern = "term://*",
-  command = "stopinsert",
-})
-
--- *.digはYAMLとして扱う
-autocmd({ "BufRead", "BufNewFile" }, {
-  pattern = "*.dig",
-  command = "setf yaml",
-})
-
-autocmd("FileType", {
-  pattern = { "markdown" },
-  callback = function() vim.treesitter.start() end,
-})
-
--- 開発用
--- autocmd("DirChanged", {
---   pattern = "",
---   callback = function()
---     print(string.format("[DEBUG-DEBUG-DEBUG] CWD = %s", vim.fn.getcwd()))
---   end,
--- })
 
 
 ----------------------------------------------------------------------
