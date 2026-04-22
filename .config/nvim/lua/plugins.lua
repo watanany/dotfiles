@@ -48,7 +48,7 @@ return {
       treesitter.setup()
       treesitter.install {
         "bash", "regex", "python", "sql",
-        "javascript", "rust",
+        "markdown", "javascript", "rust", "haskell",
       }
     end,
   },
@@ -157,7 +157,6 @@ return {
     },
     opts = {
       options = {
-        theme = "base16",
         component_separators = { left = "|", right = "|" },
         section_separators = { left = "", right = "" },
       },
@@ -172,7 +171,16 @@ return {
   ----------------------------------------------------------------------
   -- ファイラー
   ----------------------------------------------------------------------
-  { "lambdalisue/vim-fern" },
+  {
+    "lambdalisue/vim-fern",
+    keys = {
+      {
+        "<Leader>ft",
+        ":Fern . -drawer -width=50<CR>",
+        desc = "ファイルツリーを開く",
+      },
+    },
+  },
 
   -- fzf本体(CLI)
   {
@@ -198,6 +206,63 @@ return {
     "nvim-telescope/telescope.nvim",
     version = "*",
     dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      -- Telescopeの設定を行う
+      local telescope = require("telescope")
+      local telescope_actions = require("telescope.actions")
+
+      telescope.setup {
+        extensions = {
+          project = {
+            base_dirs = {
+              { path = "~/dotfiles", max_depth = 1 },
+              { path = "~/sanctum/org", max_depth = 1 },
+              { path = "~/sanctum/projects", max_depth = 2 },
+              { path = "~/sanctum/goals", max_depth = 2 },
+            },
+            order_by = "asc",
+            hidden_files = true,
+            cd_scope = { "tab" },
+          },
+          fzf = {
+            fuzzy = true,                    -- false will only do exact matching
+            override_generic_sorter = true,  -- override the generic sorter
+            override_file_sorter = true,     -- override the file sorter
+            case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+                                             -- the default case_mode is "smart_case"
+          },
+        },
+        defaults = {
+          mappings = {
+            n = {
+              ["<C-;>"] = telescope_actions.close,
+              ["<C-q>"] = telescope_actions.close,
+            },
+            i = {
+              -- 最初のESCでTelescopeを閉じる
+              -- cf. <https://www.reddit.com/r/neovim/comments/pzxw8h/telescope_quit_on_first_single_esc/>
+              ["<Esc>"] = telescope_actions.close,
+
+              ["<C-h>"] = "which_key",
+              ["<C-;>"] = telescope_actions.close,
+              ["<C-q>"] = telescope_actions.close,
+
+              ["<C-f>"] = function()
+                local keys = vim.api.nvim_replace_termcodes("<Right>", true, false, true)
+                vim.fn.feedkeys(keys, "n")
+              end,
+
+              ["<C-b>"] = function()
+                local keys = vim.api.nvim_replace_termcodes("<Left>", true, false, true)
+                vim.fn.feedkeys(keys, "n")
+              end,
+
+              ["<C-k>"] = kill_line,
+            },
+          },
+        },
+      }
+    end,
   },
 
   {
@@ -211,6 +276,16 @@ return {
       "nvim-telescope/telescope.nvim",
       "nvim-telescope/telescope-file-browser.nvim",
     },
+    keys = {
+      {
+        "<Leader>pp",
+        function() require("telescope").extensions.project.project() end,
+        desc = "プロジェクトを開く",
+      },
+    },
+    config = function()
+      require("telescope").load_extension("project")
+    end,
   },
 
   {
@@ -223,6 +298,18 @@ return {
 
   {
     "nvim-telescope/telescope-frecency.nvim",
+    keys = {
+      {
+        "<Leader>fr",
+        "<cmd>Telescope frecency<CR>",
+        desc = "最近開いたファイルで検索する",
+      },
+      {
+        "<Leader>fR",
+        "<cmd>Telescope frecency workspace=CWD<CR>",
+        desc = "最近開いたファイルで検索する(workspace=CWD)",
+      },
+    },
     config = function()
       require("telescope").load_extension("frecency")
     end,
@@ -255,6 +342,9 @@ return {
     "nvim-telescope/telescope-fzf-native.nvim",
     -- build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release"
     build = "make",
+    config = function()
+      require("telescope").load_extension("fzf")
+    end,
   },
 
   ----------------------------------------------------------------------
@@ -292,7 +382,51 @@ return {
   { "hrsh7th/cmp-vsnip" },
   { "hrsh7th/vim-vsnip" },
 
-  { "hrsh7th/nvim-cmp" },
+  {
+    "hrsh7th/nvim-cmp",
+    config = function()
+      local cmp = require("cmp")
+
+      cmp.setup {
+        snippet = {
+          expand = function(args)
+            vim.fn["vsnip#anonymous"](args.body)
+          end,
+        },
+        mapping = cmp.mapping.preset.insert {
+          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-f>"] = cmp.mapping.scroll_docs(4),
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<C-q>"] = cmp.mapping.abort(),
+          ["<Tab>"] = cmp.mapping.confirm({ select = true }),
+          ["<CR>"] = cmp.mapping.confirm({ select = true }),
+        },
+        sources = vim.tbl_deep_extend("force", cmp.config.sources {
+          { name = "nvim_lsp" },
+          { name = "buffer" },
+          { name = "path" },
+          { name = "copilot" },
+          { name = "command" },
+          { name = "calc" },
+          { name = "nvim_lua" },
+          { name = "render-markdown" },
+          { name = "lazydev", group_index = 0 },
+        }, {
+            per_filetype = {
+              codecompanion = { "codecompanion" },
+            },
+        }),
+        formatting = {
+          format = require("lspkind").cmp_format {
+            mode = "symbol",
+            maxwidth = 50,
+            ellipsis_char = "...",
+            show_labelDetails = true,
+          },
+        },
+      }
+    end,
+  },
 
   {
     "hrsh7th/cmp-nvim-lsp",
@@ -329,6 +463,7 @@ return {
         -- panel = { enabled = false },
       }
     end,
+    enabled = false,
   },
 
   {
@@ -413,6 +548,7 @@ return {
         },
       },
     },
+    dev = true,
   },
 
   -- Claude Code
@@ -689,15 +825,15 @@ return {
   -- messages, cmdline, popupmenuのUIを改善
   {
     "folke/noice.nvim",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    },
     event = "VeryLazy",
     opts = {
       cmdline = {
         view = "cmdline",
       },
-    },
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "rcarriga/nvim-notify",
     },
     enabled = true,
   },
