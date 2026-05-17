@@ -18,7 +18,7 @@
     };
 
     # 機種固有の最適化プロファイル集 (ThinkPad, Framework, Mac 等)
-    # 使う時は以下のコメントを外し、hosts/nixos/default.nix で imports に追加:
+    # 使う時は以下のコメントを外し、hosts/nico/default.nix で imports に追加:
     #   imports = [ inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-9th-gen ];
     # nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
@@ -41,15 +41,15 @@
       specialArgs = { inherit inputs system; };
     in
     {
-      # `nixos-rebuild switch --flake .#nixos` で適用される構成。
+      # `nixos-rebuild switch --flake .#nico` で適用される構成。
       # ホスト名ごとに増やしていけるよう、エントリ単位で分けておくと拡張が楽。
       nixosConfigurations = {
-        nixos = nixpkgs.lib.nixosSystem {
+        nico = nixpkgs.lib.nixosSystem {
           inherit system specialArgs;
 
           modules = [
             # ホスト固有設定 (ハードウェア構成・ホスト名など)
-            ./hosts/nixos
+            ./hosts/nico
 
             # 共通システムモジュール (機能ごとに分割)
             ./modules/nix.nix

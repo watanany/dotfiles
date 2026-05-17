@@ -5,7 +5,7 @@
 # 上書きしてください。コマンド例:
 #
 #   sudo nixos-generate-config --show-hardware-config \
-#     > nixos/hosts/nixos/hardware-configuration.nix
+#     > nixos/hosts/nico/hardware-configuration.nix
 #
 # 内容には initrd モジュール、ファイルシステム (UUID), スワップ等
 # このマシン固有の情報が含まれます。リポジトリの初期状態では空モジュール
