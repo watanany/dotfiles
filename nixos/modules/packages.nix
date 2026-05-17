@@ -29,8 +29,4 @@
   # fish を default shell にする場合、システム側で有効化が必要
   # (これがないとログインシェル経由の PATH 補完などが壊れる)
   programs.fish.enable = true;
-
-  # /run/current-system/sw/share/zsh/site-functions 等を有効化したい時のため
-  # zsh も最低限有効にしておく (使わなければ削除可)
-  programs.zsh.enable = false;
 }

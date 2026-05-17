@@ -36,8 +36,8 @@
   programs.starship = {
     enable = true;
     enableFishIntegration = true;
-    # Nerd Font を使う前提でアイコンを有効化
     settings = {
+      # プロンプトの前に空行を入れて見やすくする
       add_newline = true;
     };
   };
