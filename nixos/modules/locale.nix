@@ -27,11 +27,11 @@
   };
 
   # コンソール (TTY) のキーマップ
-  console.keyMap = "jp106";
+  console.keyMap = "us";
 
   # X / Wayland のキーマップ (DE を入れた時に有効)
   services.xserver.xkb = {
-    layout = "jp";
+    layout = "us";
     variant = "";
   };
 }
