@@ -43,6 +43,7 @@ flake.nix                      ← 玄関。inputs(外部リポ) と outputs(構
 - [x] /nix/store 自動最適化 + 週次 GC (30 日)
 - [x] `allowUnfree = true`
 - [x] systemd-boot (UEFI) + 最新カーネル
+- [x] SSD TRIM (fstrim) + ファームウェア更新 (fwupd)
 - [x] NetworkManager
 - [x] ファイアウォール (22/tcp のみ開放)
 - [x] OpenSSH (root ログイン拒否、初期はパスワード認証許可)

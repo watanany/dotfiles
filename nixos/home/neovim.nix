@@ -11,5 +11,10 @@
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
+
+    # 25.11 で default が true → false に変わる。新 default に追従。
+    # Ruby/Python プラグインを使う場合のみ true にする。
+    withRuby = false;
+    withPython3 = false;
   };
 }
