@@ -20,7 +20,7 @@ flake.nix                      ← 玄関。inputs(外部リポ) と outputs(構
  │     ├── nix.nix             ← flakes / GC / 最適化
  │     ├── boot.nix            ← systemd-boot + EFI + 最新カーネル
  │     ├── networking.nix      ← NetworkManager + firewall + OpenSSH (root拒否)
- │     ├── locale.nix          ← ja_JP / Asia/Tokyo / jp106 / fcitx5-mozc
+ │     ├── locale.nix          ← ja_JP / Asia/Tokyo / US 配列 / fcitx5-mozc
  │     ├── packages.nix        ← システム共通の最低限ツール
  │     └── users.nix           ← watanany ユーザ (fish, wheel)
  │
@@ -46,7 +46,7 @@ flake.nix                      ← 玄関。inputs(外部リポ) と outputs(構
 - [x] NetworkManager
 - [x] ファイアウォール (22/tcp のみ開放)
 - [x] OpenSSH (root ログイン拒否、初期はパスワード認証許可)
-- [x] ロケール: 日本語 / タイムゾーン: Asia/Tokyo / キーマップ: jp106
+- [x] ロケール: 日本語 / タイムゾーン: Asia/Tokyo / キーマップ: US 配列
 - [x] fcitx5 + mozc (DE 導入時に効く)
 - [x] fish + starship + direnv (nix-direnv)
 - [x] ripgrep, fd, bat, eza, fzf, zoxide, jq, gh, lazygit, delta, ...
@@ -201,10 +201,10 @@ ssh-copy-id watanany@<host>
 
 ## トラブルシュート
 
-- **`error: file 'hardware-configuration.nix' has 0 fileSystems` / boot しない**
+- **`error: file 'hardware-configuration.nix' ... has 0 fileSystems` / boot しない**
   → 手順 2 の `nixos-generate-config` を忘れている。実機で生成して差し替え。
-- **`error: hostname does not match`**
-  → `hosts/nixos/default.nix` の `hostName` と flake の attribute 名 (`nixosConfigurations.nixos`) を揃える。
+- **`nixos-rebuild switch --flake .#nixos` で `nixosConfigurations.nixos not found`**
+  → `flake.nix` の attribute 名 (`nixosConfigurations.nixos`) と `--flake .#<名前>` の名前を揃える。`hostName` は別物 (任意の名前で OK だが、attribute 名と揃えておくと混乱しない)。
 - **ログイン後も fish にならない**
   → `chsh -s $(which fish)` ではなく、`users.users.watanany.shell = pkgs.fish;` を変更して `nixos-rebuild switch` する。
 

@@ -8,8 +8,8 @@
     # nixpkgs 本体。安定版を使いたければ "nixos-25.05" などに変更。
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    # 旧バージョンを併用したい場合に備えた予備チャンネル (任意で利用)
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
+    # 旧バージョンを併用したい場合は以下のコメントを外して有効化:
+    # nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
 
     # ユーザ環境 (dotfiles・ユーザパッケージ) を宣言的に管理する Home Manager
     home-manager = {
@@ -18,7 +18,9 @@
     };
 
     # 機種固有の最適化プロファイル集 (ThinkPad, Framework, Mac 等)
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    # 使う時は以下のコメントを外し、hosts/nixos/default.nix で imports に追加:
+    #   imports = [ inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-9th-gen ];
+    # nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
   # ─────────────────────────────────────────────────────────────
@@ -28,7 +30,6 @@
     { self
     , nixpkgs
     , home-manager
-    , nixos-hardware
     , ...
     }@inputs:
     let

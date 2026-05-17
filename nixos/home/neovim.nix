@@ -4,7 +4,7 @@
 # 設定を Home Manager で管理したくなったら programs.neovim.extraConfig や
 # `home.file.".config/nvim".source = ../../.config/nvim;` 等で取り込める。
 # ──────────────────────────────────────────────────────────────
-{ pkgs, ... }:
+{ ... }:
 {
   programs.neovim = {
     enable = true;

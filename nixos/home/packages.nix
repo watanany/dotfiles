@@ -22,10 +22,10 @@
     # 開発ツール
     gh        # GitHub CLI
     lazygit
-    delta
+    # delta は home/git.nix の programs.git.delta.enable で自動インストールされる
 
     # ファイル操作
-    unzip
+    # unzip はシステム側 (modules/packages.nix) に置いている
     rsync
   ];
 

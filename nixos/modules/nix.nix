@@ -14,7 +14,8 @@
       # wheel グループの操作を信頼 (キャッシュ等の管理を可能に)
       trusted-users = [ "root" "@wheel" ];
 
-      # 公式バイナリキャッシュ (デフォルトでも有効だが明示)
+      # バイナリキャッシュ。`substituters` を設定するとデフォルトを上書きするため、
+      # カスタムキャッシュを足す時は cache.nixos.org も明示的に含める必要がある。
       substituters = [ "https://cache.nixos.org/" ];
     };
 
