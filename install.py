@@ -14,6 +14,8 @@ DIRS: list[str] = [
     ".ipython/profile_default/startup",
     ".pyenv",
     ".clojure",
+    ".claude",
+    ".dippy",
 ]
 
 LINK_LIST: list[str] = [
@@ -23,7 +25,7 @@ LINK_LIST: list[str] = [
     ".ghci",
     ".iex.exs",
     ".config/fish",
-    ".config/karabiner",
+    # ".config/karabiner",
     ".config/kitty",
     ".local/bin/marked2",
     ".cache/dein",
