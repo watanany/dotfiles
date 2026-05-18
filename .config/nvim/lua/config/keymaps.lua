@@ -96,9 +96,6 @@ vim.keymap.set("n", "<Leader>tb", function() vim.cmd("GitBlameToggle") end, { no
 vim.keymap.set("n", "<Leader>tB", function() vim.cmd("BlameToggle") end, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>tmt", function() vim.cmd("TableModeToggle") end, { noremap = true, silent = true })
 
--- 通知履歴
-vim.keymap.set("n", "<Leader>n", ":Telescope notify<CR>", { noremap = true, silent = true })
-
 -- タブ関連
 vim.keymap.set("n", "<Leader><Tab>n", ":tablast | tabnew<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader><Tab>d", ":tabclose<CR>", { noremap = true, silent = true })
@@ -160,4 +157,5 @@ end, { noremap = true, silent = true })
 
 -- Terminal modeで<C-;>で<Esc>が伝わるようにする
 vim.keymap.set('t', '<C-;>', '<Esc>', { noremap = true })
+
 

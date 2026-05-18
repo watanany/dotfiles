@@ -117,13 +117,27 @@ return {
         numbers = "ordinal",
 
         name_formatter = function(buf)
+          local label
           if vim.uv.fs_stat(buf.path) then
             local path = vim.api.nvim_buf_get_name(buf.bufnr)
             local root = vim.fs.root(path, { ".git" })
-            return root and vim.fs.basename(root) or vim.fs.basename(path)
+            local name = root and vim.fs.basename(root) or vim.fs.basename(path)
+            local parts = vim.split(name, "-")
+            label = parts[#parts]
           else
-            return buf.name
+            label = buf.name
           end
+          local tabpages = vim.api.nvim_list_tabpages()
+          for i, tp in ipairs(tabpages) do
+            local win = vim.api.nvim_tabpage_get_win(tp)
+            if vim.api.nvim_win_get_buf(win) == buf.bufnr then
+              if vim.fn.gettabvar(i, "claude_pending") == 1 then
+                label = "◆ " .. label
+              end
+              break
+            end
+          end
+          return label
         end,
 
         show_buffer_icons = true,
@@ -199,136 +213,6 @@ return {
     enabled = false,
   },
 
-  ----------------------------------------------------------------------
-  -- ファジーファインダー
-  ----------------------------------------------------------------------
-  {
-    "nvim-telescope/telescope.nvim",
-    version = "*",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      -- Telescopeの設定を行う
-      local telescope = require("telescope")
-      local telescope_actions = require("telescope.actions")
-
-      telescope.setup {
-        extensions = {
-          project = {
-            base_dirs = {
-              { path = "~/dotfiles", max_depth = 1 },
-              { path = "~/sanctum/org", max_depth = 1 },
-              { path = "~/sanctum/projects", max_depth = 2 },
-              { path = "~/sanctum/goals", max_depth = 2 },
-            },
-            order_by = "asc",
-            hidden_files = true,
-            cd_scope = { "tab" },
-          },
-          fzf = {
-            fuzzy = true,                    -- false will only do exact matching
-            override_generic_sorter = true,  -- override the generic sorter
-            override_file_sorter = true,     -- override the file sorter
-            case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-                                             -- the default case_mode is "smart_case"
-          },
-        },
-        defaults = {
-          mappings = {
-            n = {
-              ["<C-;>"] = telescope_actions.close,
-              ["<C-q>"] = telescope_actions.close,
-            },
-            i = {
-              -- 最初のESCでTelescopeを閉じる
-              -- cf. <https://www.reddit.com/r/neovim/comments/pzxw8h/telescope_quit_on_first_single_esc/>
-              ["<Esc>"] = telescope_actions.close,
-
-              ["<C-h>"] = "which_key",
-              ["<C-;>"] = telescope_actions.close,
-              ["<C-q>"] = telescope_actions.close,
-
-              ["<C-f>"] = function()
-                local keys = vim.api.nvim_replace_termcodes("<Right>", true, false, true)
-                vim.fn.feedkeys(keys, "n")
-              end,
-
-              ["<C-b>"] = function()
-                local keys = vim.api.nvim_replace_termcodes("<Left>", true, false, true)
-                vim.fn.feedkeys(keys, "n")
-              end,
-
-              ["<C-k>"] = kill_line,
-            },
-          },
-        },
-      }
-    end,
-  },
-
-  {
-    "nvim-telescope/telescope-file-browser.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
-  },
-
-  {
-    "nvim-telescope/telescope-project.nvim",
-    dependencies = {
-      "nvim-telescope/telescope.nvim",
-      "nvim-telescope/telescope-file-browser.nvim",
-    },
-    keys = {
-      {
-        "<Leader>pp",
-        function() require("telescope").extensions.project.project() end,
-        desc = "プロジェクトを開く",
-      },
-    },
-    config = function()
-      require("telescope").load_extension("project")
-    end,
-  },
-
-  {
-    "smartpde/telescope-recent-files",
-    dependencies = { "nvim-telescope/telescope.nvim" },
-    config = function()
-      require("telescope").load_extension("recent_files")
-    end,
-  },
-
-  {
-    "nvim-telescope/telescope-frecency.nvim",
-    keys = {
-      {
-        "<Leader>fr",
-        "<cmd>Telescope frecency<CR>",
-        desc = "最近開いたファイルで検索する",
-      },
-      {
-        "<Leader>fR",
-        "<cmd>Telescope frecency workspace=CWD<CR>",
-        desc = "最近開いたファイルで検索する(workspace=CWD)",
-      },
-    },
-    config = function()
-      require("telescope").load_extension("frecency")
-    end,
-  },
-
-  {
-    "ahmedkhalf/project.nvim",
-    config = function()
-      require("project_nvim").setup {
-        detection_methods = { "pattern" },
-        patterns = { ".git" },
-        show_hidden = true,
-        scope_chdir = "tab",
-      }
-      require("telescope").load_extension("projects")
-    end,
-    enabled = false,
-  },
-
   {
     "notjedi/nvim-rooter.lua",
     lazy = false,
@@ -336,15 +220,6 @@ return {
       require("nvim-rooter").setup {}
     end,
     enabled = false,
-  },
-
-  {
-    "nvim-telescope/telescope-fzf-native.nvim",
-    -- build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release"
-    build = "make",
-    config = function()
-      require("telescope").load_extension("fzf")
-    end,
   },
 
   ----------------------------------------------------------------------
@@ -819,31 +694,16 @@ return {
     end,
   },
 
-  -- 通知表示機能
+  -- 通知表示機能（Snacks.notifier に移行済み）
   {
     "rcarriga/nvim-notify",
-    init = function()
-      vim.o.termguicolors = true
-    end,
-    config = function()
-      vim.notify = require("notify")
-    end,
+    enabled = false,
   },
 
-  -- messages, cmdline, popupmenuのUIを改善
+  -- messages, cmdline, popupmenuのUIを改善（Snacks.notifier と競合するため無効化）
   {
     "folke/noice.nvim",
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "rcarriga/nvim-notify",
-    },
-    event = "VeryLazy",
-    opts = {
-      cmdline = {
-        view = "cmdline",
-      },
-    },
-    enabled = true,
+    enabled = false,
   },
 
   -- :messagesをバッファとして表示(Bmessages)
@@ -858,6 +718,81 @@ return {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {},
+  },
+
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    ---@type snacks.Config
+    opts = {
+      picker = {
+        enabled = true,
+        sources = {
+          projects = {
+            dirs = {
+              "~/dotfiles",
+              "~/sanctum/org",
+              "~/sanctum/projects",
+              "~/sanctum/goals",
+            },
+          },
+        },
+        win = {
+          input = {
+            keys = {
+              ["<Esc>"] = { "close", mode = { "i" } },
+              ["<C-;>"] = { "close", mode = { "i", "n" } },
+              ["<C-q>"] = { "close", mode = { "i", "n" } },
+            },
+          },
+        },
+      },
+      notifier = { enabled = true },
+      session = { enabled = false },
+    },
+    keys = {
+      { "<Leader>ff", function() Snacks.picker.files({ hidden = true }) end,
+        desc = "ファイル名で検索する" },
+      { "<Leader>pf", function()
+          Snacks.picker.files({
+            hidden = true,
+            cwd = vim.fs.root(vim.api.nvim_buf_get_name(0), { ".git" }),
+          })
+        end, desc = "プロジェクトのファイルを検索する" },
+      { "<Leader>fp", function()
+          Snacks.picker.files({ cwd = "~/dotfiles", hidden = true })
+        end, desc = "dotfilesを検索する" },
+      { "<Leader>fd", function()
+          Snacks.picker.files({ cwd = vim.fn.expand("%:h"), hidden = true })
+        end, desc = "ファイル名で検索する(cwd=%:h)" },
+
+      { "<Leader>fs", function() Snacks.picker.grep({ hidden = true }) end,
+        desc = "ファイル内の文字列を検索する" },
+      { "<Leader>sp", function()
+          Snacks.picker.grep({
+            hidden = true,
+            cwd = vim.fs.root(vim.api.nvim_buf_get_name(0), { ".git" }),
+          })
+        end, desc = "プロジェクト内の文字列を検索する" },
+      { "<Leader>sd", function()
+          Snacks.picker.grep({ cwd = vim.fn.expand("%:h"), hidden = true })
+        end, desc = "ファイル内の文字列を検索する(cwd=%:h)" },
+
+      { "<Leader>fb", function() Snacks.picker.buffers() end, desc = "バッファ一覧を表示する" },
+      { "<Leader>bB", function() Snacks.picker.buffers() end, desc = "バッファ一覧を表示する" },
+      { "<Leader>bl", function() Snacks.picker.buffers() end, desc = "バッファ一覧を表示する" },
+
+      { "<Leader>fh", function() Snacks.picker.help() end, desc = "ヘルプを表示する" },
+      { "<Leader>fr", function() Snacks.picker.recent() end,
+        desc = "最近開いたファイルで検索する" },
+      { "<Leader>fR", function() Snacks.picker.recent({ cwd = vim.fn.getcwd() }) end,
+        desc = "最近開いたファイルで検索する(workspace=CWD)" },
+      { "<Leader>pp", function() Snacks.picker.projects() end, desc = "プロジェクトを開く" },
+      { "<Leader>n",  function() Snacks.picker.notifications() end, desc = "通知履歴" },
+      { "<Leader>gf", function() Snacks.picker.git_files({ hidden = true }) end,
+        desc = "Gitファイルを検索する" },
+    },
   },
 
   -- 外部ツールのインストール
@@ -957,14 +892,7 @@ return {
 
   {
     "renerocksai/telekasten.nvim",
-    dependencies = {"nvim-telescope/telescope.nvim"},
-    config = function()
-      local telekasten = require("telekasten")
-      telekasten.setup {
-        home = vim.fn.expand("~/sanctum/org/zk")
-      }
-    end,
-    enabled = true,
+    enabled = false,
   },
 
   {

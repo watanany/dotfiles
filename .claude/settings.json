@@ -30,6 +30,16 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$NVIM\" ] && nvim --server \"$NVIM\" --remote-expr 'execute(\"lua claude_notify_done()\")' || true"
+          }
+        ]
+      }
     ]
   },
   "enabledPlugins": {
