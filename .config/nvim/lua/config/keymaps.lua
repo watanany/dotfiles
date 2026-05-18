@@ -56,14 +56,18 @@ vim.keymap.set("i", "<C-k>", function()
   -- unpackは非推奨で移行中
   -- TODO: neovimの使用するLuaのバージョンが5.2になったらtable.unpackを使うように変更する
   local unpack = table.unpack or unpack
-
   local _, col = unpack(vim.api.nvim_win_get_cursor(0))
-  local line = vim.api.nvim_get_current_line()
 
-  if col >= #line then
+  local line = vim.api.nvim_get_current_line()
+  local end_col = #line
+
+  if col >= end_col then
+    -- カーソルが行末にある場合は、次の行と結合
     vim.api.nvim_command("normal! J")
   else
-
+    -- カーソル位置から行末までを削除
+    local new_line = line:sub(1, col)
+    vim.api.nvim_set_current_line(new_line)
   end
 end, { noremap = true, silent = true })
 

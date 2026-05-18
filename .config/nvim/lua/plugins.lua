@@ -47,7 +47,7 @@ return {
       local treesitter = require("nvim-treesitter")
       treesitter.setup()
       treesitter.install {
-        "bash", "regex", "python", "sql",
+        "lua", "bash", "regex", "python", "sql",
         "markdown", "javascript", "rust", "haskell",
       }
     end,
@@ -401,21 +401,23 @@ return {
           ["<Tab>"] = cmp.mapping.confirm({ select = true }),
           ["<CR>"] = cmp.mapping.confirm({ select = true }),
         },
-        sources = vim.tbl_deep_extend("force", cmp.config.sources {
-          { name = "nvim_lsp" },
-          { name = "buffer" },
-          { name = "path" },
-          { name = "copilot" },
-          { name = "command" },
-          { name = "calc" },
-          { name = "nvim_lua" },
-          { name = "render-markdown" },
-          { name = "lazydev", group_index = 0 },
-        }, {
-            per_filetype = {
-              codecompanion = { "codecompanion" },
-            },
-        }),
+        sources = cmp.config.sources(
+          {
+            { name = "lazydev" },
+          },
+          {
+            { name = "nvim_lsp" },
+            { name = "path" },
+            { name = "copilot" },
+            { name = "command" },
+            { name = "calc" },
+            { name = "nvim_lua" },
+            { name = "render-markdown" },
+          },
+          {
+            { name = "buffer" },
+          }
+        ),
         formatting = {
           format = require("lspkind").cmp_format {
             mode = "symbol",
@@ -675,6 +677,12 @@ return {
     opts = { -- see below for full configuration options
       mappings = true,
     }
+  },
+
+  -- flix
+  {
+    "flix/nvim",
+    opts = {},
   },
 
   ----------------------------------------------------------------------

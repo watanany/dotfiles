@@ -1,0 +1,135 @@
+# Dippy global config
+# https://github.com/ldayton/Dippy/wiki/Configuration
+#
+# ============================================================
+# 判定フロー (Python風擬似コード)
+# ============================================================
+#
+# Decision = Literal["allow", "deny", "ask"]
+#
+# def decide(command: str) -> Decision:
+#     ast = parse(command)                       # Parable再帰下降パーサー
+#
+#     # Step 1: リダイレクト (最優先 — カスタムdenyより強い)
+#     if has_redirect(ast):
+#         return "deny" if matches_deny_redirect(config) else "ask"
+#
+#     # Step 2: パイプ・複合コマンドを分解し各セグメントを評価
+#     def evaluate(seg) -> Decision:
+#         custom = match_custom_rules(seg)       # allow/deny/None (last match wins)
+#         if custom is not None:
+#             return custom                      # カスタムがbuilt-inを上書き
+#         else:
+#             return classify(seg)               # built-in CLIハンドラ (allow/ask)
+#
+#     segments = split(ast, on="|", "&&", "||", ";")
+#     return max(map(evaluate, segments),        # 最も制限的な結果が勝つ
+#                key=lambda d: {"allow": 0, "ask": 1, "deny": 2}[d])
+#
+# ============================================================
+# 具体例
+# ============================================================
+#
+#   allow : ls, rg, fd, jq, sed (built-in: 読み取り)
+#           git commit, git push (カスタムallow → built-in ask を上書き)
+#   deny  : git push --force (カスタムdeny → カスタムallow を上書き)
+#           rm -rf, gh pr merge (カスタムdeny)
+#           cat ~/.ssh/* (カスタムdeny → built-in allow を上書き)
+#   ask   : dbt run, python (built-in: 実行系)
+#           ls > file.txt (リダイレクト検出)
+#           未知のコマンド (built-in: unknown → ask)
+#
+# ============================================================
+
+# --- Git: allow common operations ---
+allow git commit
+allow git push
+allow git add
+allow git stash
+allow git switch
+allow git pull
+allow git rebase
+allow git cherry-pick
+allow git merge
+
+# --- Git: force push (override allow git push) ---
+deny git push --force "Blocked. Rebase and push normally."
+deny git push * --force "Blocked. Rebase and push normally."
+deny git push -f "Blocked. Rebase and push normally."
+deny git push * -f "Blocked. Rebase and push normally."
+deny git push --force-with-lease "Blocked."
+deny git push * --force-with-lease "Blocked."
+
+# --- Git: protected branches (override allow git push) ---
+deny git push origin main "Direct push to main is blocked. Create a PR."
+deny git push origin develop "Direct push to develop is blocked. Create a PR."
+
+# --- Git: destructive ---
+deny git checkout "Use git switch for branch switching, git restore for file restoration."
+deny git reset --hard "Destructive. Use git stash instead."
+deny git reset * --hard "Destructive. Use git stash instead."
+deny git stash drop "Stash drop is blocked."
+deny git stash clear "Stash clear is blocked."
+deny git clean -f "Destructive. Removes untracked files permanently."
+
+# --- Filesystem: destructive ---
+deny rm -rf "Recursive forced deletion is blocked."
+
+# --- GitHub CLI: allow common operations ---
+allow gh pr create
+allow gh pr comment
+allow gh pr edit
+allow gh issue create
+allow gh issue comment
+
+# --- GitHub CLI: dangerous (override allow) ---
+deny gh pr merge "Do not merge PRs automatically."
+deny gh pr ready "Do not mark PRs as ready automatically."
+deny gh repo delete "Repository deletion is blocked."
+
+# --- Dippy testing ---
+allow dippy
+
+# --- AWS via aws-vault ---
+allow aws-vault exec * -- aws s3 ls
+allow aws-vault exec * -- aws s3 cp
+allow aws-vault exec * -- aws s3 presign
+allow aws-vault exec * -- aws glue get-*
+allow aws-vault exec * -- aws glue list-*
+allow aws-vault exec * -- aws glue batch-get-*
+allow aws-vault exec * -- aws athena get-*
+allow aws-vault exec * -- aws athena list-*
+allow aws-vault exec * -- aws athena batch-get-*
+allow aws-vault exec * -- aws sts get-caller-identity
+allow aws-vault exec * -- aws iam get-*
+allow aws-vault exec * -- aws iam list-*
+
+# --- Sensitive file protection ---
+deny cat ~/.ssh/* "SSH keys must not be read."
+deny cat ~/.aws/* "AWS credentials must not be read."
+deny cat ~/.gnupg/* "GPG keys must not be read."
+deny cat *.env "Secrets must not be read."
+deny cat *.env.* "Secrets must not be read."
+deny head ~/.ssh/* "SSH keys must not be read."
+deny head ~/.aws/* "AWS credentials must not be read."
+deny head ~/.gnupg/* "GPG keys must not be read."
+deny head *.env "Secrets must not be read."
+deny head *.env.* "Secrets must not be read."
+deny tail ~/.ssh/* "SSH keys must not be read."
+deny tail ~/.aws/* "AWS credentials must not be read."
+deny tail ~/.gnupg/* "GPG keys must not be read."
+deny tail *.env "Secrets must not be read."
+deny tail *.env.* "Secrets must not be read."
+deny less ~/.ssh/* "SSH keys must not be read."
+deny less ~/.aws/* "AWS credentials must not be read."
+deny less ~/.gnupg/* "GPG keys must not be read."
+deny less *.env "Secrets must not be read."
+deny less *.env.* "Secrets must not be read."
+deny aws-vault exec safie-data-analysis--DataAnalysisDeveloper *
+deny snow *
+deny snowsql *
+
+# --- Redirect protection ---
+deny-redirect **/.env* "Never write secrets. Ask the user to do it manually."
+deny-redirect ~/.ssh/** "SSH directory is protected."
+deny-redirect ~/.aws/** "AWS credentials directory is protected."

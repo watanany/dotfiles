@@ -143,6 +143,7 @@ vim.lsp.enable({
   "fsautocomplete",
   "yamlls",
   "dbt-lsp",
+  "flix",
 })
 
 vim.keymap.set("n", "<Leader>e", vim.diagnostic.open_float, { noremap = true, silent = true })
