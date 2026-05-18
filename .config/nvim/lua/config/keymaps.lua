@@ -97,7 +97,12 @@ vim.keymap.set("n", "<Leader>tB", function() vim.cmd("BlameToggle") end, { norem
 vim.keymap.set("n", "<Leader>tmt", function() vim.cmd("TableModeToggle") end, { noremap = true, silent = true })
 
 -- タブ関連
-vim.keymap.set("n", "<Leader><Tab>n", ":tablast | tabnew<CR>", { noremap = true, silent = true })
+-- 新タブを開く際、キー入力時点のCWDを引き継ぐ
+vim.keymap.set("n", "<Leader><Tab>n", function()
+  local cwd = vim.fn.getcwd()
+  vim.cmd("tablast | tabnew")
+  vim.cmd("tcd " .. vim.fn.fnameescape(cwd))
+end, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader><Tab>d", ":tabclose<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader><Tab>[", ":tabprev<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader><Tab>]", ":tabnext<CR>", { noremap = true, silent = true })
