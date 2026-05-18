@@ -208,6 +208,14 @@ return {
               "~/sanctum/projects",
               "~/sanctum/goals",
             },
+            -- デフォルトの load_session を上書き：CWD変更のみ行いファイル一覧を開く
+            confirm = function(picker, item)
+              picker:close()
+              if item then
+                vim.fn.chdir(item.file)
+                Snacks.picker.files({ cwd = item.file })
+              end
+            end,
           },
         },
         win = {
