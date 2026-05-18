@@ -6,19 +6,6 @@ return {
 
   -- カラースキーム
   {
-    "w0ng/vim-hybrid",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      vim.cmd [[
-        set background=dark
-        colorscheme hybrid
-      ]]
-    end,
-    enabled = false,
-  },
-
-  {
     "catppuccin/nvim",
     name = "catppuccin",
     priority = 1000,
@@ -58,28 +45,10 @@ return {
 
   -- f + 一文字で検索
   { "rhysd/clever-f.vim", enabled = true },
-  { "ggandor/lightspeed.nvim", enabled = false },
 
   ----------------------------------------------------------------------
   -- セッション管理
   ----------------------------------------------------------------------
-  {
-    "rmagatti/auto-session",
-    lazy = false,
-
-    config = function()
-      -- cf. <https://github.com/rmagatti/auto-session?tab=readme-ov-file#recommended-sessionoptions-config>
-      -- NOTE: このプラグインのsetup前に設定しないと警告が出る
-      vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
-
-      require("auto-session").setup {
-        auto_restore_last_session = true,
-      }
-    end,
-
-    enabled = false,
-  },
-
   {
     "Shatur/neovim-session-manager",
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -93,18 +62,6 @@ return {
   ----------------------------------------------------------------------
   -- タブ制御
   ----------------------------------------------------------------------
-  {
-    "crispgm/nvim-tabline",
-    dependencies = {
-      { "nvim-lualine/lualine.nvim", lazy = true },
-      { "nvim-tree/nvim-web-devicons", lazy = true },
-    },
-    config = function()
-      require("tabline").setup {}
-    end,
-    enabled = false,
-  },
-
   {
     "akinsho/bufferline.nvim",
     version = "*",
@@ -147,21 +104,19 @@ return {
     enabled = true,
   },
 
+  -- 行ごとのgit差分マーク表示（キーマップなし、操作はlazygitで行う）
   {
-    "romgrk/barbar.nvim",
-    dependencies = {
-      "lewis6991/gitsigns.nvim",     -- OPTIONAL: for git status
-      "nvim-tree/nvim-web-devicons", -- OPTIONAL: for file icons
-    },
-    init = function()
-      vim.g.barbar_auto_setup = false
-    end,
+    "lewis6991/gitsigns.nvim",
+    event = { "BufReadPre", "BufNewFile" },
     opts = {
-      icons = {
-        buffer_index = true,
+      signs = {
+        add          = { text = "+" },
+        change       = { text = "~" },
+        delete       = { text = "_" },
+        topdelete    = { text = "‾" },
+        changedelete = { text = "~" },
       },
     },
-    enabled = false,
   },
 
   {
@@ -196,52 +151,9 @@ return {
     },
   },
 
-  -- fzf本体(CLI)
-  {
-    "junegunn/fzf",
-    build = ":call fzf#install()",
-    enabled = false,
-  },
-
-  -- vim用のfzfプラグイン
-  {
-    "junegunn/fzf.vim",
-    init = function()
-      -- fzfのコマンドのプレフィックスを設定(e.g. :Files -> :FzfFiles)
-      vim.g.fzf_command_prefix = "Fzf"
-    end,
-    enabled = false,
-  },
-
-  {
-    "notjedi/nvim-rooter.lua",
-    lazy = false,
-    config = function()
-      require("nvim-rooter").setup {}
-    end,
-    enabled = false,
-  },
-
   ----------------------------------------------------------------------
   -- ターミナル
   ----------------------------------------------------------------------
-  -- ターミナルをトグルする機能を追加
-  {
-    "akinsho/toggleterm.nvim",
-    config = function()
-      require("toggleterm").setup {
-        size = 20,
-        open_mapping = "<C-\\>",
-      }
-    end,
-    enabled = false,
-  },
-
-  {
-    "watanany/tabtoggleterm.nvim",
-    enabled = false,
-  },
-
   -- ターミナル内でneovimを開けるようにする
   {
     "samjwill/nvim-unception",
@@ -253,107 +165,47 @@ return {
   ----------------------------------------------------------------------
   -- 補完プラグイン
   ----------------------------------------------------------------------
-  -- スニペット
-  { "hrsh7th/cmp-vsnip" },
-  { "hrsh7th/vim-vsnip" },
-
+  -- 高速非同期補完エンジン（nvim-cmpの後継）
   {
-    "hrsh7th/nvim-cmp",
-    config = function()
-      local cmp = require("cmp")
+    "saghen/blink.cmp",
+    version = "*",
+    dependencies = {
+      -- 汎用スニペット集（vim-vsnipの代替）
+      "rafamadriz/friendly-snippets",
+    },
+    ---@module "blink.cmp"
+    ---@type blink.cmp.Config
+    opts = {
+      -- キーマップ：Emacsバインド（<C-b>/<C-f>/<C-e>/<C-k>）との衝突を回避
+      keymap = {
+        preset = "none",
+        ["<C-space>"] = { "show", "fallback" },
+        ["<C-q>"]     = { "hide", "fallback" },
+        ["<Tab>"]     = { "select_next", "snippet_forward", "fallback" },
+        ["<S-Tab>"]   = { "select_prev", "snippet_backward", "fallback" },
+        ["<CR>"]      = { "accept", "fallback" },
+        ["<Up>"]      = { "select_prev", "fallback" },
+        ["<Down>"]    = { "select_next", "fallback" },
+      },
 
-      cmp.setup {
-        snippet = {
-          expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body)
-          end,
-        },
-        mapping = cmp.mapping.preset.insert {
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-q>"] = cmp.mapping.abort(),
-          ["<Tab>"] = cmp.mapping.confirm({ select = true }),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }),
-        },
-        sources = cmp.config.sources(
-          {
-            { name = "lazydev" },
-          },
-          {
-            { name = "nvim_lsp" },
-            { name = "path" },
-            { name = "copilot" },
-            { name = "command" },
-            { name = "calc" },
-            { name = "nvim_lua" },
-            { name = "render-markdown" },
-          },
-          {
-            { name = "buffer" },
-          }
-        ),
-        formatting = {
-          format = require("lspkind").cmp_format {
-            mode = "symbol",
-            maxwidth = 50,
-            ellipsis_char = "...",
-            show_labelDetails = true,
+      appearance = {
+        -- nerd fontを使用している場合は "mono"
+        nerd_font_variant = "mono",
+      },
+
+      -- 補完ソース設定
+      sources = {
+        default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+        providers = {
+          -- lazydev（Lua開発補助）を最優先に表示する
+          lazydev = {
+            name         = "LazyDev",
+            module       = "lazydev.integrations.blink",
+            score_offset = 100,
           },
         },
-      }
-    end,
-  },
-
-  {
-    "hrsh7th/cmp-nvim-lsp",
-    dependencies = { "hrsh7th/nvim-cmp" },
-  },
-
-  {
-    "hrsh7th/cmp-buffer",
-    dependencies = { "hrsh7th/nvim-cmp" },
-  },
-
-  {
-    "hrsh7th/cmp-path",
-    dependencies = { "hrsh7th/nvim-cmp" },
-  },
-
-  {
-    "hrsh7th/cmp-cmdline",
-    dependencies = { "hrsh7th/nvim-cmp", "hrsh7th/cmp-buffer" },
-  },
-
-  {
-    "hrsh7th/cmp-nvim-lua",
-    dependencies = { "hrsh7th/nvim-cmp" },
-  },
-
-  {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    config = function()
-      require("copilot").setup {
-        -- suggestion = { enabled = false },
-        -- panel = { enabled = false },
-      }
-    end,
-    enabled = false,
-  },
-
-  {
-    "zbirenbaum/copilot-cmp",
-    dependencies = { "zbirenbaum/copilot.lua" },
-    config = function()
-      require("copilot_cmp").setup()
-    end,
-  },
-
-  -- vscodeのようなピクトグラムをneovimのLSP機能に追加する
-  {
-    "onsails/lspkind.nvim",
+      },
+    },
   },
 
   -- kocmd
@@ -428,49 +280,6 @@ return {
     dev = true,
   },
 
-  -- Claude Code
-  {
-    "coder/claudecode.nvim",
-    dependencies = { "folke/snacks.nvim" },
-    config = true,
-    keys = {
-      { "<Leader>a", nil, desc = "AI/Claude Code" },
-      { "<Leader>ac", "<cmd>ClaudeCode<CR>", desc = "Toggle Claude" },
-      { "<Leader>af", "<cmd>ClaudeCodeFocus<CR>", desc = "Focus Claude" },
-      { "<Leader>ar", "<cmd>ClaudeCode --resume<CR>", desc = "Resume Claude" },
-      { "<Leader>aC", "<cmd>ClaudeCode --continue<CR>", desc = "Continue Claude" },
-      { "<Leader>ab", "<cmd>ClaudeCodeAdd %<CR>", desc = "Add current buffer" },
-      { "<Leader>as", "<cmd>ClaudeCodeSend<CR>", mode = "v", desc = "Send to Claude" },
-      {
-        "<Leader>as",
-        "<cmd>ClaudeCodeTreeAdd<CR>",
-        desc = "Add file",
-        ft = { "NvimTree", "neo-tree", "oil" },
-      },
-      -- Diff management
-      { "<Leader>aa", "<cmd>ClaudeCodeDiffAccept<CR>", desc = "Accept diff" },
-      { "<Leader>ad", "<cmd>ClaudeCodeDiffDeny<CR>", desc = "Deny diff" },
-    },
-    opts = {
-      terminal = {
-        -- snacks_win_opts = {
-        --   position = "float",
-        --   width = 0.60,
-        --   height = 0.60,
-        --   border = "double",
-        --   backdrop = 80,
-        -- },
-        snacks_win_opts = {
-          position = "left",
-          width = 0.25,
-          height = 0.25,
-          border = "single",
-        },
-      },
-    },
-    enabled = false,
-  },
-
   -- jsonls/yamllsで使用するスキーマ用のプラグイン
   {
     "b0o/schemastore.nvim",
@@ -519,11 +328,6 @@ return {
 
   { "hylang/vim-hy" },
 
-  {
-    "chrismaher/vim-lookml",
-    enabled = false,
-  },
-
   { "posva/vim-vue" },
 
   -- 色コードを彩色する
@@ -571,17 +375,6 @@ return {
     end,
   },
 
-  -- ブラウザでmarkdownをプレビューする(:MarkdownPreview & :MarkdownPreviewStop)
-  {
-    "iamcco/markdown-preview.nvim",
-    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-    ft = { "markdown" },
-    build = function() vim.fn["mkdp#util#install"]() end,
-
-    -- FIXME: <https://github.com/iamcco/markdown-preview.nvim/issues/690>
-    enabled = false,
-  },
-
   -- markdown用のマッピングを追加する
   {
     "SidOfc/mkdx",
@@ -612,67 +405,9 @@ return {
   -- markdownのテーブル作成とフォーマット(:TableModeToggleで有効化する)
   { "dhruvasagar/vim-table-mode" },
 
-  -- org
-  {
-    "nvim-orgmode/orgmode",
-    event = "VeryLazy",
-    ft = { "org" },
-    config = function()
-      -- Setup orgmode
-      require("orgmode").setup({
-        org_agenda_files = "~/sanctum/org/**/*",
-        org_default_notes_file = "~/sanctum/org/refile.org",
-      })
-
-      -- NOTE: If you are using nvim-treesitter with ~ensure_installed = "all"~ option
-      -- add ~org~ to ignore_install
-      -- require("nvim-treesitter.configs").setup({
-      --   ensure_installed = "all",
-      --   ignore_install = { "org" },
-      -- })
-    end,
-    enabled = false,
-  },
-
-  -- luarocks
-  {
-    "vhyrro/luarocks.nvim",
-    priority = 1000,
-    config = true,
-    enabled = false,
-  },
-
   ----------------------------------------------------------------------
   -- その他
   ----------------------------------------------------------------------
-  -- 対応する文字を閉じる
-  {
-    "m4xshen/autoclose.nvim",
-    config = function()
-      local autoclose = require("autoclose")
-      autoclose.setup {
-        keys = {
-          -- ['"'] = { escape = true, close = false, pair = '""' },
-          -- ["'"] = { escape = true, close = false, pair = "''" },
-          -- ["`"] = { escape = true, close = false, pair = "``" },
-        },
-        options = {
-          disable_when_touch = true,
-          touch_regex = "[%w(%[{ぁ-んァ-ヶー一-龯]"
-        },
-      }
-    end,
-    enabled = false,
-  },
-
-  {
-    "altermo/ultimate-autopair.nvim",
-    event = { "InsertEnter", "CmdlineEnter" },
-    branch = "v0.6",
-    opts = {},
-    enabled = false,
-  },
-
   -- endを自動で補完する
   {
     "RRethy/nvim-treesitter-endwise",
@@ -692,18 +427,6 @@ return {
     config = function()
       require("nvim-surround").setup {}
     end,
-  },
-
-  -- 通知表示機能（Snacks.notifier に移行済み）
-  {
-    "rcarriga/nvim-notify",
-    enabled = false,
-  },
-
-  -- messages, cmdline, popupmenuのUIを改善（Snacks.notifier と競合するため無効化）
-  {
-    "folke/noice.nvim",
-    enabled = false,
   },
 
   -- :messagesをバッファとして表示(Bmessages)
@@ -795,33 +518,8 @@ return {
     },
   },
 
-  -- 外部ツールのインストール
-  {
-    "williamboman/mason.nvim",
-    config = function()
-      require("mason").setup {}
-    end,
-    enabled = false,
-  },
-
   -- windowを消さないbdコマンド(:Bdeleteと:Bwipeoutを追加)
   { "famiu/bufdelete.nvim" },
-
-  --
-  {
-    "nvimtools/none-ls.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      local null_ls = require("null-ls")
-      null_ls.setup {
-        sources = {
-          -- null_ls.builtins.formatting.stylua,
-          -- null_ls.builtins.completion.spell,
-        },
-      }
-    end,
-    enabled = true,
-  },
 
   -- Lua
   {
@@ -829,43 +527,16 @@ return {
     ft = "lua", -- only load on lua files
     opts = {
       library = {
-        -- See the configuration section for more details
-        -- Load luvit types when the `vim.uv` word is found
+        -- vim.uv が登場する箇所に luv の型定義を補完する
         { path = "${3rd}/luv/library", words = { "vim%.uv" } },
       },
     },
   },
 
-  -- nvim-cmpと競合しそう
-  -- { -- optional blink completion source for require statements and module annotations
-  --   "saghen/blink.cmp",
-  --   opts = {
-  --     sources = {
-  --       -- add lazydev to your completion providers
-  --       default = { "lazydev", "lsp", "path", "snippets", "buffer" },
-  --       providers = {
-  --         lazydev = {
-  --           name = "LazyDev",
-  --           module = "lazydev.integrations.blink",
-  --           -- make lazydev completions top priority (see `:h blink.cmp`)
-  --           score_offset = 100,
-  --         },
-  --       },
-  --     },
-  --   },
-  -- },
-
-  -- git-blame
+  -- git-blame（デフォルト無効、<Leader>tb でトグル）
   {
     "f-person/git-blame.nvim",
-
-    -- load the plugin at startup
-    -- Because of the keys part, you will be lazy loading this plugin.
-    -- The plugin will only load once one of the keys is used.
-    -- If you want to load the plugin at startup, add something like event = "VeryLazy",
-    -- or lazy = false. One of both options will work.
     event = "VeryLazy",
-
     opts = {
       enabled = false,
       message_template = " <summary> • <date> • <author> • <<sha>>",
@@ -874,25 +545,10 @@ return {
     },
   },
 
-  {
-    "FabijanZulj/blame.nvim",
-    lazy = false,
-    config = function()
-      require("blame").setup {}
-    end,
-    opts = {},
-    enabled = false,
-  },
-
   -- Lua Lisp
   {
     "Olical/nfnl",
     ft = "fennel",
-  },
-
-  {
-    "renerocksai/telekasten.nvim",
-    enabled = false,
   },
 
   {
