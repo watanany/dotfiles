@@ -1,24 +1,17 @@
 local utils = require("utils")
 
 return {
-  -- Configurations for Nvim LSP
+  ----------------------------------------------------------------------
+  -- 基盤
+  -- LSP・構文解析・Lua開発補助など、他プラグインが依存する基礎的なもの
+  ----------------------------------------------------------------------
+  -- LSP設定の基盤（各言語サーバーの設定はconfig/lsps.luaで行う）
   { "neovim/nvim-lspconfig" },
 
-  -- カラースキーム
-  {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme "catppuccin-mocha"
-    end,
-    enabled = true,
-  },
-
-  -- Neovim用のLuaの関数集
+  -- Lua関数集（多くのプラグインが依存）
   { "nvim-lua/plenary.nvim" },
 
-  -- treesitter
+  -- 構文解析エンジン（シンタックスハイライト・テキストオブジェクトの基盤）
   {
     "nvim-treesitter/nvim-treesitter",
     lazy = false,
@@ -40,28 +33,37 @@ return {
     end,
   },
 
-  -- カーソル移動加速プラグイン
-  { "rainbowhxch/accelerated-jk.nvim" },
-
-  -- f + 一文字で検索
-  { "rhysd/clever-f.vim", enabled = true },
-
-  ----------------------------------------------------------------------
-  -- セッション管理
-  ----------------------------------------------------------------------
+  -- Neovim Lua開発補助（型定義・補完）
   {
-    "Shatur/neovim-session-manager",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    lazy = false,
+    "folke/lazydev.nvim",
+    ft = "lua",
+    opts = {
+      library = {
+        -- vim.uv が登場する箇所に luv の型定義を補完する
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+    },
+  },
+
+  -- JSONSchema・YAMLスキーマ定義（jsonls/yamllsで使用）
+  { "b0o/schemastore.nvim" },
+
+  ----------------------------------------------------------------------
+  -- 外観・UI
+  -- カラースキーム・タブライン・ステータスライン・インデントガイドなど
+  ----------------------------------------------------------------------
+  -- カラースキーム
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
     config = function()
-      require("session_manager").setup {}
+      vim.cmd.colorscheme "catppuccin-mocha"
     end,
     enabled = true,
   },
 
-  ----------------------------------------------------------------------
-  -- タブ制御
-  ----------------------------------------------------------------------
+  -- タブラインをタブモードで表示（プロジェクト名短縮・◆マーク表示）
   {
     "akinsho/bufferline.nvim",
     version = "*",
@@ -73,6 +75,8 @@ return {
         mode = "tabs",
         numbers = "ordinal",
 
+        -- タブ名を整形する：プロジェクト名の末尾セグメントのみ表示し、
+        -- Claude応答完了時は◆マークを付与する
         name_formatter = function(buf)
           local label
           if vim.uv.fs_stat(buf.path) then
@@ -104,21 +108,7 @@ return {
     enabled = true,
   },
 
-  -- 行ごとのgit差分マーク表示（キーマップなし、操作はlazygitで行う）
-  {
-    "lewis6991/gitsigns.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    opts = {
-      signs = {
-        add          = { text = "+" },
-        change       = { text = "~" },
-        delete       = { text = "_" },
-        topdelete    = { text = "‾" },
-        changedelete = { text = "~" },
-      },
-    },
-  },
-
+  -- ステータスライン
   {
     "nvim-lualine/lualine.nvim",
     dependencies = {
@@ -137,6 +127,164 @@ return {
     enabled = true,
   },
 
+  -- インデントガイドラインの追加
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+
+    ---@module "ibl"
+    ---@type ibl.config
+    opts = {
+      scope = { enabled = false },
+    },
+  },
+
+  -- 色コードを彩色する
+  {
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require("colorizer").setup {
+        "*",
+      }
+    end,
+  },
+
+  ----------------------------------------------------------------------
+  -- Git
+  ----------------------------------------------------------------------
+  -- 行ごとのgit差分マーク表示（キーマップなし、操作はlazygitで行う）
+  {
+    "lewis6991/gitsigns.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    opts = {
+      signs = {
+        add          = { text = "+" },
+        change       = { text = "~" },
+        delete       = { text = "_" },
+        topdelete    = { text = "‾" },
+        changedelete = { text = "~" },
+      },
+    },
+  },
+
+  -- git-blame（デフォルト無効、<Leader>tb でトグル）
+  {
+    "f-person/git-blame.nvim",
+    event = "VeryLazy",
+    opts = {
+      enabled = false,
+      message_template = " <summary> • <date> • <author> • <<sha>>",
+      date_format = "%Y-%m-%d %H:%M:%S",
+      virtual_text_column = 1,
+    },
+  },
+
+  ----------------------------------------------------------------------
+  -- 移動・検索
+  ----------------------------------------------------------------------
+  -- カーソル移動加速プラグイン
+  { "rainbowhxch/accelerated-jk.nvim" },
+
+  -- f + 一文字で検索（clever-fはファイル内の文字に直接ジャンプできる）
+  { "rhysd/clever-f.vim", enabled = true },
+
+  -- ファジーファインダー・通知・プロジェクト管理
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    ---@type snacks.Config
+    opts = {
+      -- ファイル・バッファ・プロジェクト検索のpicker
+      picker = {
+        enabled = true,
+        sources = {
+          projects = {
+            dirs = {
+              "~/dotfiles",
+              "~/sanctum/org",
+              "~/sanctum/projects",
+              "~/sanctum/goals",
+            },
+          },
+        },
+        win = {
+          input = {
+            keys = {
+              ["<Esc>"] = { "close", mode = { "i" } },
+              ["<C-;>"] = { "close", mode = { "i", "n" } },
+              ["<C-q>"] = { "close", mode = { "i", "n" } },
+            },
+          },
+        },
+      },
+      -- 通知表示（nvim-notifyの代替）
+      notifier = { enabled = true },
+      -- セッション管理は無効（プロジェクト切り替え時のセッション復元を抑制）
+      session = { enabled = false },
+    },
+    keys = {
+      -- ファイル検索
+      { "<Leader>ff", function() Snacks.picker.files({ hidden = true }) end,
+        desc = "ファイル名で検索する" },
+      { "<Leader>pf", function()
+          Snacks.picker.files({
+            hidden = true,
+            cwd = vim.fs.root(vim.api.nvim_buf_get_name(0), { ".git" }),
+          })
+        end, desc = "プロジェクトのファイルを検索する" },
+      { "<Leader>fp", function()
+          Snacks.picker.files({ cwd = "~/dotfiles", hidden = true })
+        end, desc = "dotfilesを検索する" },
+      { "<Leader>fd", function()
+          Snacks.picker.files({ cwd = vim.fn.expand("%:h"), hidden = true })
+        end, desc = "ファイル名で検索する(cwd=%:h)" },
+
+      -- grep
+      { "<Leader>fs", function() Snacks.picker.grep({ hidden = true }) end,
+        desc = "ファイル内の文字列を検索する" },
+      { "<Leader>sp", function()
+          Snacks.picker.grep({
+            hidden = true,
+            cwd = vim.fs.root(vim.api.nvim_buf_get_name(0), { ".git" }),
+          })
+        end, desc = "プロジェクト内の文字列を検索する" },
+      { "<Leader>sd", function()
+          Snacks.picker.grep({ cwd = vim.fn.expand("%:h"), hidden = true })
+        end, desc = "ファイル内の文字列を検索する(cwd=%:h)" },
+
+      -- バッファ
+      { "<Leader>fb", function() Snacks.picker.buffers() end, desc = "バッファ一覧を表示する" },
+      { "<Leader>bB", function() Snacks.picker.buffers() end, desc = "バッファ一覧を表示する" },
+      { "<Leader>bl", function() Snacks.picker.buffers() end, desc = "バッファ一覧を表示する" },
+
+      -- その他
+      { "<Leader>fh", function() Snacks.picker.help() end, desc = "ヘルプを表示する" },
+      { "<Leader>fr", function() Snacks.picker.recent() end,
+        desc = "最近開いたファイルで検索する" },
+      { "<Leader>fR", function() Snacks.picker.recent({ cwd = vim.fn.getcwd() }) end,
+        desc = "最近開いたファイルで検索する(workspace=CWD)" },
+      { "<Leader>pp", function() Snacks.picker.projects() end, desc = "プロジェクトを開く" },
+      { "<Leader>n",  function() Snacks.picker.notifications() end, desc = "通知履歴" },
+      { "<Leader>gf", function() Snacks.picker.git_files({ hidden = true }) end,
+        desc = "Gitファイルを検索する" },
+    },
+  },
+
+  ----------------------------------------------------------------------
+  -- セッション管理
+  ----------------------------------------------------------------------
+  -- Neovim起動時に前回のタブ・バッファ構成を自動復元する
+  {
+    "Shatur/neovim-session-manager",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    lazy = false,
+    config = function()
+      require("session_manager").setup {}
+    end,
+    enabled = true,
+  },
+
   ----------------------------------------------------------------------
   -- ファイラー
   ----------------------------------------------------------------------
@@ -152,9 +300,10 @@ return {
   },
 
   ----------------------------------------------------------------------
-  -- ターミナル
+  -- ターミナル・外部ツール
   ----------------------------------------------------------------------
-  -- ターミナル内でneovimを開けるようにする
+  -- ターミナル内でneovimを開いたとき、新しいインスタンスを起動せず
+  -- 親のneovimでファイルを開けるようにする
   {
     "samjwill/nvim-unception",
     init = function()
@@ -162,53 +311,7 @@ return {
     end,
   },
 
-  ----------------------------------------------------------------------
-  -- 補完プラグイン
-  ----------------------------------------------------------------------
-  -- 高速非同期補完エンジン（nvim-cmpの後継）
-  {
-    "saghen/blink.cmp",
-    version = "*",
-    dependencies = {
-      -- 汎用スニペット集（vim-vsnipの代替）
-      "rafamadriz/friendly-snippets",
-    },
-    ---@module "blink.cmp"
-    ---@type blink.cmp.Config
-    opts = {
-      -- キーマップ：Emacsバインド（<C-b>/<C-f>/<C-e>/<C-k>）との衝突を回避
-      keymap = {
-        preset = "none",
-        ["<C-space>"] = { "show", "fallback" },
-        ["<C-q>"]     = { "hide", "fallback" },
-        ["<Tab>"]     = { "select_next", "snippet_forward", "fallback" },
-        ["<S-Tab>"]   = { "select_prev", "snippet_backward", "fallback" },
-        ["<CR>"]      = { "accept", "fallback" },
-        ["<Up>"]      = { "select_prev", "fallback" },
-        ["<Down>"]    = { "select_next", "fallback" },
-      },
-
-      appearance = {
-        -- nerd fontを使用している場合は "mono"
-        nerd_font_variant = "mono",
-      },
-
-      -- 補完ソース設定
-      sources = {
-        default = { "lazydev", "lsp", "path", "snippets", "buffer" },
-        providers = {
-          -- lazydev（Lua開発補助）を最優先に表示する
-          lazydev = {
-            name         = "LazyDev",
-            module       = "lazydev.integrations.blink",
-            score_offset = 100,
-          },
-        },
-      },
-    },
-  },
-
-  -- kocmd
+  -- lazygit・lazydocker・claude等をトグルで開く（自作プラグイン）
   {
     "watanany/kocmd.nvim",
     keys = {
@@ -280,70 +383,79 @@ return {
     dev = true,
   },
 
-  -- jsonls/yamllsで使用するスキーマ用のプラグイン
-  {
-    "b0o/schemastore.nvim",
-  },
-
   ----------------------------------------------------------------------
-  -- syntax highlight
+  -- 補完
   ----------------------------------------------------------------------
-  -- TODOコメントのハイライト
+  -- 高速非同期補完エンジン（nvim-cmpの後継）
   {
-    "folke/todo-comments.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    "saghen/blink.cmp",
+    version = "*",
+    dependencies = {
+      -- 汎用スニペット集（vim-vsnipの代替）
+      "rafamadriz/friendly-snippets",
+    },
+    ---@module "blink.cmp"
+    ---@type blink.cmp.Config
     opts = {
-      highlight = {
-        keyword = "fg",
-        after = "",
-        pattern = "(KEYWORDS):",
+      -- キーマップ：Emacsバインド（<C-b>/<C-f>/<C-e>/<C-k>）との衝突を回避
+      keymap = {
+        preset = "none",
+        ["<C-space>"] = { "show", "fallback" },
+        ["<C-q>"]     = { "hide", "fallback" },
+        ["<Tab>"]     = { "select_next", "snippet_forward", "fallback" },
+        ["<S-Tab>"]   = { "select_prev", "snippet_backward", "fallback" },
+        ["<CR>"]      = { "accept", "fallback" },
+        ["<Up>"]      = { "select_prev", "fallback" },
+        ["<Down>"]    = { "select_next", "fallback" },
+      },
+
+      appearance = {
+        -- nerd fontを使用している場合は "mono"
+        nerd_font_variant = "mono",
+      },
+
+      -- 補完ソース設定
+      sources = {
+        default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+        providers = {
+          -- lazydev（Lua開発補助）を最優先に表示する
+          lazydev = {
+            name         = "LazyDev",
+            module       = "lazydev.integrations.blink",
+            score_offset = 100,
+          },
+        },
       },
     },
   },
 
-  -- インデントガイドラインの追加
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    main = "ibl",
-
-    ---@module "ibl"
-    ---@type ibl.config
-    opts = {
-      scope = { enabled = false },
-    },
-  },
-
-  -- CSVを見やすく色付け
-  { "mechatroner/rainbow_csv" },
-
+  ----------------------------------------------------------------------
+  -- 言語サポート
+  -- 各言語のシンタックス・LSP統合・フォーマッタなど
+  ----------------------------------------------------------------------
+  -- Haskell（LSP統合・GHCi連携）
   {
     "mrcjkb/haskell-tools.nvim",
     version = "^4",
     lazy = false,
   },
 
+  -- Haskell cabalフォーマッタ
   { "sdiehl/vim-cabalfmt" },
 
+  -- PureScript
   { "purescript-contrib/purescript-vim" },
 
+  -- Hy（Python上で動くLisp方言）
   { "hylang/vim-hy" },
 
+  -- Vue.js
   { "posva/vim-vue" },
-
-  -- 色コードを彩色する
-  {
-    "norcalli/nvim-colorizer.lua",
-    config = function()
-      require("colorizer").setup {
-        "*",
-      }
-    end,
-  },
 
   -- F#
   { "adelarsq/neofsharp.vim" },
 
-  -- Lean 4
+  -- Lean 4（定理証明支援言語）
   {
     "Julian/lean.nvim",
     event = { "BufReadPre *.lean", "BufNewFile *.lean" },
@@ -353,21 +465,30 @@ return {
     },
 
     ---@type lean.Config
-    opts = { -- see below for full configuration options
+    opts = {
       mappings = true,
     }
   },
 
-  -- flix
+  -- Flix
   {
     "flix/nvim",
     opts = {},
   },
 
+  -- Fennel（Lua上で動くLisp方言）
+  {
+    "Olical/nfnl",
+    ft = "fennel",
+  },
+
+  -- CSVを見やすく色付け
+  { "mechatroner/rainbow_csv" },
+
   ----------------------------------------------------------------------
-  -- markdown
+  -- ドキュメント・Markdown
   ----------------------------------------------------------------------
-  -- nvim内でmarkdownをプレビューする(:Glow)
+  -- Markdownをneovim内でプレビュー（:Glow）
   {
     "ellisonleao/glow.nvim",
     config = function()
@@ -375,7 +496,7 @@ return {
     end,
   },
 
-  -- markdown用のマッピングを追加する
+  -- Markdownのキーマップ追加（テーブル操作・見出し操作など）
   {
     "SidOfc/mkdx",
     init = function()
@@ -391,6 +512,7 @@ return {
     end,
   },
 
+  -- Markdownをneovim上でリアルタイムレンダリング
   {
     "MeanderingProgrammer/render-markdown.nvim",
     dependencies = {
@@ -402,25 +524,36 @@ return {
     opts = {},
   },
 
-  -- markdownのテーブル作成とフォーマット(:TableModeToggleで有効化する)
+  -- Markdownのテーブル作成とフォーマット（:TableModeToggleで有効化）
   { "dhruvasagar/vim-table-mode" },
 
+  -- 画像をneovim内で表示
+  {
+    "3rd/image.nvim",
+    build = false, -- so that it doesn't build the rock https://github.com/3rd/image.nvim/issues/91#issuecomment-2453430239
+    opts = {
+      processor = "magick_cli",
+    },
+    enabled = true,
+  },
+
   ----------------------------------------------------------------------
-  -- その他
+  -- エディタ拡張
+  -- テキスト編集・UI補助・ユーティリティ
   ----------------------------------------------------------------------
-  -- endを自動で補完する
+  -- endを自動で補完する（RubyやLuaのブロック末尾）
   {
     "RRethy/nvim-treesitter-endwise",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
   },
 
-  -- treesitterでtextobjectを設定できるようにする
+  -- treesitterでtextobjectを設定できるようにする（関数・クラス単位で選択など）
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
   },
 
-  -- surroundを追加
+  -- surroundを追加（cs"'でクォートを変換、ds"でsurroundを削除など）
   {
     "kylechui/nvim-surround",
     version = "*", -- for stability; omit to use `main` branch for the latest features
@@ -429,134 +562,33 @@ return {
     end,
   },
 
-  -- :messagesをバッファとして表示(Bmessages)
+  -- TODOコメントのハイライト（TODO: FIXME: NOTE: など）
   {
-    "ariel-frischer/bmessages.nvim",
-    event = "CmdlineEnter",
-    opts = {}
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {
+      highlight = {
+        keyword = "fg",
+        after = "",
+        pattern = "(KEYWORDS):",
+      },
+    },
   },
 
-  -- 利用可能なキーマップを表示
+  -- 利用可能なキーマップをポップアップで表示
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {},
   },
 
+  -- :messagesをバッファとして表示（:Bmessages）
   {
-    "folke/snacks.nvim",
-    priority = 1000,
-    lazy = false,
-    ---@type snacks.Config
-    opts = {
-      picker = {
-        enabled = true,
-        sources = {
-          projects = {
-            dirs = {
-              "~/dotfiles",
-              "~/sanctum/org",
-              "~/sanctum/projects",
-              "~/sanctum/goals",
-            },
-          },
-        },
-        win = {
-          input = {
-            keys = {
-              ["<Esc>"] = { "close", mode = { "i" } },
-              ["<C-;>"] = { "close", mode = { "i", "n" } },
-              ["<C-q>"] = { "close", mode = { "i", "n" } },
-            },
-          },
-        },
-      },
-      notifier = { enabled = true },
-      session = { enabled = false },
-    },
-    keys = {
-      { "<Leader>ff", function() Snacks.picker.files({ hidden = true }) end,
-        desc = "ファイル名で検索する" },
-      { "<Leader>pf", function()
-          Snacks.picker.files({
-            hidden = true,
-            cwd = vim.fs.root(vim.api.nvim_buf_get_name(0), { ".git" }),
-          })
-        end, desc = "プロジェクトのファイルを検索する" },
-      { "<Leader>fp", function()
-          Snacks.picker.files({ cwd = "~/dotfiles", hidden = true })
-        end, desc = "dotfilesを検索する" },
-      { "<Leader>fd", function()
-          Snacks.picker.files({ cwd = vim.fn.expand("%:h"), hidden = true })
-        end, desc = "ファイル名で検索する(cwd=%:h)" },
-
-      { "<Leader>fs", function() Snacks.picker.grep({ hidden = true }) end,
-        desc = "ファイル内の文字列を検索する" },
-      { "<Leader>sp", function()
-          Snacks.picker.grep({
-            hidden = true,
-            cwd = vim.fs.root(vim.api.nvim_buf_get_name(0), { ".git" }),
-          })
-        end, desc = "プロジェクト内の文字列を検索する" },
-      { "<Leader>sd", function()
-          Snacks.picker.grep({ cwd = vim.fn.expand("%:h"), hidden = true })
-        end, desc = "ファイル内の文字列を検索する(cwd=%:h)" },
-
-      { "<Leader>fb", function() Snacks.picker.buffers() end, desc = "バッファ一覧を表示する" },
-      { "<Leader>bB", function() Snacks.picker.buffers() end, desc = "バッファ一覧を表示する" },
-      { "<Leader>bl", function() Snacks.picker.buffers() end, desc = "バッファ一覧を表示する" },
-
-      { "<Leader>fh", function() Snacks.picker.help() end, desc = "ヘルプを表示する" },
-      { "<Leader>fr", function() Snacks.picker.recent() end,
-        desc = "最近開いたファイルで検索する" },
-      { "<Leader>fR", function() Snacks.picker.recent({ cwd = vim.fn.getcwd() }) end,
-        desc = "最近開いたファイルで検索する(workspace=CWD)" },
-      { "<Leader>pp", function() Snacks.picker.projects() end, desc = "プロジェクトを開く" },
-      { "<Leader>n",  function() Snacks.picker.notifications() end, desc = "通知履歴" },
-      { "<Leader>gf", function() Snacks.picker.git_files({ hidden = true }) end,
-        desc = "Gitファイルを検索する" },
-    },
+    "ariel-frischer/bmessages.nvim",
+    event = "CmdlineEnter",
+    opts = {}
   },
 
-  -- windowを消さないbdコマンド(:Bdeleteと:Bwipeoutを追加)
+  -- windowを消さないbdコマンド（:Bdeleteと:Bwipeoutを追加）
   { "famiu/bufdelete.nvim" },
-
-  -- Lua
-  {
-    "folke/lazydev.nvim",
-    ft = "lua", -- only load on lua files
-    opts = {
-      library = {
-        -- vim.uv が登場する箇所に luv の型定義を補完する
-        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-      },
-    },
-  },
-
-  -- git-blame（デフォルト無効、<Leader>tb でトグル）
-  {
-    "f-person/git-blame.nvim",
-    event = "VeryLazy",
-    opts = {
-      enabled = false,
-      message_template = " <summary> • <date> • <author> • <<sha>>",
-      date_format = "%Y-%m-%d %H:%M:%S",
-      virtual_text_column = 1,
-    },
-  },
-
-  -- Lua Lisp
-  {
-    "Olical/nfnl",
-    ft = "fennel",
-  },
-
-  {
-    "3rd/image.nvim",
-    build = false, -- so that it doesn't build the rock https://github.com/3rd/image.nvim/issues/91#issuecomment-2453430239
-    opts = {
-        processor = "magick_cli",
-    },
-    enabled = true,
-  },
 }
