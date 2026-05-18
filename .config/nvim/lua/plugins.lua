@@ -198,6 +198,8 @@ return {
       -- ファイル・バッファ・プロジェクト検索のpicker
       picker = {
         enabled = true,
+        -- 入力欄を下部に配置（Telescope風レイアウト）
+        layout = { preset = "telescope" },
         sources = {
           projects = {
             dirs = {
@@ -214,6 +216,10 @@ return {
               ["<Esc>"] = { "close", mode = { "i" } },
               ["<C-;>"] = { "close", mode = { "i", "n" } },
               ["<C-q>"] = { "close", mode = { "i", "n" } },
+              -- Emacsバインドを解放（insert modeのみ。normal modeは元のpicker動作を維持）
+              ["<C-a>"] = { "fallback", mode = { "i" } },
+              ["<C-b>"] = { "fallback", mode = { "i" } },
+              ["<C-f>"] = { "fallback", mode = { "i" } },
             },
           },
         },
