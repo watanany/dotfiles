@@ -223,10 +223,12 @@ return {
               ["<C-;>"] = { "close", mode = { "i", "n" } },
               ["<C-q>"] = { "close", mode = { "i", "n" } },
               -- insert modeのEmacsバインドを解放（normal modeは元のpicker動作を維持）
-              -- "fallback"はアクション名として無効なため、normal modeのみに限定して上書きする
-              ["<C-a>"] = { "select_all", mode = { "n" } },
+              -- Snacksのデフォルトがi/n両方に設定されているキーをnormal modeのみに限定する
+              ["<C-a>"] = { "select_all",        mode = { "n" } },
               ["<C-b>"] = { "preview_scroll_up", mode = { "n" } },
+              ["<C-d>"] = { "list_scroll_down",  mode = { "n" } },
               ["<C-f>"] = { "preview_scroll_down", mode = { "n" } },
+              ["<C-k>"] = { "list_up",           mode = { "n" } },
             },
           },
         },
