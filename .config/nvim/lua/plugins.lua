@@ -202,12 +202,10 @@ return {
         layout = { preset = "telescope" },
         sources = {
           projects = {
-            dirs = {
-              "~/dotfiles",
-              "~/sanctum/org",
-              "~/sanctum/projects",
-              "~/sanctum/goals",
-            },
+            -- サブディレクトリをスキャンしてプロジェクトを検出（新規作成分も即反映）
+            dev = { "~/sanctum/projects", "~/sanctum/goals" },
+            -- これら自体がプロジェクト（.git を持つので直接指定）
+            projects = { "~/dotfiles", "~/sanctum/org" },
             -- デフォルトの load_session を上書き：CWD変更のみ行いファイル一覧を開く
             confirm = function(picker, item)
               picker:close()
@@ -224,10 +222,11 @@ return {
               ["<Esc>"] = { "close", mode = { "i" } },
               ["<C-;>"] = { "close", mode = { "i", "n" } },
               ["<C-q>"] = { "close", mode = { "i", "n" } },
-              -- Emacsバインドを解放（insert modeのみ。normal modeは元のpicker動作を維持）
-              ["<C-a>"] = { "fallback", mode = { "i" } },
-              ["<C-b>"] = { "fallback", mode = { "i" } },
-              ["<C-f>"] = { "fallback", mode = { "i" } },
+              -- insert modeのEmacsバインドを解放（normal modeは元のpicker動作を維持）
+              -- "fallback"はアクション名として無効なため、normal modeのみに限定して上書きする
+              ["<C-a>"] = { "select_all", mode = { "n" } },
+              ["<C-b>"] = { "preview_scroll_up", mode = { "n" } },
+              ["<C-f>"] = { "preview_scroll_down", mode = { "n" } },
             },
           },
         },
