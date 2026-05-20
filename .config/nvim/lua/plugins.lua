@@ -205,7 +205,12 @@ return {
             -- サブディレクトリをスキャンしてプロジェクトを検出（新規作成分も即反映）
             dev = { "~/sanctum/projects", "~/sanctum/goals" },
             -- これら自体がプロジェクト（.git を持つので直接指定）
-            projects = { "~/dotfiles", "~/sanctum/org" },
+            -- vim.fn.expand で絶対パスに展開：vim.v.oldfiles 経由の登録と重複しないようにする
+            projects = {
+              vim.fn.expand("~/dotfiles"),
+              vim.fn.expand("~/sanctum/org"),
+              vim.fn.expand("~/sanctum/knowledge"),
+            },
             -- デフォルトの load_session を上書き：CWD変更のみ行いファイル一覧を開く
             confirm = function(picker, item)
               picker:close()

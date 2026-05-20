@@ -44,7 +44,7 @@
           },
           {
             "type": "command",
-            "command": "DOW=$(date +%u); WSTAMP=\"/tmp/claude_rc_week$(date +%Y%W)\"; if [ \"$DOW\" = \"1\" ] && [ ! -f \"$WSTAMP\" ]; then touch \"$WSTAMP\"; echo \"[weekly] 今週の review-candidates.md を生成してください: /review-candidates を実行\"; fi; true"
+            "command": "DOW=$(date +%u); WSTAMP=\"/tmp/claude_rc_week$(date +%Y%W)\"; if [ \"$DOW\" = \"1\" ] && [ ! -f \"$WSTAMP\" ]; then touch \"$WSTAMP\"; echo \"[weekly] 今週の review-candidates.md を生成してください: /my-review-candidates を実行\"; fi; true"
           }
         ]
       }
@@ -54,5 +54,6 @@
     "pyright-lsp@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true
   },
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "model": "opus[1m]"
 }
