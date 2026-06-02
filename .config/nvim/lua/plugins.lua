@@ -75,28 +75,30 @@ return {
         mode = "tabs",
         numbers = "ordinal",
 
-        -- タブ名を整形する：プロジェクト名の末尾セグメントのみ表示し、
-        -- Claude応答完了時は◆マークを付与する
+        -- タブ名を整形する：タブのcwdからプロジェクト名を引き、末尾セグメントのみ表示する。
+        -- フォーカス中のバッファに依存しないので、terminal buffer(fish/claude等)に
+        -- フォーカスを移してもラベルが変わらない。Claude応答完了時は◆マークを付与する。
         name_formatter = function(buf)
-          local label
-          if vim.uv.fs_stat(buf.path) then
-            local path = vim.api.nvim_buf_get_name(buf.bufnr)
-            local root = vim.fs.root(path, { ".git" })
-            local name = root and vim.fs.basename(root) or vim.fs.basename(path)
-            local parts = vim.split(name, "-")
-            label = parts[#parts]
-          else
-            label = buf.name
-          end
-          local tabpages = vim.api.nvim_list_tabpages()
-          for i, tp in ipairs(tabpages) do
+          -- このバッファが属するタブ番号を特定する(1番最初)
+          local tabnr
+          for i, tp in ipairs(vim.api.nvim_list_tabpages()) do
             local win = vim.api.nvim_tabpage_get_win(tp)
             if vim.api.nvim_win_get_buf(win) == buf.bufnr then
-              if vim.fn.gettabvar(i, "claude_pending") == 1 then
-                label = "◆ " .. label
-              end
+              tabnr = i
               break
             end
+          end
+
+          -- タブのcwd(tab-local cwdが無ければglobal cwd)からプロジェクト名を取る
+          local cwd = tabnr and vim.fn.getcwd(-1, tabnr) or vim.fn.getcwd()
+          local root = vim.fs.root(cwd, { ".git" }) or cwd
+          local name = vim.fs.basename(root)
+          local parts = vim.split(name, "-")
+          local label = parts[#parts]
+
+          -- Claude応答完了マーク
+          if tabnr and vim.fn.gettabvar(tabnr, "claude_pending") == 1 then
+            label = "◆ " .. label
           end
           return label
         end,
@@ -200,6 +202,9 @@ return {
         enabled = true,
         -- 入力欄を下部に配置（Telescope風レイアウト）
         layout = { preset = "telescope" },
+        -- ファイルを開く対象を「picker起動時のカレントウィンドウ」に固定する
+        -- （デフォルトはlastused順で隣のwindowに開きうる）
+        main = { current = true },
         sources = {
           projects = {
             -- サブディレクトリをスキャンしてプロジェクトを検出（新規作成分も即反映）
@@ -216,7 +221,7 @@ return {
               picker:close()
               if item then
                 vim.fn.chdir(item.file)
-                Snacks.picker.files({ cwd = item.file })
+                Snacks.picker.files({ cwd = item.file, hidden = true })
               end
             end,
           },
@@ -240,8 +245,6 @@ return {
       },
       -- 通知表示（nvim-notifyの代替）
       notifier = { enabled = true },
-      -- セッション管理は無効（プロジェクト切り替え時のセッション復元を抑制）
-      session = { enabled = false },
     },
     keys = {
       -- ファイル検索

@@ -86,6 +86,7 @@ end, { noremap = true })
 -- ターミナルを開く
 vim.keymap.set("n", "<Leader>oT", function() vim.cmd("term") end, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>oC", function() vim.cmd("term claude") end, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>oH", function() vim.cmd("term hunk diff") end, { noremap = true, silent = true })
 
 -- 各種設定のトグル
 vim.keymap.set("n", "<Leader>tl", function() vim.wo.list = not vim.wo.list end, { noremap = true, silent = true })

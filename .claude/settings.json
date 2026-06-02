@@ -17,8 +17,19 @@
       "Edit(~/.gnupg/**)",
       "Edit(**/.env)",
       "Edit(**/.env.*)"
+    ],
+
+    "allow": [
+      "Read(//Users/shingo.watanabe/sanctum/knowledge/**)",
+      "Read(//Users/shingo.watanabe/.claude/**)",
+      "Read(//Users/shingo.watanabe/Documents/tmp/**)",
+      "Read(//Users/shingo.watanabe/sanctum/projects/**)",
+      "Edit(//Users/shingo.watanabe/sanctum/knowledge/**)",
+      "mcp__claude_ai_Notion__notion-fetch",
+      "mcp__claude_ai_Notion__notion-search"
     ]
   },
+  "model": "opus",
   "hooks": {
     "PreToolUse": [
       {
@@ -36,7 +47,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -n \"$NVIM\" ] && nvim --server \"$NVIM\" --remote-expr 'execute(\"lua claude_notify_done()\")' || true"
+            "command": "[ -n \"$NVIM\" ] && nvim --server \"$NVIM\" --remote-expr \"execute('lua claude_notify_done([[${PWD}]])')\" || true"
           },
           {
             "type": "command",
@@ -54,6 +65,6 @@
     "pyright-lsp@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true
   },
-  "skipAutoPermissionPrompt": true,
-  "model": "opus[1m]"
+  "effortLevel": "xhigh",
+  "skipAutoPermissionPrompt": true
 }

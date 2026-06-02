@@ -130,6 +130,8 @@ if status is-interactive
 
     #;;; Rancher Desktop
     set -gx PATH "$HOME/.rd/bin" $PATH
+
+    set -gx CLAUDE_CODE_DISABLE_1M_CONTEXT 1
 end
 
 if test -f $(status dirname)/local_config.fish
