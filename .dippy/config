@@ -41,6 +41,26 @@
 #
 # ============================================================
 
+# --- allow common operations ---
+# 設計思想: harness-design.md 厳格モード
+#   静的に危険オプションを検出できるツール (find/sed/rg/fd) は
+#   allow + 危険オプション deny で扱う (後段の deny セクション参照)。
+#   コード内部の任意実行 (Rice の定理で静的解析不可、§3) を持つ
+#   python3 / awk は allow せず Dippy 既定の分類に委ねる:
+#     - python3 → ask  (LLM 判定。auto-mode の FN 17% を受容、§7)
+#     - awk     → allow (Dippy 既定。実用優先で system() リスクを受容)
+#   python3 の ask 範囲を縮められない以上、awk を deny するのは
+#   過剰と判断。両者とも「楽したい」と「制御」のトレードオフを
+#   明示的に受け入れた選択。
+allow ls
+allow grep
+allow find
+allow sed
+allow jq
+allow wc
+allow rg
+allow fd
+
 # --- Git: allow common operations ---
 allow git commit
 allow git push
@@ -50,7 +70,11 @@ allow git switch
 allow git pull
 allow git rebase
 allow git cherry-pick
-allow git merge
+allow git status
+allow git diff
+allow git log
+allow git show
+allow git branch
 
 # --- Git: force push (override allow git push) ---
 deny git push --force "Blocked. Rebase and push normally."
@@ -74,6 +98,34 @@ deny git clean -f "Destructive. Removes untracked files permanently."
 
 # --- Filesystem: destructive ---
 deny rm -rf "Recursive forced deletion is blocked."
+
+# --- find: arbitrary execution & write (allow find を上書き) ---
+deny find * -exec *      "find -exec is blocked. Run the command manually."
+deny find * -execdir *   "find -execdir is blocked."
+deny find * -delete      "find -delete is blocked. Use rm explicitly."
+deny find * -ok *        "find -ok is blocked."
+deny find * -okdir *     "find -okdir is blocked."
+deny find * -fprint *    "find -fprint writes files; blocked."
+deny find * -fprintf *   "find -fprintf writes files; blocked."
+deny find * -fls *       "find -fls writes files; blocked."
+
+# --- sed: in-place edit (allow sed を上書き) ---
+deny sed -i* *           "sed -i (in-place) is blocked. Use Edit tool."
+deny sed * -i* *         "sed -i (in-place) is blocked. Use Edit tool."
+
+# --- rg: preprocessor (allow rg を上書き) ---
+deny rg --pre *          "rg --pre executes arbitrary commands; blocked."
+deny rg * --pre *        "rg --pre executes arbitrary commands; blocked."
+
+# --- fd: execute (allow fd を上書き) ---
+deny fd -x *             "fd -x executes commands; blocked."
+deny fd * -x *           "fd -x executes commands; blocked."
+deny fd -X *             "fd -X executes commands; blocked."
+deny fd * -X *           "fd -X executes commands; blocked."
+deny fd --exec *         "fd --exec executes commands; blocked."
+deny fd * --exec *       "fd --exec executes commands; blocked."
+deny fd --exec-batch *   "fd --exec-batch executes commands; blocked."
+deny fd * --exec-batch * "fd --exec-batch executes commands; blocked."
 
 # --- GitHub CLI: allow common operations ---
 allow gh pr create
@@ -133,3 +185,6 @@ deny snowsql *
 deny-redirect **/.env* "Never write secrets. Ask the user to do it manually."
 deny-redirect ~/.ssh/** "SSH directory is protected."
 deny-redirect ~/.aws/** "AWS credentials directory is protected."
+deny-redirect ~/.snowflake/** "Snowflake config directory is protected"
+deny-redirect ~/.git/** "Global git directory is protected"
+
