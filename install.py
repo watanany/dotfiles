@@ -15,7 +15,6 @@ DIRS: list[str] = [
     ".pyenv",
     ".clojure",
     ".claude",
-    ".dippy",
 ]
 
 LINK_LIST: list[str] = [
