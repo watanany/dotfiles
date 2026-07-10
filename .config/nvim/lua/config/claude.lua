@@ -1,7 +1,9 @@
+local constants = require("constants")
+
 vim.api.nvim_create_autocmd("TabEnter", {
   group = vim.api.nvim_create_augroup("ClaudeCode", { clear = true }),
   callback = function()
-    vim.fn.settabvar(vim.fn.tabpagenr(), "claude_pending", 0)
+    vim.fn.settabvar(vim.fn.tabpagenr(), constants.claude_pending_tabvar, 0)
     vim.cmd("redrawtabline")
   end,
 })
@@ -13,7 +15,7 @@ function _G.claude_notify_done(cwd)
   local tabnr
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
     local name = vim.api.nvim_buf_get_name(buf)
-    if name:match("term://") and name:match("claude")
+    if name:match("term://") and name:match(constants.claude_cmd)
         and (not cwd or cwd == "" or name:find(cwd, 1, true)) then
       local wins = vim.fn.win_findbuf(buf)
       if #wins > 0 then
@@ -25,7 +27,7 @@ function _G.claude_notify_done(cwd)
     end
   end
   tabnr = tabnr or vim.fn.tabpagenr()
-  vim.fn.settabvar(tabnr, "claude_pending", 1)
+  vim.fn.settabvar(tabnr, constants.claude_pending_tabvar, 1)
   vim.cmd("redrawtabline")
   vim.notify(
     "応答完了\nTab " .. tabnr .. "  →  SPC <Tab>" .. tabnr,

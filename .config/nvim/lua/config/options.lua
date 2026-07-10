@@ -47,5 +47,7 @@ vim.o.expandtab = true
 vim.o.shiftwidth = 2
 -- タブ入力時その数値分だけ半角スペースを挿入する(sts)
 vim.o.softtabstop = 2
+-- JSONのクォートを見えるようにする
+vim.g.vim_json_conceal = 0
 
 

@@ -6,7 +6,7 @@
 -- vim.keymap.set("c", "w!!", "!sudo tee % > /dev/null")
 
 -- 入力モード中に素早くJJと入力した場合はESCとみなす
-vim.keymap.set("i", "jj", "<Esc>", { noremap = true, silent = true })
+-- vim.keymap.set("i", "jj", "<Esc>", { noremap = true, silent = true })
 -- ESCを二回押すことでハイライトを消す
 vim.keymap.set("n", "<Esc><Esc>", ":nohlsearch<CR>", { noremap = true, silent = true })
 -- Shift + 矢印でウィンドウサイズを変更
@@ -119,7 +119,7 @@ vim.keymap.set("n", "<Leader>bM", function()
   require("bmessages").toggle({ split_type = "split" })
 end, { noremap = true, silent = true })
 
--- ファイルパスをクリップボードにコピー（絶対パス）
+-- ファイルパスをクリップボードにコピー(絶対パス)
 vim.keymap.set("n", "<Leader>cp", function()
   local path = vim.fn.expand("%:p")
   vim.fn.setreg("+", path)
