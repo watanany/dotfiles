@@ -14,6 +14,7 @@ return {
   -- 構文解析エンジン(シンタックスハイライト・テキストオブジェクトの基盤)
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
     lazy = false,
     build = ":TSUpdate",
     config = function()
@@ -159,12 +160,11 @@ return {
 
   -- 色コードを彩色する
   {
-    "norcalli/nvim-colorizer.lua",
-    config = function()
-      require("colorizer").setup {
-        "*",
-      }
-    end,
+    "catgoose/nvim-colorizer.lua",
+    event = "BufReadPre",
+    opts = {
+      filetypes = { "*" },
+    },
   },
 
   ----------------------------------------------------------------------
@@ -416,7 +416,7 @@ return {
         },
       },
     },
-    dev = true,
+    dev = false,
   },
 
   ----------------------------------------------------------------------
@@ -639,6 +639,7 @@ return {
   -- treesitterでtextobjectを設定できるようにする(関数・クラス単位で選択など)
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
+    branch = "main",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
   },
 
