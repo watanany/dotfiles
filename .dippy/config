@@ -218,9 +218,6 @@ deny wc * ~/.aws/* "AWS credentials must not be read."
 deny wc * ~/.gnupg/* "GPG keys must not be read."
 deny wc * *.env "Secrets must not be read."
 deny wc * *.env.* "Secrets must not be read."
-deny aws-vault exec safie-data-analysis--DataAnalysisDeveloper *
-deny snow *
-deny snowsql *
 
 # --- Redirect protection ---
 deny-redirect **/.env* "Never write secrets. Ask the user to do it manually."
@@ -228,4 +225,25 @@ deny-redirect ~/.ssh/** "SSH directory is protected."
 deny-redirect ~/.aws/** "AWS credentials directory is protected."
 deny-redirect ~/.snowflake/** "Snowflake config directory is protected"
 deny-redirect ~/.git/** "Global git directory is protected"
+
+
+# TODO: あとで精査
+allow lake build
+allow lake exe render
+allow jj
+allow python
+allow ruff
+allow ty
+allow pytest
+allow dg check
+allow uv run python
+allow uv run ruff
+allow uv run ty
+allow uv run pytest
+allow uv run dg check
+allow uvx python
+allow uvx ruff
+allow uvx ty
+allow uvx pytest
+allow uvx dg check
 
