@@ -433,7 +433,7 @@ return {
     ---@module "blink.cmp"
     ---@type blink.cmp.Config
     opts = {
-      -- キーマップ：Emacsバインド(<C-b>/<C-f>/<C-e>/<C-k>)との衝突を回避
+      -- キーマップ：Emacsバインドとの衝突を回避
       keymap = {
         preset = "none",
         ["<C-space>"] = { "show", "fallback" },
@@ -443,6 +443,8 @@ return {
         ["<CR>"]      = { "accept", "fallback" },
         ["<Up>"]      = { "select_prev", "fallback" },
         ["<Down>"]    = { "select_next", "fallback" },
+        ["<C-p>"]     = { "select_prev", "fallback" },
+        ["<C-n>"]     = { "select_next", "fallback" },
       },
 
       appearance = {
