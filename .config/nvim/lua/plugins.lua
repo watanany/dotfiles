@@ -607,8 +607,23 @@ return {
     },
   },
 
-  -- Markdownのテーブル作成とフォーマット(:TableModeToggleで有効化)
-  { "dhruvasagar/vim-table-mode" },
+  -- Markdownのテーブル作成とフォーマット
+  {
+    "dhruvasagar/vim-table-mode",
+    ft = "markdown",
+    config = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "markdown",
+        callback = function()
+          vim.cmd("TableModeEnable")
+        end,
+      })
+      -- プラグイン初回ロードを引き起こしたバッファにも適用
+      if vim.bo.filetype == "markdown" then
+        vim.cmd("TableModeEnable")
+      end
+    end,
+  },
 
   -- 画像をneovim内で表示
   {

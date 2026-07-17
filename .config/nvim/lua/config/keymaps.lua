@@ -43,15 +43,28 @@ vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { noremap = true, silent = true })
 -- ターミナル上でvimを開いたときに不便なのでコメントアウト。代わりにjjをマッピングする。
 -- vim.keymap.set("t", "jj", "<C-\\><C-n>", { noremap = true, silent = true })
 
--- Emacsのキーバインドを使用できるようにする
+----------------------------------------------------------------------
+-- Emacs風のキーバインドを使用できるようにする
+----------------------------------------------------------------------
 
 vim.keymap.set("i", "<C-p>", "<Up>", { noremap = true, silent = true })
 vim.keymap.set("i", "<C-n>", "<Down>", { noremap = true, silent = true })
+
 vim.keymap.set("i", "<C-f>", "<Right>", { noremap = true, silent = true })
+vim.keymap.set("c", "<C-f>", "<Right>", { noremap = true })
 vim.keymap.set("i", "<C-b>", "<Left>", { noremap = true, silent = true })
+vim.keymap.set("c", "<C-b>", "<Left>", { noremap = true })
 vim.keymap.set("i", "<C-a>", "<Home>", { noremap = true, silent = true })
+vim.keymap.set("c", "<C-a>", "<Home>", { noremap = true })
 vim.keymap.set("i", "<C-e>", "<End>", { noremap = true, silent = true })
+vim.keymap.set("c", "<C-e>", "<End>", { noremap = true })
 vim.keymap.set("i", "<C-d>", "<Del>", { noremap = true, silent = true })
+vim.keymap.set("c", "<C-d>", "<Del>", { noremap = true })
+
+-- Ctrl-k: カーソル位置から行末まで削除
+-- `k`レジスタを使用する
+local REG = "k"
+
 vim.keymap.set("i", "<C-k>", function()
   -- unpackは非推奨で移行中
   -- TODO: neovimの使用するLuaのバージョンが5.2になったらtable.unpackを使うように変更する
@@ -62,26 +75,27 @@ vim.keymap.set("i", "<C-k>", function()
   local end_col = #line
 
   if col >= end_col then
-    -- カーソルが行末にある場合は、次の行と結合
+    -- カーソルが行末にある場合は、改行をkレジスタに保存して次の行と結合
+    vim.fn.setreg(REG, "\n", "c")
     vim.api.nvim_command("normal! J")
   else
-    -- カーソル位置から行末までを削除
-    local new_line = line:sub(1, col)
-    vim.api.nvim_set_current_line(new_line)
+    -- カーソル位置から行末までをkレジスタに保存して削除
+    vim.fn.setreg("k", line:sub(col + 1), "c")
+    vim.api.nvim_set_current_line(line:sub(1, col))
   end
 end, { noremap = true, silent = true })
 
-vim.keymap.set("c", "<C-f>", "<Right>", { noremap = true })
-vim.keymap.set("c", "<C-b>", "<Left>", { noremap = true })
-vim.keymap.set("c", "<C-a>", "<Home>", { noremap = true })
-vim.keymap.set("c", "<C-e>", "<End>", { noremap = true })
-vim.keymap.set("c", "<C-d>", "<Del>", { noremap = true })
-
 vim.keymap.set("c", "<C-k>", function()
+  -- カーソル位置から末尾までをkレジスタに保存して削除
   local line = vim.fn.getcmdline()
   local pos = vim.fn.getcmdpos()
+  vim.fn.setreg(REG, line:sub(pos), "c")
   vim.fn.setcmdline(line:sub(1, pos - 1), pos)
 end, { noremap = true })
+
+-- Ctrl-yで貼り付け
+vim.keymap.set("i", "<C-y>", ("<C-r><C-o>%s"):format(reg), { noremap = true, silent = true })
+vim.keymap.set("c", "<C-y>", ("<C-r>%s"):format(reg), { noremap = true })
 
 -- ターミナルを開く
 vim.keymap.set("n", "<Leader>oT", function() vim.cmd("term") end, { noremap = true, silent = true })
