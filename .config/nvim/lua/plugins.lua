@@ -8,6 +8,15 @@ return {
   -- LSP設定の基盤(各言語サーバーの設定はconfig/lsps.luaで行う)
   { "neovim/nvim-lspconfig" },
 
+  -- LSPのdocumentLinkをgxで開く(terraform-lsのRegistryリンク等)
+  {
+    "icholy/lsplinks.nvim",
+    opts = {},
+    keys = {
+      { "gx", function() require("lsplinks").gx() end },
+    },
+  },
+
   -- Lua関数集(多くのプラグインが依存)
   { "nvim-lua/plenary.nvim" },
 
@@ -155,6 +164,12 @@ return {
     ---@type ibl.config
     opts = {
       scope = { enabled = false },
+      exclude = {
+        filetypes = {
+          "markdown",
+          "lean",
+        },
+      },
     },
   },
 
@@ -211,6 +226,7 @@ return {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
+    ---@module "snacks"
     ---@type snacks.Config
     opts = {
       -- ファイル・バッファ・プロジェクト検索のpicker
@@ -272,33 +288,59 @@ return {
     },
     keys = {
       -- ファイル検索
-      { "<Leader>ff", function() Snacks.picker.files({ hidden = true }) end,
-        desc = "ファイル名で検索する" },
-      { "<Leader>pf", function()
+      {
+        "<Leader>ff",
+        function() Snacks.picker.files({ hidden = true }) end,
+        desc = "ファイル名で検索する",
+      },
+      {
+        "<Leader>pf",
+        function()
           Snacks.picker.files({
             hidden = true,
             cwd = vim.fs.root(vim.api.nvim_buf_get_name(0), { ".git" }),
           })
-        end, desc = "プロジェクトのファイルを検索する" },
-      { "<Leader>fp", function()
+        end,
+        desc = "プロジェクトのファイルを検索する",
+      },
+      {
+        "<Leader>fp",
+        function()
           Snacks.picker.files({ cwd = "~/dotfiles", hidden = true })
-        end, desc = "dotfilesを検索する" },
-      { "<Leader>fd", function()
+        end,
+        desc = "dotfilesを検索する",
+      },
+      {
+        "<Leader>fd",
+        function()
           Snacks.picker.files({ cwd = vim.fn.expand("%:h"), hidden = true })
-        end, desc = "ファイル名で検索する(cwd=%:h)" },
+        end,
+        desc = "ファイル名で検索する(cwd=%:h)",
+      },
 
       -- grep
-      { "<Leader>fs", function() Snacks.picker.grep({ hidden = true }) end,
-        desc = "ファイル内の文字列を検索する" },
-      { "<Leader>sp", function()
+      {
+        "<Leader>fs",
+        function() Snacks.picker.grep({ hidden = true }) end,
+        desc = "ファイル内の文字列を検索する",
+      },
+      {
+        "<Leader>sp",
+        function()
           Snacks.picker.grep({
             hidden = true,
             cwd = vim.fs.root(vim.api.nvim_buf_get_name(0), { ".git" }),
           })
-        end, desc = "プロジェクト内の文字列を検索する" },
-      { "<Leader>sd", function()
+        end,
+        desc = "プロジェクト内の文字列を検索する",
+      },
+      {
+        "<Leader>sd",
+        function()
           Snacks.picker.grep({ cwd = vim.fn.expand("%:h"), hidden = true })
-        end, desc = "ファイル内の文字列を検索する(cwd=%:h)" },
+        end,
+        desc = "ファイル内の文字列を検索する(cwd=%:h)",
+      },
 
       -- バッファ
       { "<Leader>fb", function() Snacks.picker.buffers() end, desc = "バッファ一覧を表示する" },
@@ -307,14 +349,23 @@ return {
 
       -- その他
       { "<Leader>fh", function() Snacks.picker.help() end, desc = "ヘルプを表示する" },
-      { "<Leader>fr", function() Snacks.picker.recent() end,
-        desc = "最近開いたファイルで検索する" },
-      { "<Leader>fR", function() Snacks.picker.recent({ cwd = vim.fn.getcwd() }) end,
-        desc = "最近開いたファイルで検索する(workspace=CWD)" },
+      {
+        "<Leader>fr",
+        function() Snacks.picker.recent() end,
+        desc = "最近開いたファイルで検索する",
+      },
+      {
+        "<Leader>fR",
+        function() Snacks.picker.recent({ cwd = vim.fn.getcwd() }) end,
+        desc = "最近開いたファイルで検索する(workspace=CWD)",
+      },
       { "<Leader>pp", function() Snacks.picker.projects() end, desc = "プロジェクトを開く" },
-      { "<Leader>n",  function() Snacks.picker.notifications() end, desc = "通知履歴" },
-      { "<Leader>gf", function() Snacks.picker.git_files({ hidden = true }) end,
-        desc = "Gitファイルを検索する" },
+      { "<Leader>n", function() Snacks.picker.notifications() end, desc = "通知履歴" },
+      {
+        "<Leader>gf",
+        function() Snacks.picker.git_files({ hidden = true }) end,
+        desc = "Gitファイルを検索する",
+      },
 
       -- ファイルツリー
       { "<Leader>ft", function() Snacks.explorer() end, desc = "ファイルツリーを開く" },
@@ -330,7 +381,14 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     lazy = false,
     config = function()
-      require("session_manager").setup {}
+      local session_config = require("session_manager.config")
+      local no_session = os.getenv("NVIM_NO_SESSION") ~= nil
+
+      require("session_manager").setup {
+        autoload_mode = no_session and session_config.AutoloadMode.Disabled
+          or session_config.AutoloadMode.LastSession,
+        autosave_last_session = not no_session,
+      }
     end,
     enabled = true,
   },
@@ -366,6 +424,13 @@ return {
         desc = "Toggle lazygit",
       },
       {
+        "<Leader>oh",
+        function()
+          require("kocmd").toggle("hunk")
+        end,
+        desc = "Toggle hunk diff",
+      },
+      {
         "<Leader>od",
         function()
           require("kocmd").toggle("lazydocker")
@@ -396,6 +461,11 @@ return {
         },
         lazygit = {
           cmd = "lazygit",
+          position = "float",
+          size = { width = 0.95, height = 0.95 },
+        },
+        hunk = {
+          cmd = "hunk diff",
           position = "float",
           size = { width = 0.95, height = 0.95 },
         },
@@ -512,6 +582,7 @@ return {
     },
 
     init = function()
+      ---@module "lean"
       ---@type lean.Config
       vim.g.lean_config = {
         mappings = true,
@@ -549,16 +620,18 @@ return {
   {
     "SidOfc/mkdx",
     init = function()
-      vim.g.mkdx = {
-        settings = {
-          highlight = { enabled = true },
-          enter = { shift = true },
-          links = { external = { enabled = true } },
-          toc = { text = "Table of Contents", update_on_write = true },
-          fold = { enabled = false },
+      vim.g["mkdx#settings"] = {
+        highlight = { enable = 1 },
+        enter = { shift = 1 },
+        links = {
+          external = { enable = 1 },
+          fragment = { complete = 0 },
         },
+        toc = { text = "Table of Contents", update_on_write = 1 },
+        fold = { enable = 0 },
       }
     end,
+    enabled = true,
   },
 
   -- Markdownをneovim上でリアルタイムレンダリング
@@ -574,7 +647,7 @@ return {
     enabled = false,
   },
 
-  -- Markdown を near-WYSIWYG 描画(全 markdown 対象。render-markdown の代替として試用中)
+  -- Markdown を near-WYSIWYG 描画
   {
     "OXY2DEV/markview.nvim",
     lazy = false,
@@ -585,7 +658,7 @@ return {
         -- hybrid_modes = { "i" },
       },
     },
-    enabled = true,
+    enabled = false,
   },
 
   -- Obsidian vault 操作([[wikilink]]補完・リンク追跡・バックリンク・デイリーノート)
@@ -605,6 +678,7 @@ return {
       ui = { enable = false },
       legacy_commands = false,
     },
+    enabled = false,
   },
 
   -- Markdownのテーブル作成とフォーマット
@@ -625,6 +699,14 @@ return {
     end,
   },
 
+  -- MarkdownなどをWEBブラウザでのlive-preview
+  {
+    "brianhuster/live-preview.nvim",
+    dependencies = {
+      "folke/snacks.nvim",
+    },
+  },
+
   -- 画像をneovim内で表示
   {
     "3rd/image.nvim",
@@ -633,14 +715,6 @@ return {
       processor = "magick_cli",
     },
     enabled = true,
-  },
-
-  -- MarkdownなどをWEBブラウザでのlive-preview
-  {
-    "brianhuster/live-preview.nvim",
-    dependencies = {
-      "folke/snacks.nvim",
-    },
   },
 
   ----------------------------------------------------------------------
@@ -693,9 +767,61 @@ return {
   {
     "ariel-frischer/bmessages.nvim",
     event = "CmdlineEnter",
-    opts = {}
+    opts = {},
   },
 
   -- windowを消さないbdコマンド(:Bdeleteと:Bwipeoutを追加)
   { "famiu/bufdelete.nvim" },
+
+  -- ウィンドウサイズ変更
+  {
+    "mrjones2014/smart-splits.nvim",
+    keys = {
+      { "<S-Left>", function() require("smart-splits").resize_left() end, desc = "ウィンドウの境界を左へ" },
+      { "<S-Right>", function() require("smart-splits").resize_right() end, desc = "ウィンドウの境界を右へ" },
+      { "<S-Up>", function() require("smart-splits").resize_up() end, desc = "ウィンドウの境界を上へ" },
+      { "<S-Down>", function() require("smart-splits").resize_down() end, desc = "ウィンドウの境界を下へ" },
+    },
+    opts = {
+      multiplexer_integration = false,
+      default_amount = 3,
+    },
+  },
+
+  {
+    "folke/zen-mode.nvim",
+    keys = {
+      {
+        "<Leader>tz",
+        function()
+          require("zen-mode").toggle()
+        end,
+        desc = "ZenModeをトグルする",
+      },
+    },
+    opts = {
+      -- ZenMode中はインデントガイド(indent-blankline)を非表示にする
+      on_open = function()
+        require("ibl").update { enabled = false }
+        -- require("markview").commands.disable(vim.api.nvim_get_current_buf())
+      end,
+      on_close = function()
+        require("ibl").update { enabled = true }
+        -- require("markview").commands.enable(vim.api.nvim_get_current_buf())
+      end,
+      window = {
+        width = 0.85,
+        options = {
+          wrap = false,            -- disable wrap
+          signcolumn = "no",       -- disable signcolumn
+          number = false,          -- disable number column
+          relativenumber = false,  -- disable relative numbers
+          cursorline = false,      -- disable cursorline
+          cursorcolumn = false,    -- disable cursor column
+          foldcolumn = "0",        -- disable fold column
+          list = false,            -- disable whitespace characters
+        },
+      },
+    },
+  },
 }
