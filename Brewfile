@@ -3,6 +3,7 @@ tap "k1low/tap", "https://github.com/k1LoW/homebrew-tap"
 tap "ldayton/dippy"
 tap "lightdash/lightdash"
 tap "modem-dev/tap"
+tap "terraform-linters/tap"
 # Securely store and access AWS credentials in development environments
 brew "aws-vault"
 # Official Amazon AWS command-line interface
@@ -39,6 +40,8 @@ brew "jj"
 brew "lazydocker"
 # Simple terminal UI for git commands
 brew "lazygit"
+# Language Server for the Lua language
+brew "lua-language-server"
 # Package manager for the Lua programming language
 brew "luarocks"
 # Polyglot runtime manager (asdf rust clone)
@@ -57,6 +60,10 @@ brew "pstree"
 brew "ripgrep"
 # Rust toolchain installer
 brew "rustup"
+# Static analysis and lint tool, for (ba)sh scripts
+brew "shellcheck"
+# Autoformat shell script source code
+brew "shfmt"
 # CLI for snowflake
 brew "snowflake-cli"
 # Terminal multiplexer
@@ -65,6 +72,8 @@ brew "tmux"
 brew "tree"
 # Parser generator tool
 brew "tree-sitter-cli"
+# Vulnerability scanner for container images, file systems, and Git repos
+brew "trivy"
 # Extremely fast Python type checker, written in Rust
 brew "ty"
 # Extremely fast Python package installer and resolver, written in Rust
@@ -91,6 +100,8 @@ cask "1password"
 cask "alt-tab"
 # Memory training application
 cask "anki"
+# Cross platform SQL editor and database management app
+cask "beekeeper-studio"
 # Anthropic's official Claude AI desktop app
 cask "claude"
 # Terminal-based AI coding assistant
@@ -117,6 +128,8 @@ cask "obsidian"
 cask "rancher"
 # Command-line client for connecting to Snowflake
 cask "snowflake-snowsql"
+# Pluggable Terraform linter
+cask "terraform-linters/tap/tflint", trusted: true
 # Open-source code editor
 cask "visual-studio-code"
 # Multiplayer code editor
@@ -124,12 +137,17 @@ cask "zed"
 vscode "anthropic.claude-code"
 vscode "bierner.markdown-mermaid"
 vscode "dbtlabsinc.dbt"
+vscode "github.vscode-github-actions"
+vscode "github.vscode-pull-request-github"
 vscode "matt-meyers.vscode-dbml"
 vscode "mermaidchart.vscode-mermaid-chart"
+vscode "ms-ceintl.vscode-language-pack-ja"
 vscode "ms-python.debugpy"
 vscode "ms-python.python"
 vscode "ms-python.vscode-pylance"
 vscode "ms-python.vscode-python-envs"
 vscode "nicolas-liger.dbml-viewer"
+vscode "pkief.material-icon-theme"
+vscode "tinkertrain.theme-panda"
 vscode "vscodevim.vim"
 vscode "vstirbu.vscode-mermaid-preview"
