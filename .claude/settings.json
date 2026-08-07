@@ -26,6 +26,8 @@
       "Edit(~/.snowflake/**)",
       "Edit(**/.env)",
       "Edit(**/.env.*)",
+      "Write(**/.env)",
+      "Write(**/.env.*)",
       "Bash(git push --force:*)",
       "Bash(git push --force-with-lease:*)",
       "Bash(git push -f:*)",
@@ -109,7 +111,9 @@
         "~/.aws",
         "~/.gnupg",
         "~/.snowflake",
-        "~/.git"
+        "~/.git",
+        "**/.env",
+        "**/.env.*"
       ],
       "denyRead": [
         "~/.ssh",
