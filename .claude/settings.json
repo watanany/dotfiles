@@ -20,12 +20,6 @@
       "Read(~/.snowflake/**)",
       "Read(**/.env)",
       "Read(**/.env.*)",
-      "Write(~/.ssh/**)",
-      "Write(~/.aws/**)",
-      "Write(~/.gnupg/**)",
-      "Write(~/.snowflake/**)",
-      "Write(**/.env)",
-      "Write(**/.env.*)",
       "Edit(~/.ssh/**)",
       "Edit(~/.aws/**)",
       "Edit(~/.gnupg/**)",
@@ -78,7 +72,7 @@
       "Bash(gh repo delete:*)"
     ]
   },
-  "model": "claude-fable-5",
+  "model": "opus",
   "enabledPlugins": {
     "pyright-lsp@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true,
@@ -133,5 +127,6 @@
   "effortLevel": "high",
   "tui": "default",
   "skipWorkflowUsageWarning": true,
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "hooks": {"SessionStart":[{"matcher":"*","hooks":[{"type":"command","command":"bash '/Users/shingo.watanabe/.claude/hooks/herdr-agent-state.sh' session","timeout":10}]}]}
 }
