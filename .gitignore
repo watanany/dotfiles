@@ -10,3 +10,8 @@ local_config.fish
 /.lein/repl-history
 /.history
 .cpcache/
+
+.config/karabiner/automatic_backups/
+.config/herdr/
+!.config/herdr/config.toml
+

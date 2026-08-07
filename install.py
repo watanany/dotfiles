@@ -7,6 +7,7 @@ CONFIG_ROOT: str = os.path.join(HOME, "dotfiles")
 
 DIRS: list[str] = [
     ".config",
+    ".config/herdr",
     ".cache",
     ".local/bin",
     ".local/share",
@@ -38,6 +39,7 @@ LINK_LIST: list[str] = [
     ".pyenv/default-packages",
     ".clojure/deps.edn",
     ".config/evcxr",
+    ".config/herdr/config.toml",
 ]
 
 
