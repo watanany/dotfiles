@@ -26,7 +26,7 @@ vim.lsp.config("pyright", {
   },
 })
 
-vim.lsp.config('ty', {
+vim.lsp.config("ty", {
   settings = {
     ty = {
     }
@@ -130,8 +130,8 @@ vim.lsp.config("dbt-lsp", {
 
 vim.lsp.enable({
   "lua_ls",
-  -- "pyright",
-  "ty",
+  "pyright",
+  -- "ty",
   "ruby_lsp",
   "ts_ls",
   "gopls",
