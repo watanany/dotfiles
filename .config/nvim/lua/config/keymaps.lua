@@ -6,14 +6,9 @@
 -- vim.keymap.set("c", "w!!", "!sudo tee % > /dev/null")
 
 -- 入力モード中に素早くJJと入力した場合はESCとみなす
--- vim.keymap.set("i", "jj", "<Esc>", { noremap = true, silent = true })
+vim.keymap.set("i", "jj", "<Esc>", { noremap = true, silent = true })
 -- ESCを二回押すことでハイライトを消す
 vim.keymap.set("n", "<Esc><Esc>", ":nohlsearch<CR>", { noremap = true, silent = true })
--- Shift + 矢印でウィンドウサイズを変更
-vim.keymap.set("n", "<S-Left>", "<C-w><", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-Right>", "<C-w>>", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-Up>", "<C-w>-", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-Down>", "<C-w>+", { noremap = true, silent = true })
 -- 検索後にジャンプした際に検索単語を画面中央に持ってくる
 vim.keymap.set("n", "n", "nzz", { noremap = true, silent = true })
 vim.keymap.set("n", "N", "Nzz", { noremap = true, silent = true })
@@ -80,7 +75,7 @@ vim.keymap.set("i", "<C-k>", function()
     vim.api.nvim_command("normal! J")
   else
     -- カーソル位置から行末までをkレジスタに保存して削除
-    vim.fn.setreg("k", line:sub(col + 1), "c")
+    vim.fn.setreg(REG, line:sub(col + 1), "c")
     vim.api.nvim_set_current_line(line:sub(1, col))
   end
 end, { noremap = true, silent = true })
@@ -94,8 +89,8 @@ vim.keymap.set("c", "<C-k>", function()
 end, { noremap = true })
 
 -- Ctrl-yで貼り付け
-vim.keymap.set("i", "<C-y>", ("<C-r><C-o>%s"):format(reg), { noremap = true, silent = true })
-vim.keymap.set("c", "<C-y>", ("<C-r>%s"):format(reg), { noremap = true })
+vim.keymap.set("i", "<C-y>", ("<C-r><C-o>%s"):format(REG), { noremap = true, silent = true })
+vim.keymap.set("c", "<C-y>", ("<C-r>%s"):format(REG), { noremap = true })
 
 -- ターミナルを開く
 vim.keymap.set("n", "<Leader>oT", function() vim.cmd("term") end, { noremap = true, silent = true })
