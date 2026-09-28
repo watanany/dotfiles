@@ -91,16 +91,7 @@
   "enabledPlugins": {
     "pyright-lsp@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true,
-    "document-skills@anthropic-agent-skills": true,
     "lua-lsp@claude-plugins-official": true
-  },
-  "extraKnownMarketplaces": {
-    "anthropic-agent-skills": {
-      "source": {
-        "source": "github",
-        "repo": "anthropics/skills"
-      }
-    }
   },
   "sandbox": {
     "enabled": true,
@@ -121,19 +112,9 @@
     },
     "filesystem": {
       "denyWrite": [
-        "~/.ssh",
-        "~/.aws",
-        "~/.gnupg",
-        "~/.snowflake",
         "~/.git",
         "**/.env",
         "**/.env.*"
-      ],
-      "denyRead": [
-        "~/.ssh",
-        "~/.aws",
-        "~/.gnupg",
-        "~/.snowflake"
       ]
     },
     "excludedCommands": [
