@@ -103,7 +103,7 @@ return {
 
         -- タブ名を整形する：タブのcwdからプロジェクト名を引き、末尾セグメントのみ表示する。
         -- フォーカス中のバッファに依存しないので、terminal buffer(fish/claude等)に
-        -- フォーカスを移してもラベルが変わらない。Claude応答完了時は◆マークを付与する。
+        -- フォーカスを移してもラベルが変わらない。
         name_formatter = function(buf)
           -- このバッファが属するタブ番号を特定する(1番最初)
           local tabnr
@@ -120,13 +120,7 @@ return {
           local root = vim.fs.root(cwd, { ".git" }) or cwd
           local name = vim.fs.basename(root)
           local parts = vim.split(name, "-")
-          local label = parts[#parts]
-
-          -- Claude応答完了マーク
-          if tabnr and vim.fn.gettabvar(tabnr, constants.claude_pending_tabvar) == 1 then
-            label = "◆ " .. label
-          end
-          return label
+          return parts[#parts]
         end,
 
         show_buffer_icons = true,
@@ -238,6 +232,20 @@ return {
         -- (デフォルトはlastused順で隣のwindowに開きうる)
         main = { current = true },
         sources = {
+          -- Claude Code の会話の一覧(vim.ui.select の kind)を他の picker と同じ大きさで出し、会話をプレビューする
+          select = {
+            kinds = {
+              claude_session = {
+                layout = { preset = "telescope" },
+                preview = function(ctx)
+                  ctx.preview:reset()
+                  ctx.preview:set_title(ctx.item.item.title)
+                  require("claude-history.preview").render_preview(ctx.buf, ctx.win, ctx.item.item)
+                  ctx.preview:highlight({ ft = "markdown" })
+                end,
+              },
+            },
+          },
           -- ファイルツリー(drawerスタイル)。隠しファイルも表示する
           explorer = {
             hidden = true,
@@ -389,6 +397,14 @@ return {
           or session_config.AutoloadMode.LastSession,
         autosave_last_session = not no_session,
       }
+
+      -- プラグインの VimLeavePre は nested でなく、終了時の保存で SessionWritePost が発火しないため、nested で登録し直す
+      vim.api.nvim_clear_autocmds({ group = "SessionManager", event = "VimLeavePre" })
+      vim.api.nvim_create_autocmd("VimLeavePre", {
+        group = "SessionManager",
+        nested = true,
+        callback = require("session_manager").autosave_session,
+      })
     end,
     enabled = true,
   },
@@ -406,8 +422,10 @@ return {
   },
 
   -- lazygit・lazydocker・claude等をトグルで開く(自作プラグイン)
+  -- 起動時のセッション読み込みで、claude の terminal を kocmd のウィンドウとして扱うため、遅延ロードしない
   {
     "watanany/kocmd.nvim",
+    lazy = false,
     keys = {
       {
         "<Leader>ot",
@@ -474,10 +492,18 @@ return {
           position = "float",
           size = { width = 0.95, height = 0.95 },
         },
+        -- claude-term の dtach の中で動かす。起動のたびに新しいソケットを作るので、cmd は関数で渡す
+        -- セッションに保存し、読み込み時は動いている claude につなぎ直す(止まっていれば元の会話を --resume で再開する)
         claude = {
-          cmd = constants.claude_cmd,
+          cmd = function()
+            return require("claude-term").cmd()
+          end,
           position = "left",
           size = 60,
+          session = true,
+          restore_cmd = function(buf)
+            return require("claude-term").restore_cmd(buf)
+          end,
         },
         codex = {
           cmd = "codex",
@@ -486,7 +512,34 @@ return {
         },
       },
     },
-    dev = false,
+    dev = true,
+  },
+
+  -- Claude Code を dtach の中で動かし、Neovim を閉じても止めない。会話の一覧・resume・つなぎ直し(自作プラグイン)
+  -- 起動時のセッション読み込みで claude の terminal をつなぎ直すため、遅延ロードしない
+  {
+    "watanany/claude-term.nvim",
+    main = "claude-term",
+    lazy = false,
+    opts = {
+      dtach = true,
+      -- 起動時の通知はすぐ消えて :ClaudeAttach を打つ間がないので出さない。裏の claude は <Leader>ad で見る
+      notify_detached = false,
+      -- kocmd の terminal は kocmd が自分でセッションファイルを書き換えるので、claude-term では扱わない
+      session_skip = function(buf)
+        return vim.b[buf].kocmd_name ~= nil
+      end,
+    },
+    dev = true,
+  },
+
+  -- Claude Code の会話の live grep と AI 検索(自作プラグイン)
+  {
+    "watanany/claude-history.nvim",
+    main = "claude-history",
+    dependencies = { "folke/snacks.nvim", "watanany/claude-term.nvim" },
+    opts = {},
+    dev = true,
   },
 
   ----------------------------------------------------------------------

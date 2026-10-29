@@ -94,7 +94,25 @@ vim.keymap.set("c", "<C-y>", ("<C-r>%s"):format(REG), { noremap = true })
 
 -- ターミナルを開く
 vim.keymap.set("n", "<Leader>oT", function() vim.cmd("term") end, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>oC", function() vim.cmd("term claude") end, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>oC", function() require("claude-term").open() end, { noremap = true, silent = true })
+
+-- Claude Code の会話は <Leader>a にまとめる。小文字は今のプロジェクト、大文字は全プロジェクト
+-- 今のプロジェクトは、今のバッファの git root(terminal などでは cwd から探す)
+-- この Neovim のバッファで動いている claude を出し、選んだもののウィンドウへ移る
+vim.keymap.set("n", "<Leader>ab", function() require("claude-term").select({ open = true }) end, { noremap = true, silent = true })
+-- 画面に出ていない、裏で動いている claude を出し、選んだものにつなぎ直す(:ClaudeAttach と同じ)
+-- ab は画面に出ているものだけの一覧なので、混ぜずに分ける
+vim.keymap.set("n", "<Leader>ad", function() require("claude-term").select({ detached = true }) end, { noremap = true, silent = true })
+-- 会話の一覧から選んで resume する
+vim.keymap.set("n", "<Leader>ac", function()
+  require("claude-term").select({ root = vim.fs.root(0, ".git") or vim.fn.getcwd() })
+end, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>aC", function() require("claude-term").select() end, { noremap = true, silent = true })
+-- 会話の中身を live grep して resume する。先頭に ? を付けて Enter を押すと、残りの文で AI 検索に切り替わる
+vim.keymap.set("n", "<Leader>as", function()
+  require("claude-history").search({ root = vim.fs.root(0, ".git") or vim.fn.getcwd() })
+end, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>aS", function() require("claude-history").search() end, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>oH", function() vim.cmd("term hunk diff") end, { noremap = true, silent = true })
 
 -- 各種設定のトグル

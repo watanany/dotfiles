@@ -14,6 +14,8 @@ brew "bat"
 brew "container"
 # Convert DBML file to SQL and vice versa
 brew "dbml-cli"
+# Detach a program from its terminal and reattach later
+brew "dtach"
 # Modern, maintained replacement for ls
 brew "eza"
 # Simple, fast and user-friendly alternative to find
