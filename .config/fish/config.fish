@@ -139,8 +139,6 @@ if status is-interactive
 
     #;;; opencode
     set -gx PATH "$HOME/.opencode/bin" $PATH
-
-
 end
 
 if test -f $(status dirname)/local_config.fish
