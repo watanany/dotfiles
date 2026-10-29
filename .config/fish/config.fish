@@ -131,14 +131,18 @@ if status is-interactive
     #;;; Rancher Desktop
     set -gx PATH "$HOME/.rd/bin" $PATH
 
+    #;;; Claude Code
     set -gx CLAUDE_CODE_DISABLE_1M_CONTEXT 1
 
+    #;;; dbt
     set -gx DBT_SEND_ANONYMOUS_USAGE_STATS false
+
+    #;;; opencode
+    set -gx PATH "$HOME/.opencode/bin" $PATH
+
+
 end
 
 if test -f $(status dirname)/local_config.fish
     source $(status dirname)/local_config.fish
 end
-
-# opencode
-fish_add_path /Users/shingo.watanabe/.opencode/bin
