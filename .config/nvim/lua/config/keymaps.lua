@@ -113,7 +113,13 @@ vim.keymap.set("n", "<Leader>as", function()
   require("claude-history").search({ root = vim.fs.root(0, ".git") or vim.fn.getcwd() })
 end, { noremap = true, silent = true })
 vim.keymap.set("n", "<Leader>aS", function() require("claude-history").search() end, { noremap = true, silent = true })
-vim.keymap.set("n", "<Leader>oH", function() vim.cmd("term hunk diff") end, { noremap = true, silent = true })
+-- 比べる範囲(例: 59174430..HEAD)を入力して hunk diff を開く。空のまま Enter なら作業ツリーとの差分
+vim.keymap.set("n", "<Leader>oH", function()
+  vim.ui.input({ prompt = "hunk diff " }, function(target)
+    if target == nil then return end
+    vim.cmd("term hunk diff " .. target)
+  end)
+end, { noremap = true, silent = true })
 
 -- 各種設定のトグル
 vim.keymap.set("n", "<Leader>tl", function() vim.wo.list = not vim.wo.list end, { noremap = true, silent = true })
