@@ -564,6 +564,9 @@ return {
         ["<Tab>"]     = { "select_next", "snippet_forward", "fallback" },
         ["<S-Tab>"]   = { "select_prev", "snippet_backward", "fallback" },
         ["<CR>"]      = { "accept", "fallback" },
+        -- 略語入力中は lean.nvim が <CR>/<Tab> を convert に差し替えるため、
+        -- 候補を選んで確定するための Enter 相当のキー
+        ["<C-j>"]     = { "accept", "fallback" },
         ["<Up>"]      = { "select_prev", "fallback" },
         ["<Down>"]    = { "select_next", "fallback" },
         ["<C-p>"]     = { "select_prev", "fallback" },
@@ -577,12 +580,19 @@ return {
 
       -- 補完ソース設定
       sources = {
-        default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+        default = { "lazydev", "lean_abbrev", "lsp", "path", "snippets", "buffer" },
         providers = {
           -- lazydev(Lua開発補助)を最優先に表示する
           lazydev = {
             name         = "LazyDev",
             module       = "lazydev.integrations.blink",
+            score_offset = 100,
+          },
+
+          -- Lean の Unicode 略語(\vdash → ⊢)
+          lean_abbrev = {
+            name         = "LeanAbbrev",
+            module       = "blink_sources.lean_abbrev",
             score_offset = 100,
           },
         },
@@ -640,6 +650,14 @@ return {
       vim.g.lean_config = {
         mappings = true,
       }
+
+      -- .lean 以外でも Unicode 略語を使う
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = constants.lean_abbrev_filetypes,
+        callback = function(ev)
+          require("lean.abbreviations").init(ev.buf)
+        end,
+      })
     end,
   },
 
