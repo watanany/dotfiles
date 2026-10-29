@@ -5,4 +5,4 @@ SETUVAR _fisher_jorgebucaran_2F_fisher_files:/Users/watanabe_shingo/\x2econfig/f
 SETUVAR _fisher_plugins:jorgebucaran/fisher\x1ereitzig/sdkman\x2dfor\x2dfish\x40v2\x2e1\x2e0
 SETUVAR _fisher_reitzig_2F_sdkman_2D_for_2D_fish_40_v2_2E_31_2E_30__files:/Users/watanabe\x2es/\x2econfig/fish/functions/sdk\x2efish\x1e/Users/watanabe\x2es/\x2econfig/fish/conf\x2ed/sdk\x2efish\x1e/Users/watanabe\x2es/\x2econfig/fish/completions/sdk\x2efish
 SETUVAR fish_greeting:
-SETUVAR fish_user_paths:/Users/shingo\x2ewatanabe/\x2eopencode/bin\x1e/usr/local/opt/fzf/bin\x1e/opt/homebrew/opt/fzf/bin
+SETUVAR fish_user_paths:/usr/local/opt/fzf/bin\x1e/opt/homebrew/opt/fzf/bin
